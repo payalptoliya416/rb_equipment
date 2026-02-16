@@ -1,0 +1,298 @@
+"use client";
+
+import AdminDataTable, { Column } from "@/components/tables/AdminDataTable";
+import { FiSearch } from "react-icons/fi";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { adminOrdersService } from "@/api/admin/orders";
+import OrderStatusDropdown from "@/adminpanel/OrderStatusDropdown";
+import OrderMobileCard from "@/adminpanel/OrderMobileCard";
+import { formatPrice } from "@/hooks/formate";
+import { FaFilePdf } from "react-icons/fa6";
+import PaymentSlipModal from "@/adminpanel/PaymentSlipModal";
+import { SlCloudUpload } from "react-icons/sl";
+
+/* ================= TYPES ================= */
+export type OrderRow = {
+  id: number;
+  orderId: string;
+  machineryId: number;
+  userName: string;
+  phone: string;
+  orderDate: string;
+  orderAmount: string;
+  status:
+    | "Pending"
+    | "Process"
+    | "Shipped"
+    | "In Transit"
+    | "Delivered"
+    | "Cancelled";
+  invoiceUrl?: string;
+  paymentSlipUrl?: string;
+
+  paymentSlipStatus: "Pending" | "Approve" | "Decline";
+};
+
+export default function AdminOrder() {
+  const router = useRouter();
+
+  /* ================= STATE ================= */
+  const [data, setData] = useState<OrderRow[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+
+  const [sortBy, setSortBy] = useState("id");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+
+  const [pagination, setPagination] = useState<any>(null);
+  const [noDataMessage, setNoDataMessage] = useState<string | null>(null);
+ const [slipModal, setSlipModal] = useState<{
+  open: boolean;
+  orderId?: number;
+  slipUrl?: string;
+  paymentSlipStatus?: "Pending" | "Approve" | "Decline";
+}>({ open: false });
+  /* ================= FETCH ================= */
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+
+      const res = await adminOrdersService.list({
+        search,
+        page,
+        per_page: perPage,
+        sort_by: sortBy,
+        sort_order: sortOrder,
+      });
+
+      if (!res?.data || res.data.length === 0) {
+        setData([]);
+        setPagination(res.pagination ?? null);
+        setNoDataMessage(res.message ?? "No orders found");
+        return;
+      }
+
+      const mapped: OrderRow[] = res.data.map((item) => ({
+        id: item.id,
+        orderId: item.order_id,
+        machineryId: item.machinery_id,
+        userName: item.user_full_name,
+        phone: item.phone_no,
+        orderDate: item.order_date,
+        orderAmount: `${formatPrice(item.order_amount)}`,
+        status: item.status,
+        invoiceUrl: item.invoice_url,
+        paymentSlipUrl: item.payment_slip_url,
+        paymentSlipStatus: item.payment_slip_status_text,
+      }));
+
+      setData(mapped);
+      setPagination(res.pagination);
+      setNoDataMessage(null);
+    } catch (e) {
+      setData([]);
+      setPagination(null);
+      setNoDataMessage("Failed to fetch orders");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchOrders();
+  }, [search, page, perPage, sortBy, sortOrder]);
+
+  /* ================= COLUMNS ================= */
+  const columns: Column<OrderRow>[] = [
+    {
+      key: "orderId",
+      header: "Order ID",
+      sortable: true,
+      onSort: () => {
+        setSortBy("order_id");
+        setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
+      },
+    },
+    {
+      key: "userName",
+      header: "User Name",
+      sortable: true,
+      onSort: () => {
+        setSortBy("user_full_name");
+        setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
+      },
+    },
+    {
+      key: "phone",
+      header: "Phone Number",
+    },
+    {
+      key: "orderDate",
+      header: "Order Date",
+      render: (r) => (
+        <span className="bg-[#ECECEC] px-3 py-1 rounded-md text-sm">
+          {r.orderDate}
+        </span>
+      ),
+    },
+    {
+      key: "orderAmount",
+      header: "Order Amount",
+      sortable: true,
+      onSort: () => {
+        setSortBy("order_amount");
+        setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
+      },
+    },
+    {
+      key: "paymentSlipStatus",
+      header: "Payment Slip Status",
+      render: (row) => {
+        const config = {
+          Pending: {
+            dot: "bg-yellow-400",
+            text: "text-yellow-700",
+            bg: "bg-yellow-50",
+            label: "Pending",
+          },
+          Approve: {
+            dot: "bg-green-500",
+            text: "text-green-700",
+            bg: "bg-green-50",
+            label: "Approved",
+          },
+          Decline: {
+            dot: "bg-red-500",
+            text: "text-red-700",
+            bg: "bg-red-50",
+            label: "Declined",
+          },
+        }[row.paymentSlipStatus];
+
+        return (
+          <div
+            className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap ${config.bg} ${config.text}`}
+          >
+            <span>{config.label}</span>
+          </div>
+        );
+      },
+    },
+    {
+      key: "status",
+      header: "Status",
+      render: (row) => (
+        <OrderStatusDropdown
+          value={row.status}
+          orderId={row.id}
+          onUpdated={fetchOrders} // 🔥 refresh after change
+        />
+      ),
+    },
+    {
+      key: "invoiceUrl",
+      header: "Actions",
+      render: (row) => (
+        <div className="flex items-center gap-3">
+          {/* Invoice */}
+          <button
+            disabled={!row.invoiceUrl}
+            onClick={() => window.open(row.invoiceUrl!, "_blank")}
+            className={`${
+              row.invoiceUrl
+                ? "text-green hover:scale-105 cursor-pointer"
+                : "text-gray-400 cursor-not-allowed"
+            }`}
+          >
+            <FaFilePdf size={20} />
+          </button>
+
+          {/* Payment Slip */}
+          <button
+            onClick={() =>
+              setSlipModal({
+                open: true,
+                orderId: row.id,
+                slipUrl: row.paymentSlipUrl,
+                paymentSlipStatus: row.paymentSlipStatus,
+              })
+            }
+            className="text-blue-600 hover:scale-105 cursor-pointer"
+          >
+            <SlCloudUpload size={20} />
+          </button>
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div className="space-y-5 bg-white border border-[#E9E9E9] rounded-[14px] p-3 sm:p-5">
+      {/* TOP BAR */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div className="relative w-[220px]">
+          <FiSearch
+            size={18}
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7A7A7A]"
+          />
+          <input
+            type="text"
+            placeholder="Search bidding..."
+            value={search}
+            onChange={(e) => {
+              setPage(1);
+              setSearch(e.target.value);
+            }}
+            className="w-full py-[12px] pl-[44px] pr-4 text-sm border rounded-lg border-[#E9E9E9]"
+          />
+        </div>
+      </div>
+
+      {/* MOBILE VIEW */}
+      <div className="block xl:hidden space-y-4">
+        {data.map((order) => (
+          <OrderMobileCard
+            key={order.id}
+            order={order}
+            onUpdated={fetchOrders}
+            onView={() => router.push(`/admin/order/view?id=${order.id}`)}
+            onEdit={() => router.push(`/admin/order/edit?id=${order.id}`)}
+            onDelete={() => console.log("delete")}
+            onOpenPaymentSlip={(order) =>
+              setSlipModal({
+                open: true,
+                orderId: order.id,
+                slipUrl: order.paymentSlipUrl,
+                paymentSlipStatus: order.paymentSlipStatus,
+              })
+            }
+          />
+        ))}
+      </div>
+
+      {/* DESKTOP VIEW */}
+      <div className="hidden xl:block">
+        <AdminDataTable
+          columns={columns}
+          data={data}
+          loading={loading}
+          pagination={pagination}
+          onPageChange={setPage}
+          onPageSizeChange={setPerPage}
+          noDataMessage={noDataMessage}
+        />
+      </div>
+      <PaymentSlipModal
+        open={slipModal.open}
+        orderId={slipModal.orderId!}
+        slipUrl={slipModal.slipUrl}
+        paymentSlipStatus={slipModal.paymentSlipStatus!}
+        onClose={() => setSlipModal({ open: false })}
+        onUpdated={fetchOrders}
+      />
+    </div>
+  );
+}
