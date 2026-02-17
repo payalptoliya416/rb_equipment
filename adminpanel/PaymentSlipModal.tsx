@@ -26,13 +26,12 @@ export default function PaymentSlipModal({
 }: Props) {
   if (!open) return null;
   const isFinalized = paymentSlipStatus !== "Pending";
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [submittingStatus, setSubmittingStatus] = useState<
     null | "approve" | "decline"
   >(null);
 
   const updateStatus = async (status: 1 | 2) => {
-    if (submittingStatus) return; // ⛔ guard
+    if (submittingStatus) return;
 
     const current = status === 1 ? "approve" : "decline";
 
@@ -65,8 +64,7 @@ export default function PaymentSlipModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <div className="relative bg-white rounded-2xl w-full max-w-lg shadow-xl">
-        {/* HEADER */}
+      <div className="relative bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] flex flex-col shadow-xl">
         <div className="flex items-center justify-between px-5 py-4 border-b border-light-gray">
           <h2 className="text-lg font-semibold text-gray-800">Payment Slip</h2>
 
@@ -78,58 +76,62 @@ export default function PaymentSlipModal({
           </button>
         </div>
 
-        {/* BODY */}
         <div className="p-5 space-y-4">
-          <div className="border border-dashed rounded-xl p-4 flex justify-center items-center bg-gray-50 min-h-[140px] sm:min-h-[180px]">
+          <div className="borderborder-gray-400 rounded-xl p-4 bg-gray-50 min-h-[180px] flex items-center justify-center">
             {slipUrl ? (
-              <a
-                href={slipUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col items-center gap-3 text-green hover:opacity-80"
-              >
-                {isImage(slipUrl) ? (
-                  <>
-                    <FaRegImage size={40} />
-                    <span className="text-sm font-medium">Open Image Slip</span>
-                  </>
-                ) : (
-                  <>
-                    <FaFilePdf size={40} />
-                    <span className="text-sm font-medium">Open PDF Slip</span>
-                  </>
-                )}
-              </a>
+              isImage(slipUrl) ? (
+                <div className="w-full max-h-[400px] overflow-auto flex justify-center">
+                  <img
+                    src={slipUrl}
+                    alt="Payment Slip"
+                    className="max-w-full max-h-[380px] object-contain rounded-lg shadow"
+                  />
+                </div>
+              ) : (
+                <a
+                  href={slipUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col items-center gap-3 text-green hover:opacity-80"
+                >
+                  <FaFilePdf size={40} />
+                  <span className="text-sm font-medium">Open PDF Slip</span>
+                </a>
+              )
             ) : (
               <p className="text-gray-500 text-xs text-center">
                 No payment slip uploaded
               </p>
             )}
           </div>
-
           {/* ACTIONS */}
           <div className="flex justify-end gap-3 pt-2">
+            {/* Decline */}
             <button
               disabled={!slipUrl || isFinalized || submittingStatus !== null}
               onClick={() => updateStatus(2)}
               className={`px-4 py-2 rounded-lg text-sm font-medium
-            ${
-            !slipUrl || isFinalized || submittingStatus !== null
-                ? "bg-gray-100 text-gray-400 cursor-not-allowed"
-                : "bg-red-100 text-red-700 hover:bg-red-200 cursor-pointer"
-            }`}
+      bg-red-100 text-red-700
+      ${
+        !slipUrl || isFinalized || submittingStatus !== null
+          ? "pointer-events-none opacity-60"
+          : "hover:bg-red-200 cursor-pointer"
+      }`}
             >
               {submittingStatus === "decline" ? "Processing..." : "Decline"}
             </button>
+
+            {/* Approve */}
             <button
               disabled={!slipUrl || isFinalized || submittingStatus !== null}
               onClick={() => updateStatus(1)}
               className={`px-5 py-2 rounded-lg text-sm font-medium
-                ${
-                !slipUrl || isFinalized || submittingStatus !== null
-                    ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-green text-white hover:bg-green cursor-pointer"
-                }`}
+      bg-green text-white
+      ${
+        !slipUrl || isFinalized || submittingStatus !== null
+          ? "pointer-events-none opacity-60"
+          : "hover:bg-green cursor-pointer"
+      }`}
             >
               {submittingStatus === "approve" ? "Processing..." : "Approve"}
             </button>

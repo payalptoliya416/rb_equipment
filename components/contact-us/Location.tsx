@@ -17,18 +17,22 @@ function Location() {
 
   const cardVariant = {
     hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } }
+    show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
   } as const;
 
   const containerVariant = {
     hidden: {},
     show: {
-      transition: { staggerChildren: 0.2, delayChildren: 0.2 }
-    }
+      transition: { staggerChildren: 0.2, delayChildren: 0.2 },
+    },
   } as const;
- if (!settings) return null;
 
-   const locations = [
+  if (!settings) return null;
+
+  const phone = settings.phone_no?.replace(/^(\+?1)/, "");
+  const email = settings.email;
+
+  const locations = [
     {
       icon: "/assets/l1.svg",
       title: "Office Address",
@@ -45,6 +49,7 @@ function Location() {
       desc: settings.email,
     },
   ];
+  
   return (
     <>
       <section className="my-20 lg:my-[110px]">
@@ -76,7 +81,34 @@ function Location() {
                 </h3>
 
                 <p className="text-text-gray text-base font-normal">
-                  {item.desc}
+                  {item.title === "Office Address" ? (
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                        settings.address ?? "",
+                      )}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-green transition"
+                    >
+                      {item.desc}
+                    </a>
+                  ) : item.title === "Phone Number" ? (
+                    <a
+                      href={`tel:${phone}`}
+                      className="hover:text-green transition"
+                    >
+                      {phone}
+                    </a>
+                  ) : item.title === "Email Address" ? (
+                    <a
+                      href={`mailto:${email}`}
+                      className="hover:text-green transition"
+                    >
+                      {email}
+                    </a>
+                  ) : (
+                    item.desc
+                  )}
                 </p>
               </motion.div>
             ))}

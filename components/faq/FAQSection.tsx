@@ -23,7 +23,7 @@ export default function FAQSection(): JSX.Element {
     {
       question: "What payment methods do you accept?",
       answer:
-        "We accept major credit cards, bank transfers, and secure online payments.",
+        "We accept secure wire transfers and bank transfers for all equipment purchases and auction transactions. All payments must be completed through official banking channels to ensure transparency, security, and full transaction documentation. Our team will provide detailed payment instructions once your purchase or winning bid is confirmed.",
     },
     {
       question: "How is shipping handled after purchase?",

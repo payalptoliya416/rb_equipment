@@ -31,7 +31,7 @@ const sfPro = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Stiopa Equipment",
+  title: "Stiopa Equipment Sales & Auctions",
   description: "",
   icons: {
     icon: "/favicon.png",

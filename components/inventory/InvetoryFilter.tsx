@@ -17,7 +17,7 @@ import {
   getModels,
 } from "@/api/categoryActions";
 import Loader from "../common/Loader";
-import {useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import SimpleSteps from "./SimpleSteps";
 import { formatPrice } from "@/hooks/formate";
 
@@ -67,8 +67,8 @@ export default function InventoryFilter({}: {}) {
   const categoryCountRef = useRef<Record<number, number>>({});
   const [pageLoading, setPageLoading] = useState(true);
   const [hasFetched, setHasFetched] = useState(false);
-const [openMake, setOpenMake] = useState(false);
-const [openModel, setOpenModel] = useState(false);
+  const [openMake, setOpenMake] = useState(false);
+  const [openModel, setOpenModel] = useState(false);
 
   const slugify = (text: string) =>
     text
@@ -136,8 +136,8 @@ const [openModel, setOpenModel] = useState(false);
   const cardRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
   const handleCategoryChange = (categoryId: number) => {
-      setProducts([]);      
-  setHasFetched(false); 
+    setProducts([]);
+    setHasFetched(false);
 
     setSelectedCategories((prev) => {
       let updated: number[];
@@ -184,7 +184,7 @@ const [openModel, setOpenModel] = useState(false);
     const fetchMachinery = async () => {
       setLoading(true);
       setHasFetched(false);
-      
+
       try {
         const res = await getMachineryByCategory(
           categoryNames,
@@ -412,113 +412,112 @@ const [openModel, setOpenModel] = useState(false);
             <div className="border-t border-light-gray my-[30px]" />
 
             {/* MAKE & MODEL */}
-           <div>
-  {/* HEADER */}
-  <button
-    onClick={() => {}}
-    className="w-full flex items-center justify-between mb-4 cursor-default"
-  >
-    <h2 className="font-semibold text-lg text-gray mont-text">
-      Filter by Make and Model
-    </h2>
-    <FaChevronDown className="text-gray rotate-180" />
-  </button>
+            <div>
+              {/* HEADER */}
+              <button
+                onClick={() => {}}
+                className="w-full flex items-center justify-between mb-4 cursor-default"
+              >
+                <h2 className="font-semibold text-lg text-gray mont-text">
+                  Filter by Make and Model
+                </h2>
+                <FaChevronDown className="text-gray rotate-180" />
+              </button>
 
-  <div className="space-y-5">
-    {/* ================= MAKE DROPDOWN ================= */}
-    <div className="relative">
-      {/* BUTTON */}
-      <button
-        onClick={() => {
-          setOpenMake((p) => !p);
-          setOpenModel(false);
-        }}
-        className="w-full border border-gray-300 rounded-lg py-[13px] px-[15px]
+              <div className="space-y-5">
+                {/* ================= MAKE DROPDOWN ================= */}
+                <div className="relative">
+                  {/* BUTTON */}
+                  <button
+                    onClick={() => {
+                      setOpenMake((p) => !p);
+                      setOpenModel(false);
+                    }}
+                    className="w-full border border-gray-300 rounded-lg py-[13px] px-[15px]
           text-sm text-gray-700 flex justify-between items-center bg-white"
-      >
-        {loadingMake ? "Loading..." : selectedMake}
-        <FaChevronDown
-          className={`text-gray-500 text-xs transition-transform ${
-            openMake ? "rotate-180" : ""
-          }`}
-        />
-      </button>
+                  >
+                    {loadingMake ? "Loading..." : selectedMake}
+                    <FaChevronDown
+                      className={`text-gray-500 text-xs transition-transform ${
+                        openMake ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
 
-      {/* DROPDOWN */}
-      {openMake && (
-        <div
-          className="absolute left-0 right-0 mt-2 bg-white shadow-xl
+                  {/* DROPDOWN */}
+                  {openMake && (
+                    <div
+                      className="absolute left-0 right-0 mt-2 bg-white shadow-xl
           border border-gray-200 rounded-lg max-h-52 overflow-auto z-[9999]"
-        >
-          {makes.map((make, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                setSelectedMake(make);
-                setOpenMake(false);
-              }}
-              className={`w-full text-left px-4 py-2 text-sm transition
+                    >
+                      {makes.map((make, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setSelectedMake(make);
+                            setOpenMake(false);
+                          }}
+                          className={`w-full text-left px-4 py-2 text-sm transition
                 ${
                   selectedMake === make
                     ? "bg-green text-white"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
-            >
-              {make}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
+                        >
+                          {make}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
-    {/* ================= MODEL DROPDOWN ================= */}
-    <div className="relative">
-      {/* BUTTON */}
-      <button
-        onClick={() => {
-          setOpenModel((p) => !p);
-          setOpenMake(false);
-        }}
-        className="w-full border border-gray-300 rounded-lg py-[13px] px-[15px]
+                {/* ================= MODEL DROPDOWN ================= */}
+                <div className="relative">
+                  {/* BUTTON */}
+                  <button
+                    onClick={() => {
+                      setOpenModel((p) => !p);
+                      setOpenMake(false);
+                    }}
+                    className="w-full border border-gray-300 rounded-lg py-[13px] px-[15px]
           text-sm text-gray-700 flex justify-between items-center bg-white"
-      >
-        {loadingModel ? "Loading..." : selectedModel}
-        <FaChevronDown
-          className={`text-gray-500 text-xs transition-transform ${
-            openModel ? "rotate-180" : ""
-          }`}
-        />
-      </button>
+                  >
+                    {loadingModel ? "Loading..." : selectedModel}
+                    <FaChevronDown
+                      className={`text-gray-500 text-xs transition-transform ${
+                        openModel ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
 
-      {/* DROPDOWN */}
-      {openModel && (
-        <div
-          className="absolute left-0 right-0 mt-2 bg-white shadow-xl
+                  {/* DROPDOWN */}
+                  {openModel && (
+                    <div
+                      className="absolute left-0 right-0 mt-2 bg-white shadow-xl
           border border-gray-200 rounded-lg max-h-52 overflow-auto z-[9999]"
-        >
-          {models.map((model, idx) => (
-            <button
-              key={idx}
-              onClick={() => {
-                setSelectedModel(model);
-                setOpenModel(false);
-              }}
-              className={`w-full text-left px-4 py-2 text-sm transition
+                    >
+                      {models.map((model, idx) => (
+                        <button
+                          key={idx}
+                          onClick={() => {
+                            setSelectedModel(model);
+                            setOpenModel(false);
+                          }}
+                          className={`w-full text-left px-4 py-2 text-sm transition
                 ${
                   selectedModel === model
                     ? "bg-green text-white"
                     : "text-gray-700 hover:bg-gray-100"
                 }`}
-            >
-              {model}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  </div>
-</div>
-
+                        >
+                          {model}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
 
             <div className="border-t border-light-gray my-[30px]" />
 
@@ -698,7 +697,7 @@ const [openModel, setOpenModel] = useState(false);
               </div>
             </motion.div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 items-stretch">
               {loading ? (
                 <div className="col-span-full flex items-center justify-center py-10">
                   <Loader />
@@ -716,98 +715,115 @@ const [openModel, setOpenModel] = useState(false);
                   const modelSlug = slugify(product.model ?? "");
                   const auction_id = product.auction_id;
                   const friendlyUrl = `/inventory/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`;
-                  return (
-                    <div
-                      key={product.id}
-                      onClick={() =>
-                        setShowMap((prev) => ({
-                          ...prev,
-                          [product.id]: true,
-                        }))
-                      }
-                      className="border border-light-gray rounded-[10px] p-[15px] bg-white"
-                    >
-                      <div className="w-full rounded-[10px]- flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
-                        {product.first_image_url ? (
-                          product.first_image_url && (
-                            <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
-                              <Image
-                                src={product.first_image_url}
-                                alt={product.name}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                          )
-                        ) : (
-                          <div className="w-[216px] h-[123px] flex items-center justify-center text-sm text-gray-400"></div>
-                        )}
-                        {!product.is_purchase ? (
-                          <Link
-                            onClick={(e) => e.stopPropagation()}
-                            // href={`/inventory/inventory-detail?id=${product.id}`}
-                            href={friendlyUrl}
-                            className={`
-                                absolute border border-light-gray rounded-md py-[10px] px-[30px]
-                                text-green bg-white text-base
-                                left-1/2 bottom-0 -translate-x-1/2
-                                transition-all duration-300 ease-out
-    
-                                opacity-0 translate-y-3
-                                group-hover:opacity-100 group-hover:-translate-y-3
-    
-                                ${showMap[product.id] ? "opacity-100 -translate-y-3" : ""}
-                              `}
-                          >
-                            BID OR BUY
-                          </Link>
-                        ) : (
-                          <div
-                            onClick={(e) => e.stopPropagation()}
-                            className={`
-        absolute border border-red-300 rounded-md py-[10px] px-[30px]
-        text-red-600 bg-red-50 font-semibold
-        left-1/2 bottom-0 -translate-x-1/2
-        transition-all duration-300 ease-out
-    
-        opacity-0 translate-y-3
-        group-hover:opacity-100 group-hover:-translate-y-3
-    
-        ${showMap[product.id] ? "opacity-100 -translate-y-3" : ""}
-      `}
-                          >
-                            SOLD
-                          </div>
-                        )}
-                      </div>
 
-                      <div className="px-2 mt-[15px]">
-                        <h3 className="font-normal text-lg leading-[18px] mb-[10px] text-[#373737]">
-                          {product.name}
-                        </h3>
+                  
+                return product.is_purchase ? (
+  // 🔴 SOLD → NOT CLICKABLE
+  <div key={product.id} className="h-full">
+    <div
+      className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white
+      opacity-70 cursor-not-allowed flex flex-col"
+    >
+      {/* IMAGE */}
+      <div className="w-full flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
+        {product.first_image_url ? (
+          <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
+            <Image
+              src={product.first_image_url}
+              alt={product.name}
+              fill
+              className="object-cover"
+            />
+          </div>
+        ) : (
+          <div className="w-[216px] h-[123px]" />
+        )}
 
-                        <p className="flex items-center gap-3 text-text-gray text-sm font-normal mb-[15px] leading-[16px]">
-                          <span>{product.year}</span>
+        {/* SOLD BADGE */}
+        <div
+          className="
+            absolute border border-red-300 rounded-md py-2 px-4
+            text-red-600 bg-red-50 font-semibold text-sm
+            left-1/2 bottom-0 -translate-x-1/2
+            opacity-0 translate-y-3
+            group-hover:opacity-100 group-hover:-translate-y-3
+          "
+        >
+          SOLD
+        </div>
+      </div>
 
-                          {/* DOT */}
-                          <span className="w-[6px] h-[6px] rounded-full bg-text-gray/60" />
+      {/* DETAILS */}
+      <div className="px-2 mt-[15px]">
+        <h3 className="text-lg mb-2">{product.name}</h3>
+        <p className="text-sm text-text-gray mb-4">
+          {product.year} • {product.working_hours} hrs
+        </p>
+        <p className="text-green font-semibold">
+          Bid Price: {formatPrice(product.bid_start_price)}
+        </p>
+        <p className="text-green font-bold">
+          Buy Price: {formatPrice(product.buy_now_price)}
+        </p>
+      </div>
+    </div>
+  </div>
+) : (
+  // ✅ AVAILABLE → CLICKABLE
+  <Link
+    key={product.id}
+    href={friendlyUrl}
+    className="block h-full"
+  >
+    <div
+      className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white
+      cursor-pointer hover:shadow-md transition flex flex-col"
+    >
+      {/* IMAGE */}
+      <div className="w-full flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
+        {product.first_image_url && (
+          <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
+            <Image
+              src={product.first_image_url}
+              alt={product.name}
+              fill
+              className="object-cover"
+            />
+          </div>
+        )}
 
-                          <span>{product.working_hours} hrs</span>
-                        </p>
+        {/* BID OR BUY */}
+        <div
+          className="
+            absolute border border-light-gray rounded-md py-2 px-4
+            text-green bg-white text-sm
+            left-1/2 bottom-0 -translate-x-1/2
+            opacity-0 translate-y-3
+            group-hover:opacity-100 group-hover:-translate-y-3
+            transition
+          "
+        >
+          BID OR BUY
+        </div>
+      </div>
 
-                        <p className="text-base mont-text font-semibold">
-                          <span className="font-semibold text-green">
-                            Bid Price: {formatPrice(product.bid_start_price)}
-                          </span>
-                        </p>
-                        <p className="text-base mont-text font-semibold">
-                          <span className="font-bold text-green">
-                            Buy Price: {formatPrice(product.buy_now_price)}
-                          </span>
-                        </p>
-                      </div>
-                    </div>
-                  );
+      {/* DETAILS */}
+      <div className="px-2 mt-[15px]">
+        <h3 className="text-lg mb-2">{product.name}</h3>
+        <p className="text-sm text-text-gray mb-4">
+          {product.year} • {product.working_hours} hrs
+        </p>
+        <p className="text-green font-semibold">
+          Bid Price: {formatPrice(product.bid_start_price)}
+        </p>
+        <p className="text-green font-bold">
+          Buy Price: {formatPrice(product.buy_now_price)}
+        </p>
+      </div>
+    </div>
+  </Link>
+);
+
                 })
               )}
             </div>

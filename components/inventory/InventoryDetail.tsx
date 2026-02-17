@@ -6,7 +6,12 @@ import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { FaChevronDown } from "react-icons/fa";
 import ProductSlider from "./ProductSlider";
-import { getAllCategories, getMakes, getModels, getSingleInventory } from "@/api/categoryActions";
+import {
+  getAllCategories,
+  getMakes,
+  getModels,
+  getSingleInventory,
+} from "@/api/categoryActions";
 import { SingleMachinery } from "@/types/apiType";
 import Loader from "../common/Loader";
 import { usePathname } from "next/navigation";
@@ -39,7 +44,7 @@ function InventoryDetail() {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
- const pathname = usePathname();
+  const pathname = usePathname();
 
   // /inventory/agricultural-machinery/mahindra/seed-drill-9-row/1200
   const segments = pathname.split("/").filter(Boolean);
@@ -48,12 +53,12 @@ function InventoryDetail() {
   const modelSlug = segments[3] ?? "";
   const hours = segments[4] ?? "";
 
-const slugify = (text: string) =>
-  text
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
+  const slugify = (text: string) =>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<SingleMachinery>();
@@ -61,38 +66,36 @@ const slugify = (text: string) =>
   // const [perMileCost, setPerMileCost] = useState<number | null>(null);
   const [deliveryCost, setDeliveryCost] = useState<number | null>(null);
   const [calcLoading, setCalcLoading] = useState(false);
-const [selectedCountry, setSelectedCountry] = useState("USA");
-const [makes, setMakes] = useState<string[]>([]);
-const [models, setModels] = useState<string[]>([]);
+  const [selectedCountry, setSelectedCountry] = useState("USA");
+  const [makes, setMakes] = useState<string[]>([]);
+  const [models, setModels] = useState<string[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-const getCategoryBySlug = (slug?: string) => {
-  if (!slug) return null;
+  const getCategoryBySlug = (slug?: string) => {
+    if (!slug) return null;
 
-  return categories.find(
-    (c) => slugify(c.category_name) === slug
-  );
-};
-const matchedCategory = getCategoryBySlug(categorySlug);
-const categoryName = matchedCategory?.category_name ?? "";
-const getMakeBySlug = (slug?: string) => {
-  if (!slug) return null;
-  return makes.find((m) => slugify(m) === slug);
-};
+    return categories.find((c) => slugify(c.category_name) === slug);
+  };
+  const matchedCategory = getCategoryBySlug(categorySlug);
+  const categoryName = matchedCategory?.category_name ?? "";
+  const getMakeBySlug = (slug?: string) => {
+    if (!slug) return null;
+    return makes.find((m) => slugify(m) === slug);
+  };
 
-const getModelBySlug = (slug?: string) => {
-  if (!slug) return null;
-  return models.find((m) => slugify(m) === slug);
-};
+  const getModelBySlug = (slug?: string) => {
+    if (!slug) return null;
+    return models.find((m) => slugify(m) === slug);
+  };
 
-const matchedMake = getMakeBySlug(makeSlug);
-const matchedModel = getModelBySlug(modelSlug);
+  const matchedMake = getMakeBySlug(makeSlug);
+  const matchedModel = getModelBySlug(modelSlug);
 
-const makeName = matchedMake ?? "";
-const modelName = matchedModel ?? "";
+  const makeName = matchedMake ?? "";
+  const modelName = matchedModel ?? "";
 
-const ref = useRef<HTMLDivElement | null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -109,47 +112,47 @@ const ref = useRef<HTMLDivElement | null>(null);
     fetchCategories();
   }, []);
 
-useEffect(() => {
-  const fetchMakes = async () => {
-    const res = await getMakes();
-    if (res?.success) {
-      setMakes(res.data); // ["Mahindra","Tadano",...]
-    }
-  };
-  fetchMakes();
-}, []);
+  useEffect(() => {
+    const fetchMakes = async () => {
+      const res = await getMakes();
+      if (res?.success) {
+        setMakes(res.data); // ["Mahindra","Tadano",...]
+      }
+    };
+    fetchMakes();
+  }, []);
 
-useEffect(() => {
-  const fetchModels = async () => {
-    const res = await getModels();
-    if (res?.success) {
-      setModels(res.data); // ["Seed Drill 9 Row", ...]
-    }
-  };
-  fetchModels();
-}, []);
+  useEffect(() => {
+    const fetchModels = async () => {
+      const res = await getModels();
+      if (res?.success) {
+        setModels(res.data); // ["Seed Drill 9 Row", ...]
+      }
+    };
+    fetchModels();
+  }, []);
 
-useEffect(() => {
-  const handler = (e: MouseEvent) => {
-    if (!ref.current) return;
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (!ref.current) return;
 
-    if (!ref.current.contains(e.target as Node)) {
-      setOpen(false);
-    }
-  };
+      if (!ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
 
-  document.addEventListener("mousedown", handler);
-  return () => document.removeEventListener("mousedown", handler);
-}, []);
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const fetchSingle = async () => {
     try {
       const res = await getSingleInventory({
-      category: categoryName, // ✅ original
-      make: makeName,         // ✅ original
-      model: modelName,       // ✅ original
-      auction_id: hours,
-    });
+        category: categoryName, // ✅ original
+        make: makeName, // ✅ original
+        model: modelName, // ✅ original
+        auction_id: hours,
+      });
 
       if (res?.success) {
         setData(res.data);
@@ -159,16 +162,11 @@ useEffect(() => {
     }
   };
 
-useEffect(() => {
-  if (
-    categoryName &&
-    makeName &&
-    modelName &&
-    hours
-  ) {
-    fetchSingle();
-  }
-}, [categoryName, makeName, modelName, hours]);
+  useEffect(() => {
+    if (categoryName && makeName && modelName && hours) {
+      fetchSingle();
+    }
+  }, [categoryName, makeName, modelName, hours]);
 
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -189,19 +187,6 @@ useEffect(() => {
     return () => clearInterval(timer);
   }, [data?.bid_end_time]);
 
-  // useEffect(() => {
-  //   const fetchSettings = async () => {
-  //     const res = await getSettingsByKeys();
-
-  //     if (res?.success) {
-  //       setSellerAddress(res.data.address);
-  //       setPerMileCost(Number(res.data.per_mile_delivery_cost));
-  //     }
-  //   };
-
-  //   fetchSettings();
-  // }, []);
-
   const calculateDeliveryCost = async (zip: string, country: string) => {
     try {
       setCalcLoading(true);
@@ -218,13 +203,18 @@ useEffect(() => {
       } else {
         toast.error("Failed to calculate delivery cost");
       }
-    } catch (err : any) {
-      toast.error( err?.message ||  "Distance calculation failed");
+    } catch (err: any) {
+      toast.error(err?.message || "Distance calculation failed");
     } finally {
       setCalcLoading(false);
     }
   };
-
+  const getOfferCount = (offer: string[] | number | undefined): number => {
+    if (!offer) return 0;
+    if (Array.isArray(offer)) return offer.length;
+    return offer;
+  };
+  const offerCount = getOfferCount(data?.offer);
   if (loading) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 backdrop-blur-sm">
@@ -432,12 +422,12 @@ useEffect(() => {
         <div className="col-span-12 xl:col-span-5 order-1 xl:order-2">
           <div className="border border-light-gray p-5 rounded-[15px]">
             <div className="flex justify-between flex-wrap gap-2">
-            <h4 className="text-orange text-lg xl:text-lg xl:mb-[15px]  relative after:absolute after:top-3 after:left-0 after:bg-orange after:w-[15px] after:h-[2px] pl-5 after:rounded-full mont-text font-semibold">
-              {data?.category?.category_name}
-            </h4>
-            <div className="text-end mb-2 sm:mb-0">
-              <strong>Auction ID</strong> : {data?.auction_id}
-            </div>
+              <h4 className="text-orange text-lg xl:text-lg xl:mb-[15px]  relative after:absolute after:top-3 after:left-0 after:bg-orange after:w-[15px] after:h-[2px] pl-5 after:rounded-full mont-text font-semibold">
+                {data?.category?.category_name}
+              </h4>
+              <div className="text-end mb-2 sm:mb-0">
+                <strong>Auction ID</strong> : {data?.auction_id}
+              </div>
             </div>
             <h2 className="text-[#373737] text-[26px] sm:text-[28px] sm:leading-[38px] mb-[30px] font-semibold mont-text">
               {data?.name}
@@ -471,16 +461,11 @@ useEffect(() => {
                 {formatPrice(data?.current_bid)}
               </p>
             </div>
-            <div className="flex items-center bg-[#F2F8F7] text-green border border-[#CCE4E1] px-4 py-3 rounded-xl gap-[10px] text-base leading-[16px] mb-[30px] font-normal">
-              <span>
-                <Image
-                  src="/assets/fire.png"
-                  alt="icon"
-                  width={30}
-                  height={30}
-                />
-              </span>{" "}
-              {data?.offer} offer recived
+            <div className="flex items-center bg-[#F2F8F7] text-green border border-[#CCE4E1] px-4 py-3 rounded-xl gap-[10px] text-base mb-[30px]">
+              <Image src="/assets/fire.png" alt="icon" width={30} height={30} />
+              {offerCount === 1
+                ? "1 offer was received"
+                : `${offerCount} offers were received`}
             </div>
             {/* BID Button */}
             {data && (
@@ -488,8 +473,7 @@ useEffect(() => {
                 currentBid={Number(data.current_bid)}
                 machineryId={data.id}
                 buyNow={Number(data.buy_now_price)}
-
-                 categoryName={data.category?.category_name}
+                categoryName={data.category?.category_name}
                 make={data.make ?? ""}
                 model={data.model ?? ""}
                 auction_id={data.auction_id ?? ""}
@@ -580,45 +564,45 @@ useEffect(() => {
                         <label className="text-[#333333] text-lg mb-2 block mont-text font-semibold">
                           Choose your country
                         </label>
-                      <div ref={ref} className="relative mt-2">
-                        {/* BUTTON */}
-                        <button
-                          type="button"
-                          onClick={() => setOpen(!open)}
-                          className="
+                        <div ref={ref} className="relative mt-2">
+                          {/* BUTTON */}
+                          <button
+                            type="button"
+                            onClick={() => setOpen(!open)}
+                            className="
                             w-full rounded-xl border border-light-gray
                             px-[18px] py-3 text-sm text-left
                             bg-white focus:ring-2 focus:ring-green
                             flex items-center justify-between
                           "
-                        >
-                          <span>{selectedCountry}</span>
-                          <FaChevronDown
-                            className={`text-gray-500 text-xs transition-transform ${
-                              open ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
+                          >
+                            <span>{selectedCountry}</span>
+                            <FaChevronDown
+                              className={`text-gray-500 text-xs transition-transform ${
+                                open ? "rotate-180" : ""
+                              }`}
+                            />
+                          </button>
 
-                        {/* DROPDOWN */}
-                        {open && (
-                          <div
-                            className="
+                          {/* DROPDOWN */}
+                          {open && (
+                            <div
+                              className="
                               absolute left-0 right-0 mt-2
                               rounded-xl bg-white shadow-lg
                               border border-light-gray z-[999]
                               max-h-60 overflow-auto
                             "
-                          >
-                            {countries.map((country) => (
-                              <div
-                                key={country}
-                                onClick={() => {
-                                  setSelectedCountry(country);
-                                  setFieldValue("country", country);   // 🔥 Formik sync
-                                  setOpen(false);
-                                }}
-                                className={`
+                            >
+                              {countries.map((country) => (
+                                <div
+                                  key={country}
+                                  onClick={() => {
+                                    setSelectedCountry(country);
+                                    setFieldValue("country", country); // 🔥 Formik sync
+                                    setOpen(false);
+                                  }}
+                                  className={`
                                   px-4 py-2 text-sm cursor-pointer transition
                                   ${
                                     selectedCountry === country
@@ -626,13 +610,13 @@ useEffect(() => {
                                       : "hover:bg-green/10 hover:text-green text-text-gray"
                                   }
                                 `}
-                              >
-                                {country}
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
+                                >
+                                  {country}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
 
                         <button
                           type="submit"
@@ -700,11 +684,13 @@ useEffect(() => {
                       />
                     </span>
                     <h3 className="text-lg font-semibold text-gray mb-[10px] leading-[18px] mont-text">
-                    100% Secure Payment
+                      100% Secure Payment
                     </h3>
                   </div>
                   <p className="text-text-gray text-base ">
-                  All transactions are protected with advanced encryption and secure payment gateways, ensuring your personal and financial information stays safe at all times.
+                    All transactions are protected with advanced encryption and
+                    secure payment gateways, ensuring your personal and
+                    financial information stays safe at all times.
                   </p>
 
                   <div className="border-t border-gray-200 mt-[30px]"></div>

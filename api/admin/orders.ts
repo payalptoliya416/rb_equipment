@@ -24,7 +24,7 @@ export interface OrderApiItem {
   phone_no: string;
   order_date: string;
   order_amount: string;
-
+  machinery_name: string;
   // 👇 USE THIS ONLY
   status:  "Process" | "Shipped" | "In Transit" | "Delivered" | "Cancelled" ;
   invoice_url?: string;

@@ -167,7 +167,7 @@ export default function AdminDataTable<
               px-2 py-1
               text-sm
               focus:outline-none
-              bg-white
+              bg-white cursor-pointer
             "
           >
             {[10, 20, 25, 50, 100].map((size) => (
@@ -181,7 +181,7 @@ export default function AdminDataTable<
           <button
             disabled={pagination.current_page === 1}
             onClick={() => onPageChange?.(1)}
-            className={`px-1 text-lg ${
+            className={`px-1 text-lg cursor-pointer ${
               pagination.current_page === 1
                 ? "text-gray-300 cursor-not-allowed"
                 : "text-gray-600 hover:text-black"
@@ -196,7 +196,7 @@ export default function AdminDataTable<
             onClick={() =>
               onPageChange?.(pagination.current_page - 1)
             }
-            className={`px-1 text-lg ${
+            className={`px-1 text-lg cursor-pointer ${
               pagination.current_page === 1
                 ? "text-gray-300 cursor-not-allowed"
                 : "text-gray-600 hover:text-black"
@@ -216,7 +216,7 @@ export default function AdminDataTable<
             onClick={() =>
               onPageChange?.(pagination.current_page + 1)
             }
-            className={`px-1 text-lg ${
+            className={`px-1 text-lg cursor-pointer ${
               pagination.current_page === pagination.last_page
                 ? "text-gray-300 cursor-not-allowed"
                 : "text-gray-600 hover:text-black"
@@ -231,7 +231,7 @@ export default function AdminDataTable<
             onClick={() =>
               onPageChange?.(pagination.last_page)
             }
-            className={`px-1 text-lg ${
+            className={`px-1 text-lg cursor-pointer ${
               pagination.current_page === pagination.last_page
                 ? "text-gray-300 cursor-not-allowed"
                 : "text-gray-600 hover:text-black"

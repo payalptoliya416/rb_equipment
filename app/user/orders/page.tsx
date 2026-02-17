@@ -222,7 +222,7 @@ useEffect(() => {
     <section className="py-11 sm:py-[60px]">
       <div className="container-custom mx-auto">
         <h1 className="text-[#373737] text-[26px] font-bold mb-6">
-          My Buy Now Orders
+          My Buy It Now Orders
         </h1>
               {!loading && orders.length === 0 && (
         <div className="flex items-center justify-center min-h-[30vh]">

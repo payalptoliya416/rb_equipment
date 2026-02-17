@@ -24,9 +24,8 @@ type SettingsFormValues = {
   twitter: string;
   instagram: string;
   linkedin: string;
-    whiteLogo: File | null;
+  whiteLogo: File | null;
   darkLogo: File | null;
-
 };
 
 /* ---------------- VALIDATION ---------------- */
@@ -40,10 +39,9 @@ export const Schema = Yup.object({
     .email("Enter a valid email address")
     .required("Email address is required"),
 
-  phone: Yup.string()
-    .matches(/^[0-9()+\- ]+$/, "Enter a valid phone number")
-    .min(10, "Phone number must be at least 10 digits")
-    .required("Phone number is required"),
+phone: Yup.string()
+  .required("Phone number is required")
+  .matches(/^[0-9]{10}$/, "Enter 10 digit phone number"),
 
   address: Yup.string()
     .min(5, "Address must be at least 5 characters")
@@ -75,50 +73,50 @@ export const Schema = Yup.object({
 });
 
 export default function CompanySettingUI() {
- const [data, setData] = useState<AdminSettingsData | null>(null);
-const [logoPreview, setLogoPreview] = useState<string | null>(null);
-const [loading, setLoading] = useState(true);
-const [cancelLoading, setCancelLoading] = useState(false);
+  const [data, setData] = useState<AdminSettingsData | null>(null);
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [cancelLoading, setCancelLoading] = useState(false);
 
   /* ================= API FETCH ================= */
-const fetchSettings = async () => {
-  try {
-    const res = await adminSettingsService();
-    if (res.success) {
-      setData(res.data);
-       setWhiteLogoPreview(res.data.white_logo);
-  setDarkLogoPreview(res.data.dark_logo);
+  const fetchSettings = async () => {
+    try {
+      const res = await adminSettingsService();
+      if (res.success) {
+        setData(res.data);
+        setWhiteLogoPreview(res.data.white_logo);
+        setDarkLogoPreview(res.data.dark_logo);
+      }
+    } catch (e) {
+      toast.error("Failed to load settings");
+    } finally {
+      setLoading(false);
     }
-  } catch (e) {
-    toast.error("Failed to load settings");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
-useEffect(() => {
-  fetchSettings();
-}, []);
-const [whiteLogoPreview, setWhiteLogoPreview] = useState<string | null>(null);
-const [darkLogoPreview, setDarkLogoPreview] = useState<string | null>(null);
+  useEffect(() => {
+    fetchSettings();
+  }, []);
+  const [whiteLogoPreview, setWhiteLogoPreview] = useState<string | null>(null);
+  const [darkLogoPreview, setDarkLogoPreview] = useState<string | null>(null);
 
-const initialValues: SettingsFormValues = {
-  companyName: data?.company_name || "",
-  email: data?.email || "",
-  phone: data?.phone_no || "",
-  address: data?.address || "" || "",
-  perMile: data?.per_mile_delivery_cost || "",
-  facebook: data?.facebook || "",
-  twitter: data?.twitter || "",
-  instagram: data?.instagram || "",
-  linkedin: data?.linkedin || "",
-   whiteLogo: null,
-  darkLogo: null,
-};
+  const initialValues: SettingsFormValues = {
+    companyName: data?.company_name || "",
+    email: data?.email || "",
+    phone: data?.phone_no || "",
+    address: data?.address || "" || "",
+    perMile: data?.per_mile_delivery_cost || "",
+    facebook: data?.facebook || "",
+    twitter: data?.twitter || "",
+    instagram: data?.instagram || "",
+    linkedin: data?.linkedin || "",
+    whiteLogo: null,
+    darkLogo: null,
+  };
 
   const handleSubmit = async (
     values: SettingsFormValues,
-    { setSubmitting }: { setSubmitting: (v: boolean) => void }
+    { setSubmitting }: { setSubmitting: (v: boolean) => void },
   ) => {
     try {
       const formData = new FormData();
@@ -133,13 +131,13 @@ const initialValues: SettingsFormValues = {
       formData.append("instagram", values.instagram);
       formData.append("linkedin", values.linkedin);
 
-     if (values.whiteLogo) {
-  formData.append("white_logo", values.whiteLogo);
-}
+      if (values.whiteLogo) {
+        formData.append("white_logo", values.whiteLogo);
+      }
 
-if (values.darkLogo) {
-  formData.append("dark_logo", values.darkLogo);
-}
+      if (values.darkLogo) {
+        formData.append("dark_logo", values.darkLogo);
+      }
 
       const res = await adminSettingsUpdateService(formData);
 
@@ -171,136 +169,120 @@ if (values.darkLogo) {
       validationSchema={Schema}
       onSubmit={handleSubmit}
     >
-      {({ errors, touched, values, setFieldValue, isSubmitting , resetForm, dirty }) => (
+      {({
+        errors,
+        touched,
+        values,
+        setFieldValue,
+        isSubmitting,
+        resetForm,
+        dirty,
+      }) => (
         <Form className="space-y-5 ">
           {/* ================= TOP CARD ================= */}
           <div className="border border-[#E9E9E9] rounded-[14px] bg-white p-3 sm:p-5">
             <div className=" grid grid-cols-1 md:grid-cols-2 gap-5">
-               <div className="h-[175px] border border-[#E9E9E9] rounded-xl p-5">
-  <div
-    className="relative rounded-xl border border-[#4A8D86] h-full flex items-center justify-center"
-    style={{
-      backgroundImage: whiteLogoPreview ? `url(${whiteLogoPreview})` : "none",
-      backgroundSize: "contain",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-    }}
-  >
-    <label className="absolute bg-white px-4 py-2 rounded-md shadow cursor-pointer text-sm">
-      Upload White Logo
-      <input
-        type="file"
-        hidden
-        accept="image/*"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (!file) return;
-          setFieldValue("whiteLogo", file);
-          setWhiteLogoPreview(URL.createObjectURL(file));
-        }}
-      />
-    </label>
-  </div>
-</div>
-
-                {/* LOGO */}
-           <div className="h-[175px] border border-[#E9E9E9] rounded-xl p-5">
-  <div
-    className="relative rounded-xl border border-[#4A8D86] h-full flex items-center justify-center"
-    style={{
-      backgroundImage: darkLogoPreview ? `url(${darkLogoPreview})` : "none",
-      backgroundSize: "contain",
-      backgroundPosition: "center",
-      backgroundRepeat: "no-repeat",
-    }}
-  >
-    <label className="absolute bg-white px-4 py-2 rounded-md shadow cursor-pointer text-sm">
-      Upload Dark Logo
-      <input
-        type="file"
-        hidden
-        accept="image/*"
-        onChange={(e) => {
-          const file = e.target.files?.[0];
-          if (!file) return;
-          setFieldValue("darkLogo", file);
-          setDarkLogoPreview(URL.createObjectURL(file));
-        }}
-      />
-    </label>
-  </div>
-</div>
-
-                 {/* COMPANY NAME */}
-                <div>
-                  <label className="block mb-3 text-base font-normal text-[#333333]">
-                    Footer Company Name <span className="text-[#ef4343]">*</span>
+              <div className="h-[175px] border border-[#E9E9E9] rounded-xl p-5">
+                <div
+                  className="relative rounded-xl border border-[#4A8D86] h-full flex items-center justify-center"
+                  style={{
+                    backgroundImage: whiteLogoPreview
+                      ? `url(${whiteLogoPreview})`
+                      : "none",
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                  }}
+                >
+                  <label className="absolute bg-white px-4 py-2 rounded-md shadow cursor-pointer text-sm">
+                    Upload White Logo
+                    <input
+                      type="file"
+                      hidden
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        setFieldValue("whiteLogo", file);
+                        setWhiteLogoPreview(URL.createObjectURL(file));
+                      }}
+                    />
                   </label>
-                  <Field
-                    name="companyName"
-                    placeholder="Enter footer company name"
-                    className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9] focus:outline-none"
-                  />
-                  {errors.companyName && touched.companyName && (
-                    <p className="text-xs text-red-500 mt-1">
-                      {errors.companyName}
-                    </p>
-                  )}
                 </div>
-                
-                {/* EMAIL */}
-                <div>
-                  <label className="block mb-3 text-base font-normal text-[#333333]">
-                    Email Address <span className="text-[#ef4343]">*</span>
+              </div>
+
+              {/* LOGO */}
+              <div className="h-[175px] border border-[#E9E9E9] rounded-xl p-5">
+                <div
+                  className="relative rounded-xl border border-[#4A8D86] h-full flex items-center justify-center"
+                  style={{
+                    backgroundImage: darkLogoPreview
+                      ? `url(${darkLogoPreview})`
+                      : "none",
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                  }}
+                >
+                  <label className="absolute bg-white px-4 py-2 rounded-md shadow cursor-pointer text-sm">
+                    Upload Dark Logo
+                    <input
+                      type="file"
+                      hidden
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (!file) return;
+                        setFieldValue("darkLogo", file);
+                        setDarkLogoPreview(URL.createObjectURL(file));
+                      }}
+                    />
                   </label>
-                  <Field
-                    name="email"
-                    placeholder="Enter your email address"
-                    className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9] focus:outline-none"
-                  />
-                  {errors.email && touched.email && (
-                    <p className="text-xs text-red-500 mt-1">{errors.email}</p>
-                  )}
                 </div>
+              </div>
+
+              {/* COMPANY NAME */}
+              <div>
+                <label className="block mb-3 text-base font-normal text-[#333333]">
+                  Footer Company Name <span className="text-[#ef4343]">*</span>
+                </label>
+                <Field
+                  name="companyName"
+                  placeholder="Enter footer company name"
+                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9] focus:outline-none"
+                />
+                {errors.companyName && touched.companyName && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.companyName}
+                  </p>
+                )}
+              </div>
+
+              {/* EMAIL */}
+              <div>
+                <label className="block mb-3 text-base font-normal text-[#333333]">
+                  Email Address <span className="text-[#ef4343]">*</span>
+                </label>
+                <Field
+                  name="email"
+                  placeholder="Enter your email address"
+                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9] focus:outline-none"
+                />
+                {errors.email && touched.email && (
+                  <p className="text-xs text-red-500 mt-1">{errors.email}</p>
+                )}
+              </div>
               {/* PHONE */}
               <div>
                 <label className="block mb-3 text-base font-normal text-[#333333]">
                   Phone Number <span className="text-[#ef4343]">*</span>
                 </label>
 
-                <PhoneInput
-                  country="in"
-                  value={values.phone}
-                  onChange={(phone) => setFieldValue("phone", phone)}
-                  enableSearch
-                  countryCodeEditable={false}
-                  /* MAIN CONTAINER */
-                  containerClass="!w-full"
-                  /* INPUT FIELD */
-                  inputClass="
-                            !w-full
-                            !h-[58px]
-                            !pl-[60px]
-                            !pr-5
-                            !rounded-[10px]
-                            !border
-                            !border-[#E9E9E9]
-                            !text-sm
-                            focus:!outline-none
-                          "
-                  /* FLAG BUTTON */
-                  buttonClass="
-                            !border
-                            !border-[#E9E9E9]
-                            !rounded-l-[10px]
-                            !h-[58px]
-                            !w-[52px]
-                            !flex
-                            !items-center
-                            !justify-center
-                          "
-                  dropdownClass="!text-sm"
-                  placeholder="(000) 000-0000"
+                <Field
+                  name="phone"
+                  placeholder="Enter phone number"
+                  maxLength={10}
+                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
                 />
                 {errors.phone && touched.phone && (
                   <p className="error">{errors.phone}</p>
@@ -407,10 +389,10 @@ if (values.darkLogo) {
                 )}
               </div>
             </div>
-          {/* ================= ACTIONS ================= */}
-          <div className="flex justify-end gap-3">
-            {/* CANCEL */}
-             <button
+            {/* ================= ACTIONS ================= */}
+            <div className="flex justify-end gap-3">
+              {/* CANCEL */}
+              <button
                 type="button"
                 disabled={isSubmitting || cancelLoading}
                 onClick={async () => {
@@ -437,18 +419,18 @@ if (values.darkLogo) {
                 {cancelLoading ? "Discarding..." : "Cancel"}
               </button>
 
-            {/* SAVE */}
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="px-6 py-2 rounded-md bg-[#0E9F6E] text-white text-sm flex items-center gap-2 disabled:opacity-60 cursor-pointer"
-            >
-              {isSubmitting && (
-                <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-              )}
-              Save
-            </button>
-          </div>
+              {/* SAVE */}
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="px-6 py-2 rounded-md bg-[#0E9F6E] text-white text-sm flex items-center gap-2 disabled:opacity-60 cursor-pointer"
+              >
+                {isSubmitting && (
+                  <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+                )}
+                Save
+              </button>
+            </div>
           </div>
         </Form>
       )}

@@ -10,13 +10,16 @@ import OrderMobileCard from "@/adminpanel/OrderMobileCard";
 import { formatPrice } from "@/hooks/formate";
 import { FaFilePdf } from "react-icons/fa6";
 import PaymentSlipModal from "@/adminpanel/PaymentSlipModal";
-import { SlCloudUpload } from "react-icons/sl";
+import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
+import { MdOutlineReceiptLong, MdPayment } from "react-icons/md";
+import { IoReceiptSharp } from "react-icons/io5";
 
 /* ================= TYPES ================= */
 export type OrderRow = {
   id: number;
   orderId: string;
   machineryId: number;
+  machineryName: string;
   userName: string;
   phone: string;
   orderDate: string;
@@ -56,6 +59,7 @@ export default function AdminOrder() {
   slipUrl?: string;
   paymentSlipStatus?: "Pending" | "Approve" | "Decline";
 }>({ open: false });
+
   /* ================= FETCH ================= */
   const fetchOrders = async () => {
     try {
@@ -75,11 +79,11 @@ export default function AdminOrder() {
         setNoDataMessage(res.message ?? "No orders found");
         return;
       }
-
       const mapped: OrderRow[] = res.data.map((item) => ({
         id: item.id,
         orderId: item.order_id,
         machineryId: item.machinery_id,
+         machineryName: item.machinery_name, 
         userName: item.user_full_name,
         phone: item.phone_no,
         orderDate: item.order_date,
@@ -107,15 +111,34 @@ export default function AdminOrder() {
 
   /* ================= COLUMNS ================= */
   const columns: Column<OrderRow>[] = [
+   {
+  key: "orderId",
+  header: "Order ID",
+  sortable: true,
+  onSort: () => {
+    setSortBy("order_id");
+    setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
+  },
+  render: (row) => (
+    <span className="text-xs whitespace-nowrap">
+      {row.orderId}
+    </span>
+  ),
+},
     {
-      key: "orderId",
-      header: "Order ID",
-      sortable: true,
-      onSort: () => {
-        setSortBy("order_id");
-        setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
-      },
-    },
+  key: "machineryName",
+  header: "Machinery Name",
+  sortable: true,
+  onSort: () => {
+    setSortBy("machinery_name");
+    setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
+  },
+  render: (row) => (
+    <span className="text-xs font-medium text-gray-800">
+      {row.machineryName}
+    </span>
+  ),
+},
     {
       key: "userName",
       header: "User Name",
@@ -125,19 +148,33 @@ export default function AdminOrder() {
         setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
       },
     },
-    {
-      key: "phone",
-      header: "Phone Number",
-    },
+  {
+  key: "phone",
+  header: "Phone Number",
+  render: (row) => (
+    <span className="text-xs whitespace-nowrap">
+      {row.phone}
+    </span>
+  ),
+},
     {
       key: "orderDate",
       header: "Order Date",
       render: (r) => (
-        <span className="bg-[#ECECEC] px-3 py-1 rounded-md text-sm">
+        <span className="py-1 rounded-md text-xs">
           {r.orderDate}
         </span>
       ),
     },
+    {
+  key: "orderDate",
+  header: "Order Date",
+  render: (r) => (
+    <span className="inline-flex items-center text-gray-700 px-2.5 py-1 rounded-md text-xs whitespace-nowrap">
+      {r.orderDate}
+    </span>
+  ),
+},
     {
       key: "orderAmount",
       header: "Order Amount",
@@ -195,38 +232,60 @@ export default function AdminOrder() {
     {
       key: "invoiceUrl",
       header: "Actions",
-      render: (row) => (
-        <div className="flex items-center gap-3">
-          {/* Invoice */}
-          <button
-            disabled={!row.invoiceUrl}
-            onClick={() => window.open(row.invoiceUrl!, "_blank")}
-            className={`${
-              row.invoiceUrl
-                ? "text-green hover:scale-105 cursor-pointer"
-                : "text-gray-400 cursor-not-allowed"
-            }`}
-          >
-            <FaFilePdf size={20} />
-          </button>
+      render: (row) => {
+        const isDisabled =
+          row.paymentSlipStatus === "Pending" && !row.paymentSlipUrl;
 
-          {/* Payment Slip */}
-          <button
-            onClick={() =>
-              setSlipModal({
-                open: true,
-                orderId: row.id,
-                slipUrl: row.paymentSlipUrl,
-                paymentSlipStatus: row.paymentSlipStatus,
-              })
-            }
-            className="text-blue-600 hover:scale-105 cursor-pointer"
-          >
-            <SlCloudUpload size={20} />
-          </button>
-        </div>
-      ),
-    },
+        return (
+          <div className="flex items-center justify-center gap-4">
+            {/* Invoice */}
+            <TooltipWrapper content="Invoice">
+              <button
+                disabled={!row.invoiceUrl}
+                onClick={() => window.open(row.invoiceUrl!, "_blank")}
+                className={`${
+                  row.invoiceUrl
+                    ? "text-green hover:scale-110 transition cursor-pointer"
+                    : "text-gray-400 cursor-not-allowed"
+                }`}
+              >
+                <FaFilePdf size={20} />
+              </button>
+            </TooltipWrapper>
+
+            {/* Payment Slip */}
+            <TooltipWrapper
+              content={
+                isDisabled
+                  ? "Payment slip not uploaded yet"
+                  : "View payment slip"
+              }
+            >
+              <button
+                disabled={isDisabled}
+                onClick={() =>
+                  !isDisabled &&
+                  setSlipModal({
+                    open: true,
+                    orderId: row.id,
+                    slipUrl: row.paymentSlipUrl,
+                    paymentSlipStatus: row.paymentSlipStatus,
+                  })
+                }
+                className={`transition
+                  ${
+                    isDisabled
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "text-orange hover:scale-110 cursor-pointer"
+                  }`}
+              >
+                <IoReceiptSharp size={20} />
+              </button>
+            </TooltipWrapper>
+          </div>
+        );
+      },
+    }
   ];
 
   return (
@@ -258,8 +317,8 @@ export default function AdminOrder() {
             key={order.id}
             order={order}
             onUpdated={fetchOrders}
-            onView={() => router.push(`/admin/order/view?id=${order.id}`)}
-            onEdit={() => router.push(`/admin/order/edit?id=${order.id}`)}
+            onView={() => router.push(`/admin/orders/view?id=${order.id}`)}
+            onEdit={() => router.push(`/admin/orders/edit?id=${order.id}`)}
             onDelete={() => console.log("delete")}
             onOpenPaymentSlip={(order) =>
               setSlipModal({
@@ -281,7 +340,10 @@ export default function AdminOrder() {
           loading={loading}
           pagination={pagination}
           onPageChange={setPage}
-          onPageSizeChange={setPerPage}
+          onPageSizeChange={(size) => {
+            setPage(1);        
+            setPerPage(size);
+          }}
           noDataMessage={noDataMessage}
         />
       </div>

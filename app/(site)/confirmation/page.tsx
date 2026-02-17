@@ -233,11 +233,7 @@ if (pageLoading || userLoading) {
 
             {/* Message */}
             <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-              You have submitted a request to purchase with our pre-approved{" "}
-              <span className="font-medium">"Buy-Now Price"</span>. You have the
-              highest priority over other buyers and no negotiation with the
-              seller is necessary. We will now review your request, the
-              automatic transport budget and your company information.
+              We will now review your request , the automatic shipping budget and your billing information.
             </p>
 
             {/* Buttons */}
@@ -247,7 +243,7 @@ if (pageLoading || userLoading) {
                 href="/user/orders"
                 className="px-6 py-3 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition text-center"
               >
-                View Buy-Now Request
+               View Order Progress
               </Link>
 
               {/* Button 2 */}
@@ -255,7 +251,7 @@ if (pageLoading || userLoading) {
                 href="/inventory"
                 className="px-6 py-3 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100 transition text-center"
               >
-                View Listing
+                View Inventory
               </Link>
             </div>
           </div>

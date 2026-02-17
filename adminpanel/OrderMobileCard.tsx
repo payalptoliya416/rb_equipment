@@ -2,6 +2,7 @@
 
 import { FaFilePdf } from "react-icons/fa6";
 import OrderStatusDropdown from "./OrderStatusDropdown";
+import { IoReceiptSharp } from "react-icons/io5";
 
 type Props = {
   order: any;
@@ -64,6 +65,10 @@ export default function OrderMobileCard({
           <p className="font-semibold">{order.orderId}</p>
         </div>
       </div>
+      <div className="text-sm">
+  <span className="text-gray-500">Machinery:</span>{" "}
+  <span className="font-medium">{order.machineryName}</span>
+</div>
 
       <div className="border-t border-[#E9E9E9]" />
 
@@ -91,9 +96,9 @@ export default function OrderMobileCard({
         <div className="flex justify-between items-start flex-col gap-2">
       <button
   onClick={() => onOpenPaymentSlip(order)}
-  className="flex items-center gap-2 text-blue-600 text-sm font-medium"
+  className="flex items-center gap-2 text-orange text-sm font-medium cursor-pointer"
 >
-  <FaFilePdf size={18} />
+  <IoReceiptSharp size={18} />
   Payment Slip
 </button>
 <button
@@ -102,7 +107,7 @@ export default function OrderMobileCard({
   className={`mt-2 flex items-center gap-2 text-sm font-medium
     ${
       order.invoiceUrl
-        ? "text-green cursor-pointer hover:underline"
+        ? "text-green cursor-pointer"
         : "text-gray-600 cursor-not-allowed opacity-50"
     }
   `}

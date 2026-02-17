@@ -22,7 +22,7 @@ const menu = [
   { label: "Machinery", icon: FaBoxes, href: "/admin/machinery/" },
   { label: "Category", icon: FaTags, href: "/admin/category/" },
   { label: "Bidding", icon: FaGavel, href: "/admin/bidding/" },
-  { label: "Order", icon: FaCogs, href: "/admin/order/" },
+  { label: "Orders", icon: FaCogs, href: "/admin/orders/" },
   { label: "Won User", icon: FaCogs, href: "/admin/won-user/" },
   { label: "Settings", icon: FaCogs, href: "/admin/settings/" },
 ];

@@ -35,7 +35,7 @@ export interface SingleMachinery {
   bid_end_time: string;
   description: string;
   specification?: SpecificationItem[];
-  offer: string[];
+  offer: string[] | number;
   status: number;
   images: MachineryImage[];
   category: MachineryCategory;

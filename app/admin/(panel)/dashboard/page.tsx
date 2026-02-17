@@ -306,7 +306,7 @@ const userBadge = (status: string) =>
     </h2>
 
     <Link
-      href="/admin/order"
+      href="/admin/orders"
       className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md
                   active:brightness-90 active:scale-95"
     >

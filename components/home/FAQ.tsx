@@ -20,7 +20,7 @@ function FAQ() {
         "You can easily register by creating an account on our website using your email or phone number. After quick verification, you’ll unlock full access to our live auctions, bidding features, and exclusive equipment listings.",
     },
     { question: "What payment methods do you accept?",  answer:
-        "You can easily register by creating an account on our website using your email or phone number. After quick verification, you’ll unlock full access to our live auctions, bidding features, and exclusive equipment listings." },
+        "We accept secure wire transfers and bank transfers for all equipment purchases and auction transactions. All payments must be completed through official banking channels to ensure transparency, security, and full transaction documentation. Our team will provide detailed payment instructions once your purchase or winning bid is confirmed." },
     { question: "How is shipping handled after purchase?",  answer:
         "You can easily register by creating an account on our website using your email or phone number. After quick verification, you’ll unlock full access to our live auctions, bidding features, and exclusive equipment listings." },
     {

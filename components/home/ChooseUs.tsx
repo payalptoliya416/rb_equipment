@@ -3,12 +3,38 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
+const chooseUsData = [
+  {
+    icon: "icon1.svg",
+    title: "Verified Equipment",
+    description:
+      "Every machine is thoroughly inspected and accurately listed, so you know exactly what you're buying.",
+  },
+  {
+    icon: "icon3.svg",
+    title: "Secure Payments",
+    description:
+      "We use protected payment systems to ensure every transaction is safe, transparent, and reliable.",
+  },
+  {
+    icon: "icon2.svg",
+    title: "Trusted Sellers",
+    description:
+      "Our network consists of verified dealers and reputable sellers with proven track records.",
+  },
+  {
+    icon: "icon4.svg",
+    title: "Fast Delivery",
+    description:
+      "We coordinate efficient logistics to deliver your equipment quickly and hassle-free.",
+  },
+];
+
 function ChooseUs() {
   return (
     <section className="bg-gray py-[60px]">
       <div className="container-custom mx-auto">
         
-        {/* TITLE */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -22,8 +48,6 @@ function ChooseUs() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[30px] items-center md:items-stretch">
-
-          {/* LEFT SIDE CARDS */}
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -36,13 +60,7 @@ function ChooseUs() {
             }}
             className="grid grid-cols-1 md:grid-cols-2 gap-[30px]"
           >
-            {/* CARD COMPONENT */}
-            {[
-              { icon: "icon1.svg", title: "Verified Equipment" },
-              { icon: "icon2.svg", title: "Trusted Sellers" },
-              { icon: "icon3.svg", title: "Secure Payments" },
-              { icon: "icon4.svg", title: "Fast Delivery" },
-            ].map((item, i) => (
+            {chooseUsData.map((item, i) => (
               <motion.div
                 key={i}
                 variants={{
@@ -68,14 +86,12 @@ function ChooseUs() {
                   {item.title}
                 </h3>
                 <p className="text-base leading-[26px] font-normal text-light-gray">
-                  Every listing is inspected and verified to ensure quality,
-                  authenticity.
+                  {item.description}
                 </p>
               </motion.div>
             ))}
           </motion.div>
 
-          {/* RIGHT SIDE IMAGE */}
           <motion.div
            initial={{ opacity: 0, y: 120 }} 
             whileInView={{ opacity: 1, y: 0 }}

@@ -311,7 +311,10 @@ const fetchUsers = async () => {
       loading={loading}
       pagination={pagination}
       onPageChange={setPage}
-      onPageSizeChange={setPerPage}
+       onPageSizeChange={(size) => {
+    setPage(1);       
+    setPerPage(size);
+  }}
       noDataMessage={noDataMessage}
     />
   )}

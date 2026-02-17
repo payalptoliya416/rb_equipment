@@ -189,23 +189,25 @@ function Footer() {
                 </div>
               </a>
               <a
-                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                  `${settings?.company_name} ${settings?.address}`
-                )}`}
-                target="_blank"
-                className="group block mb-5"
-              >
-                <div className="flex gap-3 items-center">
-                  <div>
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                settings?.address ?? ""
+              )}`}
+              target="_blank"
+              className="group block mb-5"
+            >
+              <div className="flex gap-3 items-center">
+                <div>
                   <div className="flex justify-center items-center w-10 h-10 rounded-full bg-white/10 group-hover:bg-green">
-                    <GrLocation className="text-white" />
-                  </div>
-                  </div>
-                  <h3 className="text-light-gray group-hover:text-white">
-                    {settings?.company_name} {settings?.address}
-                  </h3>
+                  <GrLocation className="text-white" />
                 </div>
-              </a>
+
+                </div>
+                <h3 className="text-light-gray group-hover:text-white">
+                  {settings?.company_name} {settings?.address}
+                </h3>
+              </div>
+            </a>
+
               <a
                 href={`mailto:${settings?.email}`}
                 className="group block mb-5"

@@ -41,8 +41,7 @@ function SimpleSteps() {
       </div>
 
       {/* Layout */}
-      <div className="grid grid-cols-12 lg:gap-10 ">
-        {/* Left Image */}
+      <div className="grid grid-cols-12 lg:gap-10">
         <div className="col-span-12 lg:col-span-6">
           {/* MOBILE IMAGE (no fill) */}
           <div className="block lg:hidden mb-6">
@@ -66,20 +65,16 @@ function SimpleSteps() {
           </div>
         </div>
 
-        {/* Right Timeline */}
         <div className="col-span-12 lg:col-span-6 relative">
           {steps.map((step, index) => (
             <div
               key={index}
               className="flex gap-2 sm:gap-5 items-start relative pb-11 md:pb-[60px] last:pb-0 md:min-h-[120px] last:min-h-0"
             >
-              {/* Icon + Line */}
               <div className="relative flex flex-col items-center shrink-0">
-                {/* Icon Circle */}
                 <div
                   className="w-[55px] md:w-[70px] h-[55px] md:h-[70px] rounded-full bg-[#006d5b] flex items-center justify-center relative"
                 >
-                  {/* Icon Wrapper */}
                   <div className="w-[28px] md:w-[32px] h-[28px] md:h-[32px] relative">
                     <Image
                       src={step.icon}
@@ -89,7 +84,6 @@ function SimpleSteps() {
                     />
                   </div>
                 </div>
-                {/* Dotted Line */}
               </div>
                 {index !== steps.length - 1 && (
                   <div className="absolute top-1/2 left-[28px] md:left-[35px] -translate-x-1/2 md:mt-1">

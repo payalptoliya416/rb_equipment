@@ -4,6 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSettings } from "@/contexts/SettingsContext";
+import { FiTruck, FiRefreshCw, FiShield, FiTool } from "react-icons/fi";
 
 function Hero() {
   const { companyName } = useSettings();
@@ -14,7 +15,7 @@ function Hero() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.2, ease: "easeOut" }}
-        className="-mt-32 absolute top-0 left-0 w-full h-full lg:h-[700px] bg-[url(/assets/main-bg.png)] bg-no-repeat bg-top -z-10  bg-cover lg:bg-[length:100%_100%]"
+        className="-mt-32 absolute top-0 left-0 w-full h-full lg:h-[750px] xl:lg:h-[770px] bg-[url(/assets/main-bg.png)] bg-no-repeat bg-top -z-10  bg-cover lg:bg-[length:100%_100%]"
       ></motion.div>
       <div className="container-custom mx-auto">
         <div className="grid grid-cols-12 pt-10 sm:pt-20">
@@ -32,43 +33,48 @@ function Hero() {
               <span className="text-orange">Farm Equipment</span> Sales &
               Auctions
             </h2>
-            <p className="text-para text-base font-normal mb-8 leading-[26px]">
+            <p className="text-para text-base font-normal mb-5 leading-[26px]">
               Buy or Bid on high-quality machinery, tractors, and tools from
               trusted sellers. Whether you're expanding your fleet or upgrading
               your equipment, {companyName} has you covered.
             </p>
-            <div className="flex items-center gap-4">
+            <div className="mt-6 flex flex-col gap-5">
+              <ul className="space-y-3">
+                <li className="flex items-center gap-3 text-sm text-gray-800">
+                  <FiTruck className="text-base text-gray-700" />
+                  <span>
+                    Delivery anywhere within the <strong>USA & Canada</strong>
+                  </span>
+                </li>
 
-              {/* Buy Now */}
+                <li className="flex items-center gap-3 text-sm text-gray-800">
+                  <FiRefreshCw className="text-base text-gray-700" />
+                  <span>
+                    <strong>30-day</strong> hassle-free returns
+                  </span>
+                </li>
+
+                <li className="flex items-center gap-3 text-sm text-gray-800">
+                  <FiShield className="text-base text-gray-700" />
+                  <span>
+                    <strong>6 months</strong> warranty
+                  </span>
+                </li>
+              </ul>
               <Link
                 href="/inventory"
-                className="group relative overflow-hidden py-3 px-6 text-white bg-green rounded-lg mont-text transition-all duration-300 font-semibold"
+                className="
+      inline-flex w-fit items-center justify-center
+      rounded-lg bg-green px-7 py-3
+      font-semibold text-white mont-text
+      transition-all duration-300
+      hover:bg-green-700 hover:shadow-md
+      focus:outline-none focus:ring-2 focus:ring-green-400
+    "
               >
-                <span className="relative z-10">Buy Now</span>
-
-                {/* Sliding overlay effect */}
-                <span
-                  className="absolute inset-0 bg-white/20 translate-x-[-100%] 
-                 group-hover:translate-x-[100%] transition-all duration-500"
-                ></span>
+                Browse Inventory
               </Link>
-
-              {/* Bid Now */}
-              <Link
-                href="/inventory"
-                className="group relative overflow-hidden py-3 px-6 text-green border border-green rounded-lg mont-text transition-all duration-300 font-semibold"
-              >
-                <span className="relative z-10">Bid Now</span>
-
-                {/* Sliding overlay effect */}
-                <span
-                  className="absolute inset-0 bg-green/20 translate-x-[-100%] 
-                 group-hover:translate-x-[100%] transition-all duration-500"
-                ></span>
-              </Link>
-
             </div>
-
           </motion.div>
           <motion.div
             initial={{ opacity: 0, y: -20 }}
