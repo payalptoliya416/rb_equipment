@@ -158,7 +158,7 @@ export default function MyBuyOrders() {
 
   const uploadPaymentSlip = async () => {
     if (!paymentFile || !selectedOrderId) {
-      setErrorMsg("Please upload payment slip");
+      setErrorMsg("Please upload payment Receipt");
       return;
     }
 
@@ -175,7 +175,7 @@ export default function MyBuyOrders() {
       });
 
       if (res.success) {
-        setSuccessMsg(res.message || "Payment slip uploaded successfully");
+        setSuccessMsg(res.message || "Payment Receipt uploaded successfully");
         setPaymentFile(null);
         setOpenConfirmationModal(false);
         fetchOrders();
@@ -240,6 +240,7 @@ export default function MyBuyOrders() {
             const confirmationDate = isConfirmed
               ? new Date().toISOString()
               : null;
+              
             return (
               <Accordion
                 key={data.order_id}
@@ -270,7 +271,7 @@ export default function MyBuyOrders() {
                             <p>Hours: {data.working_hours}</p>
                             <p>Total Weight: {data.weight}</p>
                             <p>Year: {data.year}</p>
-                            {data.invoice_url && (
+                           {data.invoice_url && data.payment_slip_url && (
                               <div className="flex items-center gap-3">
                                 <a
                                   href={data.invoice_url}
@@ -395,7 +396,7 @@ export default function MyBuyOrders() {
                             <>
                               {!isConfirmed ? (
                                 <p className="text-xs text-green mt-1">
-                                  Click to upload payment slip
+                                  Click to upload payment Receipt
                                 </p>
                               ) : (
                                 <p className="text-sm text-[#7A7A7A]">
@@ -514,7 +515,7 @@ export default function MyBuyOrders() {
             </h2>
 
             <p className="text-gray-600 text-sm mb-5">
-              Please upload the payment slip for order
+              Please upload the payment Receipt for order
               <span className="font-semibold"> #{selectedOrderNumber}</span>.
             </p>
 
@@ -541,7 +542,7 @@ export default function MyBuyOrders() {
                   </div>
 
                   <p className="text-sm font-medium text-gray-700">
-                    Click to upload payment slip
+                    Click to upload payment Receipt
                   </p>
 
                   <p className="text-xs text-gray-500">
@@ -553,7 +554,7 @@ export default function MyBuyOrders() {
               /* ================= ALREADY UPLOADED ================= */
               <div className="border rounded-xl p-4 bg-green/5">
                 <p className="text-sm text-green font-medium mb-2">
-                  Payment slip already uploaded
+                  Payment Receipt already uploaded
                 </p>
 
                 <a
@@ -575,7 +576,7 @@ export default function MyBuyOrders() {
                   )}
 
                   <span className="text-sm text-gray-700">
-                    View Payment Slip
+                    View Payment Receipt
                   </span>
                 </a>
               </div>
@@ -587,7 +588,7 @@ export default function MyBuyOrders() {
                 {paymentFile.type.startsWith("image") ? (
                   <img
                     src={URL.createObjectURL(paymentFile)}
-                    alt="Payment Slip Preview"
+                    alt="Payment Receipt Preview"
                     className="w-12 h-12 sm:w-14 sm:h-14 object-cover rounded-md"
                   />
                 ) : (

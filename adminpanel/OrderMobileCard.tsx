@@ -56,6 +56,8 @@ export default function OrderMobileCard({
   onDelete,
   onOpenPaymentSlip,
 }: Props) {
+  const isPaymentSlipDisabled =
+    order.paymentSlipStatus === "Pending" && !order.paymentSlipUrl;
   return (
     <div className="border border-[#E9E9E9] rounded-xl p-4 bg-white space-y-4">
       {/* Order ID */}
@@ -77,9 +79,9 @@ export default function OrderMobileCard({
       <Field label="Phone Number" value={order.phone} />
       <Field label="Order Date" value={order.orderDate} />
       <Field label="Order Amount" value={order.orderAmount} />
-      {/* Payment Slip Status */}
+      {/* Payment Receipt Status */}
       <div className="flex justify-between items-center">
-        <span className="text-sm text-gray-500">Payment Slip</span>
+        <span className="text-sm text-gray-500">Payment Receipt</span>
 
         <PaymentSlipBadge status={order.paymentSlipStatus} />
       </div>
@@ -95,10 +97,18 @@ export default function OrderMobileCard({
       </div>
       <div className="flex justify-between items-start flex-col gap-2">
         <button
-          onClick={() => onOpenPaymentSlip(order)}
-          className="flex items-center gap-2 text-orange text-sm font-medium cursor-pointer">
+          disabled={isPaymentSlipDisabled}
+          onClick={() => !isPaymentSlipDisabled && onOpenPaymentSlip(order)}
+          className={`flex items-center gap-2 text-sm font-medium transition
+    ${
+      isPaymentSlipDisabled
+        ? "text-orange  cursor-not-allowed"
+        : "text-orange cursor-pointer hover:opacity-80"
+    }
+  `}
+        >
           <IoReceiptSharp size={18} />
-          Payment Slip
+          Payment Receipt
         </button>
         <button
           onClick={() =>
@@ -109,7 +119,7 @@ export default function OrderMobileCard({
     ${
       order.invoiceUrl
         ? "text-green cursor-pointer"
-        : "text-gray-600 cursor-not-allowed opacity-50"
+        : "text-green  cursor-not-allowed"
     }
   `}
         >

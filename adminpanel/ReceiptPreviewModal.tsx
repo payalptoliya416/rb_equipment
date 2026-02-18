@@ -46,7 +46,7 @@ export default function ReceiptPreviewModal({
           ) : (
             <img
               src={url}
-              alt="Payment Slip"
+              alt="Payment Receipt"
               className="max-w-full mx-auto rounded-md"
             />
           )}

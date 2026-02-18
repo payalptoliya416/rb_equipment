@@ -1,7 +1,10 @@
 "use client";
 
 import { isLoggedIn } from "@/api/authToken";
-import { getAllCategories, getSettingsByKeysFooter } from "@/api/categoryActions";
+import {
+  getAllCategories,
+  getSettingsByKeysFooter,
+} from "@/api/categoryActions";
 import { Category } from "@/api/data";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,8 +18,9 @@ import { MdChevronRight } from "react-icons/md";
 type NavItem = {
   name: string;
   path: string;
-  submenu?: NavItem[]; // ✅ recursive nested support
+  submenu?: NavItem[];
 };
+
 function MobileNavItem({
   item,
   router,
@@ -35,102 +39,105 @@ function MobileNavItem({
   const [open, setOpen] = useState(false);
 
   const hasChildren = (item.submenu?.length ?? 0) > 0;
-useEffect(() => {
-  setOpen(false);
-}, [resetKey]);
-const isActive =
-  pathname === item.path || pathname.startsWith(item.path + "/");
+  useEffect(() => {
+    setOpen(false);
+  }, [resetKey]);
+  const isActive =
+    pathname === item.path || pathname.startsWith(item.path + "/");
 
   return (
-   <li>
-  <div
-    className="flex justify-between items-center w-full"
-    style={{ paddingLeft: `${level * 14 + 8}px` }}
-  >
-    {/* ✅ TEXT CLICK */}
-    <button
-      onClick={() => {
-        // ✅ Inventory click → Page open
-        if (level === 0) {
-         router.push(item.path);
-    router.refresh();
-          closeMenu();
-          return;
-        }
+    <li>
+      <div
+        className="flex justify-between items-center w-full"
+        style={{ paddingLeft: `${level * 14 + 8}px` }}
+      >
+        {/* ✅ TEXT CLICK */}
+        <button
+          onClick={() => {
+            // ✅ Inventory click → Page open
+            if (level === 1 && hasChildren) {
+              const categories = item.submenu
+                ?.map((sub) => sub.path.split("category=")[1])
+                .filter(Boolean)
+                .join(",");
 
-        // ✅ Group click → Toggle submenu
-        if (hasChildren) {
-          setOpen(!open);
-          return;
-        }
+              router.push(`/inventory?category=${categories}`);
+              router.refresh();
+              closeMenu();
+              return;
+            }
+            if (!hasChildren) {
+              router.push(item.path);
+              router.refresh();
+              closeMenu();
+              return;
+            }
 
-        // ✅ Leaf click → Redirect + Close sidebar
-       router.push(item.path);
-    router.refresh();
-        closeMenu();
-      }}
-     className={`
+            router.push(item.path);
+            router.refresh();
+            closeMenu();
+          }}
+          className={`
   flex-1 text-left py-2 px-2 font-medium rounded-md transition
   ${
     isActive
       ? "text-orange font-semibold bg-orange/10"
       : level === 0
-      ? "text-gray-800 text-base"
-      : "text-gray-600 text-sm"
+        ? "text-gray-800 text-base"
+        : "text-gray-600 text-sm"
   }
   hover:bg-orange/10 hover:text-orange cursor-pointer
 `}
-    >
-      {item.name}
-    </button>
+        >
+          {item.name}
+        </button>
 
-    {/* ✅ PLUS ICON FOR ALL SUBMENU GROUPS */}
-    {hasChildren && level !== 0 && (
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setOpen(!open);
-        }}
-        className="px-2 hover:text-orange"
-      >
-        {open ? <HiMiniMinus/> : <HiMiniPlus/>}
-      </button>
-    )}
+        {/* ✅ PLUS ICON FOR ALL SUBMENU GROUPS */}
+        {hasChildren && level !== 0 && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpen(!open);
+            }}
+            className="px-2 hover:text-orange"
+          >
+            {open ? <HiMiniMinus /> : <HiMiniPlus />}
+          </button>
+        )}
 
-    {/* ✅ PLUS ICON FOR INVENTORY ALSO */}
-    {hasChildren && level === 0 && (
-      <button
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setOpen(!open);
-        }}
-        className="px-2 hover:text-orange"
-      >
-          {open ? <HiMiniMinus/> : <HiMiniPlus/>}
-      </button>
-    )}
-  </div>
+        {/* ✅ PLUS ICON FOR INVENTORY ALSO */}
+        {hasChildren && level === 0 && (
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setOpen(!open);
+            }}
+            className="px-2 hover:text-orange"
+          >
+            {open ? <HiMiniMinus /> : <HiMiniPlus />}
+          </button>
+        )}
+      </div>
 
-  {/* ✅ SUBMENU */}
-  {hasChildren && open && (
-    <ul className="mt-1 flex flex-col gap-1">
-      {item.submenu?.map((sub) => (
-        <MobileNavItem
-          key={sub.path}
-          item={sub}
-          router={router}
-          closeMenu={closeMenu}
-          level={level + 1}
-           resetKey={resetKey}
-           pathname={pathname}
-        />
-      ))}
-    </ul>
-  )}
-</li>
-
+      {/* ✅ SUBMENU */}
+      {hasChildren && open && (
+        <ul className="mt-1 flex flex-col gap-1">
+          {item.submenu?.map((sub) => (
+            <MobileNavItem
+              key={sub.path}
+              item={sub}
+              router={router}
+              closeMenu={closeMenu}
+              level={level + 1}
+              resetKey={resetKey}
+              pathname={pathname}
+            />
+          ))}
+        </ul>
+      )}
+    </li>
   );
 }
 
@@ -138,10 +145,10 @@ const inventoryGroups: Record<string, string[]> = {
   Loaders: ["Skid Steer Loaders", "Backhoe Loaders", "Wheel Loaders"],
 
   Excavators: ["Mini Excavators", "Track Excavators", "Wheel Excavators"],
-  "Telehandlers": [],
+  Telehandlers: [],
 
   "Earthmoving Equipment": ["Graders", "Dozers", "Dumpers", "Rollers"],
-   "Farm Tractors": [],
+  "Farm Tractors": [],
 };
 
 function Header() {
@@ -154,48 +161,51 @@ function Header() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [resetKey, setResetKey] = useState(0);
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
-const [clickedGroup, setClickedGroup] = useState<string | null>(null);
+  const [clickedGroup, setClickedGroup] = useState<string | null>(null);
 
   const slugify = (text: string) =>
-  text
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-const [openDropdown, setOpenDropdown] = useState<string | null>(null);
-useEffect(() => {
-  function close(e: MouseEvent) {
-    if (!(e.target as HTMLElement).closest(".dropdown-parent")) {
-      setOpenDropdown(null);
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const [disableHover, setDisableHover] = useState(false);
+  useEffect(() => {
+    function close(e: MouseEvent) {
+      if (!(e.target as HTMLElement).closest(".dropdown-parent")) {
+        setOpenDropdown(null);
+      }
     }
-  }
 
-  document.addEventListener("click", close);
-  return () => document.removeEventListener("click", close);
-}, []);
-const inventorySubmenu: NavItem[] = Object.entries(inventoryGroups).map(
-  ([groupName, children]) => {
-    const matched = categories.filter((cat) =>
-      children.includes(cat.category_name)
-    );
+    document.addEventListener("click", close);
+    return () => document.removeEventListener("click", close);
+  }, []);
 
-    return {
-      name: groupName,
-      path: "#",
-      submenu: matched.map((cat) => ({
-        name: cat.category_name,
-        path: `/inventory?category=${slugify(cat.category_name)}`,
-      })),
-    };
-  }
-);
-  const navItems : NavItem[] = [
+  const inventorySubmenu: NavItem[] = Object.entries(inventoryGroups).map(
+    ([groupName, children]) => {
+      const matched = categories.filter((cat) =>
+        children.includes(cat.category_name),
+      );
+
+      return {
+        name: groupName,
+        path: "#",
+        submenu: matched.map((cat) => ({
+          name: cat.category_name,
+          path: `/inventory?category=${slugify(cat.category_name)}`,
+        })),
+      };
+    },
+  );
+
+  const navItems: NavItem[] = [
     { name: "Home", path: "/" },
-      {
-    name: "Inventory",
-    path: "/inventory",
-    submenu: inventorySubmenu,
-  },
+    {
+      name: "Inventory",
+      path: "/inventory",
+      submenu: inventorySubmenu,
+    },
     { name: "About Us", path: "/about-us" },
     { name: "Services", path: "/services" },
     { name: "FAQ", path: "/faq" },
@@ -237,6 +247,17 @@ const inventorySubmenu: NavItem[] = Object.entries(inventoryGroups).map(
   }, [pathname]);
 
   const [settings, setSettings] = useState<any>(null);
+  const getGroupCategoryUrl = (group: NavItem) => {
+    if (!group.submenu || group.submenu.length === 0) return group.path;
+
+    const categories = group.submenu
+      .map((sub) => sub.path.split("category=")[1])
+      .filter(Boolean)
+      .join(",");
+
+    return `/inventory?category=${categories}`;
+  };
+
   useEffect(() => {
     getSettingsByKeysFooter().then((res) => {
       if (res.success) {
@@ -245,48 +266,46 @@ const inventorySubmenu: NavItem[] = Object.entries(inventoryGroups).map(
     });
   }, []);
 
-    useEffect(() => {
-      const fetchCategories = async () => {
-        try {
-          const res = await getAllCategories();
-          if (res?.success) {
-            setCategories(res.data);
-          }
-        } catch (e) {
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await getAllCategories();
+        if (res?.success) {
+          setCategories(res.data);
         }
-      };
-  
-      fetchCategories();
-    }, []);
-  
-const handleCloseMenu = () => {
-  setIsMenuOpen(false);
-  setResetKey((prev) => prev + 1);
-};
+      } catch (e) {}
+    };
+
+    fetchCategories();
+  }, []);
+
+  const handleCloseMenu = () => {
+    setIsMenuOpen(false);
+    setResetKey((prev) => prev + 1);
+  };
   useEffect(() => {
     setLoggedIn(isLoggedIn());
   }, [pathname]);
 
-const hasBgImage =
-  pathname !== "/inventory" &&
-  pathname !== "/inventory/" &&
-
-  pathname.startsWith("/inventory/") ||
-  pathname.startsWith("/inventory") ||
-  pathname.startsWith("/signin") ||
-  pathname.startsWith("/verify-account/") ||
-  pathname.startsWith("/verify-account") ||
-  pathname.startsWith("/signup") || 
-  pathname.startsWith("/confirmation") || 
-  pathname.startsWith("/sale-agreement") || 
-  pathname.startsWith("/checkout");
+  const hasBgImage =
+    (pathname !== "/inventory" &&
+      pathname !== "/inventory/" &&
+      pathname.startsWith("/inventory/")) ||
+    pathname.startsWith("/inventory") ||
+    pathname.startsWith("/signin") ||
+    pathname.startsWith("/verify-account/") ||
+    pathname.startsWith("/verify-account") ||
+    pathname.startsWith("/signup") ||
+    pathname.startsWith("/confirmation") ||
+    pathname.startsWith("/sale-agreement") ||
+    pathname.startsWith("/checkout");
 
   return (
     <header
       className={`
     w-full z-50 relative
     ${
-    hasBgImage
+      hasBgImage
         ? "bg-[url(/assets/header-bg.png)] bg-no-repeat bg-top bg-cover lg:bg-[length:100%_100%]"
         : "bg-transparent"
     }
@@ -308,12 +327,23 @@ const hasBgImage =
         {/* Desktop & Tablet Navbar */}
         <ul className="hidden lg:flex justify-center items-center gap-8 md:gap-12">
           {navItems.map((item) => (
-          <li key={item.path} className="relative group dropdown-parent flex items-center gap-1">
-
-  {/* ✅ Inventory Name Click → Page Open */}
-  <button
-    onClick={() => router.push(item.path)}
-    className={`text-base font-medium text-gray-700 hover:text-orange cursor-pointer relative
+            <li
+              key={item.path}
+  className="relative dropdown-parent flex items-center gap-1"
+  onMouseEnter={() => {
+    if (disableHover) return;
+    setOpenDropdown(item.name);
+  }}
+  onMouseLeave={() => {
+    setOpenDropdown(null);
+    setActiveGroup(null);
+    setClickedGroup(null);
+  }}
+            >
+              {/* ✅ Inventory Name Click → Page Open */}
+              <button
+                onClick={() => router.push(item.path)}
+                className={`text-base font-medium text-gray-700 hover:text-orange cursor-pointer relative
                 after:content-[''] after:absolute after:-bottom-1
                 after:left-1/2 after:-translate-x-1/2
                 after:h-1 after:w-0
@@ -325,36 +355,38 @@ const hasBgImage =
                       ? "text-orange font-bold after:w-8"
                       : "text-gray-700 font-medium"
                     : pathname.startsWith(item.path)
-                    ? "text-orange font-bold after:w-8"
-                    : "text-gray-700 font-medium"
+                      ? "text-orange font-bold after:w-8"
+                      : "text-gray-700 font-medium"
                 }
-              `}  >
-            {item.name}
-          </button>
-
-            {/* ✅ Dropdown Icon Click → Open Dropdown */}
-            {(item.submenu?.length ?? 0) > 0 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation(); // prevent inventory click
-                  e.preventDefault();
-                  setOpenDropdown(openDropdown === item.name ? null : item.name);
-                }}
-                className={`hover:text-orange transition mt-1  ${
-                            item.path === "/"
-                              ? pathname === "/"
-                                ? "text-orange font-bold after:w-8"
-                                : "text-gray-700 font-medium"
-                              : pathname.startsWith(item.path)
-                              ? "text-orange font-bold after:w-8"
-                              : "text-gray-700 font-medium"
-                          }`}
+              `}
               >
-                <IoIosArrowDown size={14}/>
+                {item.name}
               </button>
-            )}
 
-            {/* ✅ Dropdown Menu */}
+              {/* ✅ Dropdown Icon Click → Open Dropdown */}
+              {(item.submenu?.length ?? 0) > 0 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation(); // prevent inventory click
+                    e.preventDefault();
+                    setOpenDropdown(
+                      openDropdown === item.name ? null : item.name,
+                    );
+                  }}
+                  className={`hover:text-orange transition mt-1  ${
+                    item.path === "/"
+                      ? pathname === "/"
+                        ? "text-orange font-bold after:w-8"
+                        : "text-gray-700 font-medium"
+                      : pathname.startsWith(item.path)
+                        ? "text-orange font-bold after:w-8"
+                        : "text-gray-700 font-medium"
+                  }`}
+                >
+                  <IoIosArrowDown size={14} />
+                </button>
+              )}
+
               {(item.submenu?.length ?? 0) > 0 && (
                 <div
                   className={`
@@ -362,72 +394,77 @@ const hasBgImage =
                     bg-white shadow-xl rounded-xl z-[999]
                     transition-all duration-300
                     ${
-                      openDropdown === item.name
+                      openDropdown === item.name && !disableHover
                         ? "opacity-100 visible"
-                        : "opacity-0 invisible group-hover:opacity-100 group-hover:visible"
+                        : disableHover
+                          ? "opacity-0 invisible"
+                          : "opacity-0 invisible "
                     }
                   `}
                 >
                   <ul className="py-3">
-                      {item.submenu?.map((group) => {
-                        const hasSubmenu = (group.submenu?.length ?? 0) > 0;
-                        const isOpen = activeGroup === group.name;
+                    {item.submenu?.map((group) => {
+                      const hasSubmenu = (group.submenu?.length ?? 0) > 0;
+                      const isOpen = activeGroup === group.name;
 
-                        return (
-                          <li
-                            key={group.name + group.path}
-                            className="relative px-4 py-2 hover:bg-gray-50"
-                            onMouseEnter={() => {
-                              // ✅ Hover open
-                              setActiveGroup(group.name);
-                            }}
-                            onMouseLeave={() => {
-                              // ✅ Close only if not clicked/locked
-                              if (clickedGroup !== group.name) {
+                      return (
+                        <li
+                          key={group.name + group.path}
+                          className="relative px-4 py-2 hover:bg-gray-50"
+                          onMouseEnter={() => {
+                            setActiveGroup(group.name);
+                          }}
+                          onMouseLeave={() => {
+                            if (clickedGroup !== group.name) {
+                              setActiveGroup(null);
+                            }
+                          }}
+                        >
+                          <button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+
+                              if (hasSubmenu) {
+                                const url = getGroupCategoryUrl(group);
+                                  setDisableHover(true);
+                                setOpenDropdown(null);
                                 setActiveGroup(null);
+                                setClickedGroup(null);
+
+                                router.push(url);
+                                router.refresh();
+                                  setTimeout(() => setDisableHover(false), 300);
+                                return;
+                              }
+
+                              if (clickedGroup === group.name) {
+                                setClickedGroup(null);
+                                setActiveGroup(null);
+                              } else {
+                                setClickedGroup(group.name);
+                                setActiveGroup(group.name);
                               }
                             }}
-                          >
-                            {/* ✅ Group Click */}
-                            <button
-                            onClick={(e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-
-                                if (!hasSubmenu) {
-                                  setOpenDropdown(null);
-                                  setActiveGroup(null);
-                                  setClickedGroup(null);
-
-                                  router.push(`/inventory?category=${slugify(group.name)}`);
-                                  router.refresh();
-                                  return;
-                                }
-
-                                if (clickedGroup === group.name) {
-                                  setClickedGroup(null);
-                                  setActiveGroup(null);
-                                } else {
-                                  setClickedGroup(group.name);
-                                  setActiveGroup(group.name);
-                                }
-                              }}
-                              className="
+                            className="
                                 w-full flex justify-between items-center
                                  text-gray-700 font-medium hover:text-orange cursor-pointer
                               "
-                            >
-                              {group.name}
+                          >
+                            {group.name}
 
-                              {hasSubmenu && (
-                                <MdChevronRight size={20} className="text-gray-400" />
-                              )}
-                            </button>
-
-                            {/* ✅ Right Side Submenu */}
                             {hasSubmenu && (
-                              <ul
-                                className={`
+                              <MdChevronRight
+                                size={20}
+                                className="text-gray-400"
+                              />
+                            )}
+                          </button>
+
+                          {/* ✅ Right Side Submenu */}
+                          {hasSubmenu && (
+                            <ul
+                              className={`
                                   absolute top-0 left-full ml-2
                                   w-[220px]
                                   bg-white shadow-xl rounded-xl
@@ -439,54 +476,53 @@ const hasBgImage =
                                       : "opacity-0 invisible"
                                   }
                                 `}
-                              >
-                                {group.submenu?.map((subItem) => (
-                                  <li key={subItem.path}>
-                                    <button
-                                      onClick={() => {
-                                        setOpenDropdown(null);
-                                        setActiveGroup(null);
-                                        setClickedGroup(null);
-                                        router.push(subItem.path);
-                                        router.refresh();
-                                      }}
-                                      className="
+                            >
+                              {group.submenu?.map((subItem) => (
+                                <li key={subItem.path}>
+                                  <button
+                                    onClick={() => {
+                                      setOpenDropdown(null);
+                                      setActiveGroup(null);
+                                      setClickedGroup(null);
+                                      router.push(subItem.path);
+                                      router.refresh();
+                                    }}
+                                    className="
                                         block w-full text-left py-2
                                         text-gray-700 font-medium hover:text-orange
                                       text-base cursor-pointer hover:bg-gray-50  px-4
                                       "
-                                    >
-                                      {subItem.name}
-                                    </button>
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </li>
-                        );
-                      })}
+                                  >
+                                    {subItem.name}
+                                  </button>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </div>
               )}
-          </li>
-
-
+            </li>
           ))}
         </ul>
-            {loggedIn ? (
-                    <Link
-          href="/user"
-          className="hidden lg:block text-green bg-white py-2 px-4 md:py-3 md:px-6 rounded-lg font-semibold hover:bg-orange hover:text-white transition"
-        >
-          Dashboard
-        </Link> ) : (
-                <Link
-          href="/user/signin"
-          className="hidden lg:block text-green bg-white py-2 px-4 md:py-3 md:px-6 rounded-lg font-semibold hover:bg-orange hover:text-white transition"
-        >
-          Sign In
-        </Link>
-              )}
+        {loggedIn ? (
+          <Link
+            href="/user"
+            className="hidden lg:block text-green bg-white py-2 px-4 md:py-3 md:px-6 rounded-lg font-semibold hover:bg-orange hover:text-white transition"
+          >
+            Dashboard
+          </Link>
+        ) : (
+          <Link
+            href="/user/signin"
+            className="hidden lg:block text-green bg-white py-2 px-4 md:py-3 md:px-6 rounded-lg font-semibold hover:bg-orange hover:text-white transition"
+          >
+            Sign In
+          </Link>
+        )}
 
         {/* Hamburger Icon for Mobile */}
         <button
@@ -512,7 +548,7 @@ const hasBgImage =
                 : "opacity-0 pointer-events-none"
             }
           `}
-          onClick={handleCloseMenu }
+          onClick={handleCloseMenu}
         ></div>
         {/* Sidebar Menu */}
         <div
@@ -524,60 +560,61 @@ const hasBgImage =
           `}
         >
           <Link href="/">
-          {settings?.dark_logo && (
-            <Image
-              src={`${settings.dark_logo}`}
-              alt="Logo"
-              height={100}
-              width={100}
-              loading="eager"
-              priority
-            />
-          )}
-        </Link>
+            {settings?.dark_logo && (
+              <Image
+                src={`${settings.dark_logo}`}
+                alt="Logo"
+                height={100}
+                width={100}
+                loading="eager"
+                priority
+              />
+            )}
+          </Link>
           {/* Close Button */}
           <button
-            onClick={handleCloseMenu }
+            onClick={handleCloseMenu}
             className="absolute top-2 right-2 text-white text-2xl bg-orange rounded-full p-[2px] cursor-pointer"
           >
-            <IoClose size={20}/>
+            <IoClose size={20} />
           </button>
 
-        <ul className="flex flex-col gap-2 mt-6">
-         {navItems.map((item) => (
-    <MobileNavItem
-      key={item.path}
-      item={item}
-      router={router}
-      closeMenu={handleCloseMenu }
-      resetKey={resetKey} 
-      pathname={pathname}
-    />
-  ))}
-        </ul>
-           {loggedIn ? (
-          <Link
-            href="/user"
-            className="
+          <ul className="flex flex-col gap-2 mt-6">
+            {navItems.map((item) => (
+              <MobileNavItem
+                key={item.path}
+                item={item}
+                router={router}
+                closeMenu={handleCloseMenu}
+                resetKey={resetKey}
+                pathname={pathname}
+              />
+            ))}
+          </ul>
+          {loggedIn ? (
+            <Link
+              href="/user"
+              className="
               mt-6 block text-center text-green bg-white border border-green 
               py-3 px-6 rounded-lg font-semibold 
               transition-all duration-300 
               hover:bg-orange hover:text-white hover:border-orange
             "
-          >
-           Dashboard
-          </Link> ) : (
-             <Link
-            href="/user/signin"
-            className="
+            >
+              Dashboard
+            </Link>
+          ) : (
+            <Link
+              href="/user/signin"
+              className="
               mt-6 block text-center text-green bg-white border border-green 
               py-3 px-6 rounded-lg font-semibold 
               transition-all duration-300 
               hover:bg-orange hover:text-white hover:border-orange
             "
-          >
-            Sign In
-          </Link>
+            >
+              Sign In
+            </Link>
           )}
         </div>
       </div>

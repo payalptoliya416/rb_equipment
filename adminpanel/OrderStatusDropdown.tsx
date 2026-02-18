@@ -35,46 +35,46 @@ export default function OrderStatusDropdown({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   /* ================= STATUS CONFIG ================= */
-  const statusConfig: Record<
-    OrderStatus,
-    { label: string; btnClass: string; apiValue: number }
-  > = {
-    Pending: {
-      label: "Pending",
-      btnClass: "bg-gray-400 text-white",
-      apiValue: 0,
-    },
-    Confirmed: {
-      label: "Confirmed",
-      btnClass: "bg-cyan-500 text-white",
-      apiValue: 1,
-    },
-    Process: {
-      label: "Process",
-      btnClass: "bg-yellow-400 text-black",
-      apiValue: 2,
-    },
-    Shipped: {
-      label: "Shipped",
-      btnClass: "bg-blue-500 text-white",
-      apiValue: 3,
-    },
-    "In Transit": {
-      label: "In Transit",
-      btnClass: "bg-indigo-500 text-white",
-      apiValue: 4,
-    },
-    Delivered: {
-      label: "Delivered",
-      btnClass: "bg-green-500 text-white",
-      apiValue: 5,
-    },
-    Cancelled: {
-      label: "Cancelled",
-      btnClass: "bg-red-500 text-white",
-      apiValue: 6,
-    },
-  };
+ const statusConfig: Record<
+  OrderStatus,
+  { label: string; btnClass: string; apiValue: number }
+> = {
+  Pending: {
+    label: "Pending",
+    btnClass: "bg-yellow-400 text-black",
+    apiValue: 0,
+  },
+  Confirmed: {
+    label: "Confirmed",
+    btnClass: "bg-blue-500 text-white",
+    apiValue: 1,
+  },
+  Process: {
+    label: "Process",
+    btnClass: "bg-purple-500 text-white",
+    apiValue: 2,
+  },
+  Shipped: {
+    label: "Shipped",
+    btnClass: "bg-blue-500 text-white",
+    apiValue: 3,
+  },
+  "In Transit": {
+    label: "In Transit",
+    btnClass: "bg-indigo-500 text-white",
+    apiValue: 4,
+  },
+  Delivered: {
+    label: "Delivered",
+    btnClass: "bg-green-500 text-white",
+    apiValue: 5,
+  },
+  Cancelled: {
+    label: "Cancelled",
+    btnClass: "bg-red-500 text-white",
+    apiValue: 6,
+  },
+};
 
   const current = statusConfig[value] ?? statusConfig["Pending"];
 
@@ -211,11 +211,8 @@ const openAccordion = () => {
                     const isDelivered = value === "Delivered";
                     const isCancelled = status === "Cancelled";
 
-                    // ❌ Cancel not allowed after Shipped
-                    const cancelBlocked =
-                      isCancelled && currentValue >= statusConfig["Shipped"].apiValue;
+                    const cancelBlocked =  isCancelled && value === "Delivered";
 
-                    // FINAL DISABLE RULE
                     const disabled =
                       isCurrent || isBackward || isDelivered || cancelBlocked;
 

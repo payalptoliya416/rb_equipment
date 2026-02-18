@@ -19,7 +19,7 @@ function Footer() {
   return (
     <>
       <section
-        className="bg-[url(/assets/ready-bg2.png)] lg:bg-[url(/assets/ready-bg.png)] bg-no-repeat w-full h-full mt-20 lg:mt-[110px] py-[60px] bg-position"
+        className="bg-[url(/assets/ready-bg2.png)] lg:bg-[url(/assets/ready-bg01.png)] 2xl:bg-[url(/assets/ready-bg.png)] bg-no-repeat w-full h-full mt-20 lg:mt-[110px] py-[60px] bg-position"
       >
         <div className="grid grid-cols-12 container-custom mx-auto">
           <div className="col-span-12 sm:col-span-10 md:col-span-7 xl:col-span-5 2xl:col-span-4">

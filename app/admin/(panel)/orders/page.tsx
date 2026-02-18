@@ -178,7 +178,7 @@ export default function AdminOrder() {
     },
     {
       key: "paymentSlipStatus",
-      header: "Payment Slip Status",
+      header: "Payment Receipt Status",
       render: (row) => {
         const config = {
           Pending: {
@@ -230,27 +230,25 @@ export default function AdminOrder() {
 
         return (
           <div className="flex items-center justify-center gap-4">
-            {/* Invoice */}
             <TooltipWrapper content="Invoice">
               <button
                 disabled={!row.invoiceUrl}
                 onClick={() => window.open(row.invoiceUrl!, "_blank")}
                 className={`${
                   row.invoiceUrl
-                    ? "text-green hover:scale-110 transition cursor-pointer"
-                    : "text-gray-400 cursor-not-allowed"
+                    ? "text-green transition cursor-pointer"
+                    : "text-green cursor-not-allowed"
                 }`}
               >
                 <FaFilePdf size={20} />
               </button>
             </TooltipWrapper>
 
-            {/* Payment Slip */}
             <TooltipWrapper
               content={
                 isDisabled
-                  ? "Payment slip not uploaded yet"
-                  : "View payment slip"
+                  ? "Payment Receipt not uploaded yet"
+                  : "View payment Receipt"
               }
             >
               <button
@@ -264,11 +262,11 @@ export default function AdminOrder() {
                     paymentSlipStatus: row.paymentSlipStatus,
                   })
                 }
-                className={`transition
+                className={`
                   ${
                     isDisabled
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "text-orange hover:scale-110 cursor-pointer"
+                      ? "text-orange cursor-not-allowed"
+                      : "text-orange cursor-pointer"
                   }`}
               >
                 <IoReceiptSharp size={20} />

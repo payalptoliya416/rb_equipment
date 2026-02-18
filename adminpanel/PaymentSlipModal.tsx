@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import { adminOrdersService } from "@/api/admin/orders";
 import { useState } from "react";
 import { FaRegImage } from "react-icons/fa";
+import Loader from "@/components/common/Loader";
 
 type Props = {
   open: boolean;
@@ -26,6 +27,7 @@ export default function PaymentSlipModal({
 }: Props) {
   if (!open) return null;
   const isFinalized = paymentSlipStatus !== "Pending";
+  const [imageLoading, setImageLoading] = useState(true);
   const [submittingStatus, setSubmittingStatus] = useState<
     null | "approve" | "decline"
   >(null);
@@ -43,7 +45,7 @@ export default function PaymentSlipModal({
         status,
       });
 
-      toast.success("Payment slip status updated");
+      toast.success("Payment Receipt status updated");
       onUpdated();
       onClose();
     } catch {
@@ -64,9 +66,11 @@ export default function PaymentSlipModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md h-auto max-h-[90vh] flex flex-col">
+      <div className="relative bg-white rounded-2xl shadow-xl w-fit max-w-3xl max-h-[90vh] flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-light-gray">
-          <h2 className="text-lg font-semibold text-gray-800">Payment Slip</h2>
+          <h2 className="text-lg font-semibold text-gray-800">
+            Payment Receipt
+          </h2>
           <button
             onClick={onClose}
             className="text-gray-400 hover:text-gray-700 transition cursor-pointer"
@@ -76,37 +80,40 @@ export default function PaymentSlipModal({
         </div>
 
         <div className="p-5 space-y-4 overflow-y-auto">
-          <div className="rounded-xl p-4 flex items-center justify-center overflow-auto">
+          <div className="overflow-auto">
             {slipUrl ? (
               isImage(slipUrl) ? (
-                <a
-                  href={slipUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block cursor-pointer w-full"
-                >
-                  <div className="w-full flex items-center justify-center rounded-lg">
-                    <img
-                      src={slipUrl}
-                      alt="Payment Slip"
-                      className="max-w-full max-h-full object-contain rounded-lg transition hover:opacity-90"
-                    />
-                  </div>
-                </a>
+                <div className="relative block">
+                  {imageLoading && (
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <Loader />
+                    </div>
+                  )}
+
+                  <img
+                    src={slipUrl}
+                    alt="Payment Receipt"
+                    onLoad={() => setImageLoading(false)}
+                    onError={() => setImageLoading(false)}
+                    className={`max-w-full h-auto mx-auto transition-opacity duration-300 ease-in-out ${
+                      imageLoading ? "opacity-0" : "opacity-100"
+                    }`}
+                  />
+                </div>
               ) : (
                 <a
                   href={slipUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex flex-col items-center gap-3 text-green hover:opacity-80"
+                  className="flex flex-col items-center gap-3 text-green hover:opacity-80 py-5"
                 >
                   <FaFilePdf size={40} />
-                  <span className="text-sm font-medium">Open PDF Slip</span>
+                  <span className="text-sm font-medium">Open PDF</span>
                 </a>
               )
             ) : (
               <p className="text-gray-500 text-xs text-center">
-                No payment slip uploaded
+                No payment Receipt uploaded
               </p>
             )}
           </div>
