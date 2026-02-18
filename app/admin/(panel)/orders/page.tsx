@@ -166,15 +166,7 @@ export default function AdminOrder() {
         </span>
       ),
     },
-    {
-  key: "orderDate",
-  header: "Order Date",
-  render: (r) => (
-    <span className="inline-flex items-center text-gray-700 px-2.5 py-1 rounded-md text-xs whitespace-nowrap">
-      {r.orderDate}
-    </span>
-  ),
-},
+
     {
       key: "orderAmount",
       header: "Order Amount",

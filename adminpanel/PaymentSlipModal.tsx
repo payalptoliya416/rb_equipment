@@ -64,23 +64,35 @@ export default function PaymentSlipModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <div className="relative bg-white rounded-2xl shadow-xl w-auto max-w-[95vw] max-h-[95vh] flex flex-col">
+      <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md h-auto max-h-[90vh] flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-light-gray">
           <h2 className="text-lg font-semibold text-gray-800">Payment Slip</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-700 transition cursor-pointer">
+          <button
+            onClick={onClose}
+            className="text-gray-400 hover:text-gray-700 transition cursor-pointer"
+          >
             <IoClose size={24} />
           </button>
         </div>
 
-        <div className="p-5 space-y-4">
+        <div className="p-5 space-y-4 overflow-y-auto">
           <div className="rounded-xl p-4 flex items-center justify-center overflow-auto">
             {slipUrl ? (
               isImage(slipUrl) ? (
-                <img
-                  src={slipUrl}
-                  alt="Payment Slip"
-                  className="max-w-[90vw] max-h-[75vh] object-contain rounded-lg"
-                />
+                <a
+                  href={slipUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block cursor-pointer w-full"
+                >
+                  <div className="w-full flex items-center justify-center rounded-lg">
+                    <img
+                      src={slipUrl}
+                      alt="Payment Slip"
+                      className="max-w-full max-h-full object-contain rounded-lg transition hover:opacity-90"
+                    />
+                  </div>
+                </a>
               ) : (
                 <a
                   href={slipUrl}
