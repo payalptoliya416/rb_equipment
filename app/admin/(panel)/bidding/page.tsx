@@ -12,6 +12,7 @@ import BiddingMobileCard from "@/adminpanel/BiddingMobileCard";
 import Loader from "@/components/common/Loader";
 import { HiOutlineEye } from "react-icons/hi2";
 import { formatPrice } from "@/hooks/formate";
+import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
 
 /* ================= TYPES ================= */
 export type BiddingRow = {
@@ -22,13 +23,13 @@ export type BiddingRow = {
   model: string;
   bid_end_time: string;
   bid_start_price: string;
-bid_status: "active" | "pending" | "sold";
+  bid_status: "active" | "pending" | "sold";
   bids_count: number;
 };
 
 export default function BiddingManagement() {
   const router = useRouter();
-const isMobile = useIsMobile();
+  const isMobile = useIsMobile();
   /* ================= STATE ================= */
   const [data, setData] = useState<BiddingRow[]>([]);
   const [loading, setLoading] = useState(false);
@@ -55,7 +56,7 @@ const isMobile = useIsMobile();
         page,
         per_page: perPage,
       });
-      
+
       if (!res.data || res.data.length === 0) {
         setData([]);
         setPagination(res.pagination);
@@ -69,13 +70,13 @@ const isMobile = useIsMobile();
         year: item.year,
         make: item.make,
         model: item.model,
-        bid_end_time: new Date(item.bid_end_time).toLocaleString('en-US', {
-          year: 'numeric',
-          month: '2-digit',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: true
+        bid_end_time: new Date(item.bid_end_time).toLocaleString("en-US", {
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: true,
         }),
         bid_start_price: `${formatPrice(item.bid_start_price)}`,
         bid_status: item.bid_status,
@@ -137,43 +138,47 @@ const isMobile = useIsMobile();
       key: "bid_status",
       header: "Status",
       render: (row) => {
-       const statusMap: Record<string, string> = {
-      active: "bg-[#34C759] text-white",     // Green
-      pending: "bg-[#FFCA42] text-black",    // Yellow
-      sold: "bg-[#2196F3] text-white",       // Red
-    };
-        
-       
-    const statusDisplay: Record<string, string> = {
-      active: "Active",
-      pending: "Pending",
-      sold: "Sold",
-    };
+        const statusMap: Record<string, string> = {
+          active: "bg-[#34C759] text-white", // Green
+          pending: "bg-[#FFCA42] text-black", // Yellow
+          sold: "bg-[#2196F3] text-white", // Red
+        };
+
+        const statusDisplay: Record<string, string> = {
+          active: "Active",
+          pending: "Pending",
+          sold: "Sold",
+        };
 
         return (
-           <span
-        className={`px-4 py-2 rounded-md text-sm w-[90px] text-center inline-block ${
-          statusMap[row.bid_status] || "bg-gray-300 text-black"
-        }`}
-      >
-        {statusDisplay[row.bid_status] || "Unknown"}
-      </span>
+          <span
+            className={`px-4 py-2 rounded-md text-sm w-[90px] text-center inline-block ${
+              statusMap[row.bid_status] || "bg-gray-300 text-black"
+            }`}
+          >
+            {statusDisplay[row.bid_status] || "Unknown"}
+          </span>
         );
       },
     },
     {
-          key: "actions",
-          header: "Actions",
-          render: (r) => (
-           <div className="flex items-center">
-      {/* EDIT */}
-      <button  onClick={() => router.push(`/admin/bidding/bidding-list?id=${r.id}`)} className="w-9 h-9 flex items-center justify-center rounded-full text-yellow-500 transition cursor-pointer">
-         <HiOutlineEye className="text-[#3C97FF] cursor-pointer" size={18} />
-      </button>
-    </div>
-    
-          ),
-        },
+      key: "actions",
+      header: "Actions",
+      render: (r) => (
+        <div className="flex items-center">
+          <TooltipWrapper content="View bidding details">
+            <button
+              onClick={() =>
+                router.push(`/admin/bidding/bidding-list?id=${r.id}`)
+              }
+              className="w-9 h-9 flex items-center justify-center rounded-full text-[#3C97FF] cursor-pointer"
+            >
+              <HiOutlineEye size={18} />
+            </button>
+          </TooltipWrapper>
+        </div>
+      ),
+    },
   ];
 
   return (
@@ -199,44 +204,41 @@ const isMobile = useIsMobile();
       </div>
 
       {isMobile ? (
-  <div className="space-y-4">
-    {loading && (
-      <p className="flex justify-center items-center h-full">
-       <Loader/>
-      </p>
-    )}
+        <div className="space-y-4">
+          {loading && (
+            <p className="flex justify-center items-center h-full">
+              <Loader />
+            </p>
+          )}
 
-    {!loading && data.length === 0 && (
-      <p className="text-center text-sm text-gray-500">
-        {noDataMessage}
-      </p>
-    )}
+          {!loading && data.length === 0 && (
+            <p className="text-center text-sm text-gray-500">{noDataMessage}</p>
+          )}
 
-    {data.map((item) => (
-      <BiddingMobileCard
-        key={item.id}
-        item={item}
-        onEdit={() =>
-          router.push(`/admin/bidding/bidding-list?id=${item.id}`)
-        }
-      />
-    ))}
-  </div>
-) : (
-  <AdminDataTable
-    columns={columns}
-    data={data}
-    loading={loading}
-    pagination={pagination}
-    onPageChange={setPage}
-    onPageSizeChange={(size) => {
-    setPage(1);        
-    setPerPage(size);
-  }}
-    noDataMessage={noDataMessage}
-  />
-)}
-
+          {data.map((item) => (
+            <BiddingMobileCard
+              key={item.id}
+              item={item}
+              onEdit={() =>
+                router.push(`/admin/bidding/bidding-list?id=${item.id}`)
+              }
+            />
+          ))}
+        </div>
+      ) : (
+        <AdminDataTable
+          columns={columns}
+          data={data}
+          loading={loading}
+          pagination={pagination}
+          onPageChange={setPage}
+          onPageSizeChange={(size) => {
+            setPage(1);
+            setPerPage(size);
+          }}
+          noDataMessage={noDataMessage}
+        />
+      )}
     </div>
   );
 }

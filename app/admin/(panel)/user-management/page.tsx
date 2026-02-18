@@ -13,6 +13,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import UserMobileCard from "@/adminpanel/UserMobileCard";
 import { BiEdit } from "react-icons/bi";
 import Loader from "@/components/common/Loader";
+import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
 export interface Pagination {
   current_page: number;
   last_page: number;
@@ -238,21 +239,29 @@ const fetchUsers = async () => {
       header: "Actions",
       render: (r) => (
        <div className="flex items-center">
-    {/* VIEW */}
-    <button onClick={() => router.push(`/admin/user-management/user-license?id=${r.id}`)}  className="w-9 h-9 flex items-center justify-center rounded-full text-blue-500 hover:bg-blue-50 transition cursor-pointer">
-      <HiOutlineEye size={18} />
-    </button>
-    
-    {/* EDIT */}
-    <button  onClick={() => router.push(`/admin/user-management/add?id=${r.id}`)} className="w-9 h-9 flex items-center justify-center rounded-full text-yellow-500 hover:bg-gray-100 transition cursor-pointer">
-      <BiEdit size={18} />
-    </button>
+     <TooltipWrapper content="View user">
+        <button
+          onClick={() => router.push(`/admin/user-management/user-license?id=${r.id}`)}
+          className="w-9 h-9 flex items-center justify-center rounded-full text-blue-500 transition cursor-pointer">
+          <HiOutlineEye size={18} />
+        </button>
+      </TooltipWrapper>
 
+     <TooltipWrapper content="Edit user">
+        <button
+          onClick={() => router.push(`/admin/user-management/add?id=${r.id}`)}
+          className="w-9 h-9 flex items-center justify-center rounded-full text-yellow-500 transition cursor-pointer">
+          <BiEdit size={18} />
+        </button>
+      </TooltipWrapper>
 
-    {/* DELETE */}
-    <button className="w-9 h-9 flex items-center justify-center rounded-full text-red-500 hover:bg-red-50 transition cursor-pointer" onClick={() => setDeleteId(r.id)}>
-      <HiOutlineTrash size={18} />
-    </button>
+      <TooltipWrapper content="Delete user">
+        <button
+          onClick={() => setDeleteId(r.id)}
+          className="w-9 h-9 flex items-center justify-center rounded-full text-red-500 transition cursor-pointer">
+          <HiOutlineTrash size={18} />
+        </button>
+      </TooltipWrapper>
   </div>
       ),
     },

@@ -81,7 +81,7 @@ export default function MyBuyOrders() {
   const [selectedOrderNumber, setSelectedOrderNumber] = useState<string | null>(
     null,
   );
-const [noDataMessage, setNoDataMessage] = useState<string | null>(null);
+  const [noDataMessage, setNoDataMessage] = useState<string | null>(null);
   const mapOrderApiToUI = (item: OrderApiItem): OrderData => ({
     id: item.id,
     order_id: item.order_id,
@@ -99,47 +99,46 @@ const [noDataMessage, setNoDataMessage] = useState<string | null>(null);
     payment_slip_url: item.payment_slip_url ?? null,
   });
 
-const [page, setPage] = useState(1);
-const [perPage, setPerPage] = useState(10);
-const [search, setSearch] = useState(""); // 👈 important
-const [sortBy, setSortBy] = useState("id");
-const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-const [totalPages, setTotalPages] = useState(1);
+  const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(10);
+  const [search, setSearch] = useState(""); // 👈 important
+  const [sortBy, setSortBy] = useState("id");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [totalPages, setTotalPages] = useState(1);
 
-const fetchOrders = async () => {
-  try {
-    setLoading(true);
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
 
-    const res = await orderService.getOrders({
-      page,
-      per_page: perPage,
-      search,
-      sort_by: sortBy,
-      sort_order: sortOrder,
-    });
+      const res = await orderService.getOrders({
+        page,
+        per_page: perPage,
+        search,
+        sort_by: sortBy,
+        sort_order: sortOrder,
+      });
 
-    if (res.success) {
-       if (!res.data || res.data.length === 0) {
-        setOrders([]);
-        setTotalPages(1);
-        setNoDataMessage("No orders found");
-        return;
+      if (res.success) {
+        if (!res.data || res.data.length === 0) {
+          setOrders([]);
+          setTotalPages(1);
+          setNoDataMessage("No orders found");
+          return;
+        }
+
+        setOrders(res.data.map(mapOrderApiToUI));
+        setTotalPages(res.pagination.last_page);
       }
-
-      setOrders(res.data.map(mapOrderApiToUI));
-      setTotalPages(res.pagination.last_page);
+    } catch (err) {
+      console.error("Failed to fetch orders", err);
+    } finally {
+      setLoading(false);
     }
-  } catch (err) {
-    console.error("Failed to fetch orders", err);
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
-
-useEffect(() => {
-  fetchOrders();
-}, [page, perPage, search, sortBy, sortOrder]);
+  useEffect(() => {
+    fetchOrders();
+  }, [page, perPage, search, sortBy, sortOrder]);
 
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -175,15 +174,15 @@ useEffect(() => {
         payment_slip: base64,
       });
 
-    if (res.success) {
-  setSuccessMsg(res.message || "Payment slip uploaded successfully");
-  setPaymentFile(null);
-  setOpenConfirmationModal(false);
-  fetchOrders();
-  setTimeout(() => {
-    setSuccessMsg(null);
-  }, 2000);
-} else {
+      if (res.success) {
+        setSuccessMsg(res.message || "Payment slip uploaded successfully");
+        setPaymentFile(null);
+        setOpenConfirmationModal(false);
+        fetchOrders();
+        setTimeout(() => {
+          setSuccessMsg(null);
+        }, 2000);
+      } else {
         setErrorMsg(res.message || "Upload failed");
       }
     } catch (err) {
@@ -224,16 +223,19 @@ useEffect(() => {
         <h1 className="text-[#373737] text-[26px] font-bold mb-6">
           My Buy It Now Orders
         </h1>
-              {!loading && orders.length === 0 && (
-        <div className="flex items-center justify-center min-h-[30vh]">
-          <h2 className="text-lg sm:text-xl font-medium text-gray-600">
-            No Orders Found
-          </h2>
-        </div>
-      )}
+        {!loading && orders.length === 0 && (
+          <div className="flex items-center justify-center min-h-[30vh]">
+            <h2 className="text-lg sm:text-xl font-medium text-gray-600">
+              No Orders Found
+            </h2>
+          </div>
+        )}
         <div className="space-y-6">
           {orders.map((data) => {
             const step = getCurrentStepFromTimeline(data.delivery_timeline);
+            const MAX_STEP = STEPS.length - 1;
+
+            const safeStep = Math.min(step, MAX_STEP);
             const isConfirmed = !!data.payment_slip_url;
             const confirmationDate = isConfirmed
               ? new Date().toISOString()
@@ -334,7 +336,7 @@ useEffect(() => {
                     className="hidden lg:block absolute top-[18px] h-[6px] bg-[#0A7F71] rounded -z-10 transition-all"
                     style={{
                       left: "calc(50% / 6)",
-                      width: `calc(${step} * (100% / 6))`,
+                      width: `calc(${Math.min(step, STEPS.length - 1)} * (100% / 6))`,
                     }}
                   />
 

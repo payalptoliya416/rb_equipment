@@ -14,6 +14,7 @@ import { useIsMobile } from "@/hooks/useIsMobile";
 import MachineryMobileCard from "@/adminpanel/MachineryMobileCard";
 import Loader from "@/components/common/Loader";
 import { formatPrice } from "@/hooks/formate";
+import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
 /* ================= TYPES ================= */
 export type MachineryRow = {
   id: number;
@@ -26,7 +27,7 @@ export type MachineryRow = {
   buyNowPrice: string;
   bidStartPrice: string;
   status: "Active" | "Sold" | "Closed";
-   is_sign: boolean;
+  is_sign: boolean;
 };
 
 const mapStatus = (s: number): "Active" | "Sold" | "Closed" =>
@@ -82,7 +83,7 @@ export default function Machinery() {
         buyNowPrice: `${formatPrice(item.buy_now_price)}`,
         bidStartPrice: `${formatPrice(item.bid_start_price)}`,
         status: mapStatus(item.status),
-          is_sign: Boolean(item.is_sign), 
+        is_sign: Boolean(item.is_sign),
       }));
 
       setData(mapped);
@@ -199,26 +200,32 @@ export default function Machinery() {
       header: "Actions",
       render: (row) => (
         <div className="flex items-center gap-3">
-          <BiEdit
-            className="text-[#EDB423] cursor-pointer"
-            size={18}
-            onClick={() => {
-              router.push(`/admin/machinery/add?id=${row.id}`);
-            }}
-          />
-          <HiOutlineTrash
-            className="text-[#DD3623] cursor-pointer"
-            size={18}
-            onClick={() => setDeleteId(row.id)}
-          />
-   {row.is_sign && (row.status === "Active" || row.status === "Sold") && (
-  <HiArrowPath
-    className="text-[#2F80ED] cursor-pointer"
-    size={18}
-    title="Regenerate Auction ID"
-    onClick={() => setRefreshId(row.id)}
-  />
-)}
+          <TooltipWrapper content="Edit machinery">
+            <BiEdit
+              className="text-[#EDB423] cursor-pointer"
+              size={18}
+              onClick={() => {
+                router.push(`/admin/machinery/add?id=${row.id}`);
+              }}
+            />
+          </TooltipWrapper>
+          <TooltipWrapper content="Delete machinery">
+            <HiOutlineTrash
+              className="text-[#DD3623] cursor-pointer"
+              size={18}
+              onClick={() => setDeleteId(row.id)}
+            />
+          </TooltipWrapper>
+          {row.is_sign &&
+            (row.status === "Active" || row.status === "Sold") && (
+              <TooltipWrapper content="Regenerate Auction ID">
+                <HiArrowPath
+                  className="text-[#2F80ED] cursor-pointer"
+                  size={18}
+                  onClick={() => setRefreshId(row.id)}
+                />
+              </TooltipWrapper>
+          )}
         </div>
       ),
       className: "w-[120px]",
@@ -344,8 +351,8 @@ export default function Machinery() {
           loading={loading}
           pagination={pagination}
           onPageChange={setPage}
-           onPageSizeChange={(size) => {
-            setPage(1);       
+          onPageSizeChange={(size) => {
+            setPage(1);
             setPerPage(size);
           }}
           noDataMessage={noDataMessage}

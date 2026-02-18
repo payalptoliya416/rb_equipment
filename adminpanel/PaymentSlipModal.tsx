@@ -64,29 +64,23 @@ export default function PaymentSlipModal({
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
-      <div className="relative bg-white rounded-2xl w-full max-w-6xl max-h-[90vh] flex flex-col shadow-xl">
+      <div className="relative bg-white rounded-2xl shadow-xl w-auto max-w-[95vw] max-h-[95vh] flex flex-col">
         <div className="flex items-center justify-between px-5 py-4 border-b border-light-gray">
           <h2 className="text-lg font-semibold text-gray-800">Payment Slip</h2>
-
-          <button
-            onClick={onClose}
-            className="text-gray-400 hover:text-gray-700 transition cursor-pointer"
-          >
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-700 transition cursor-pointer">
             <IoClose size={24} />
           </button>
         </div>
 
         <div className="p-5 space-y-4">
-          <div className="borderborder-gray-400 rounded-xl p-4 bg-gray-50 min-h-[180px] flex items-center justify-center">
+          <div className="rounded-xl p-4 flex items-center justify-center overflow-auto">
             {slipUrl ? (
               isImage(slipUrl) ? (
-                <div className="w-full max-h-[400px] overflow-auto flex justify-center">
-                  <img
-                    src={slipUrl}
-                    alt="Payment Slip"
-                    className="max-w-full max-h-[380px] object-contain rounded-lg shadow"
-                  />
-                </div>
+                <img
+                  src={slipUrl}
+                  alt="Payment Slip"
+                  className="max-w-[90vw] max-h-[75vh] object-contain rounded-lg"
+                />
               ) : (
                 <a
                   href={slipUrl}
@@ -104,6 +98,7 @@ export default function PaymentSlipModal({
               </p>
             )}
           </div>
+
           {/* ACTIONS */}
           <div className="flex justify-end gap-3 pt-2">
             {/* Decline */}
@@ -111,12 +106,12 @@ export default function PaymentSlipModal({
               disabled={!slipUrl || isFinalized || submittingStatus !== null}
               onClick={() => updateStatus(2)}
               className={`px-4 py-2 rounded-lg text-sm font-medium
-      bg-red-100 text-red-700
-      ${
-        !slipUrl || isFinalized || submittingStatus !== null
-          ? "pointer-events-none opacity-60"
-          : "hover:bg-red-200 cursor-pointer"
-      }`}
+              bg-red-100 text-red-700
+              ${
+                !slipUrl || isFinalized || submittingStatus !== null
+                  ? "pointer-events-none"
+                  : "hover:bg-red-200 cursor-pointer"
+              }`}
             >
               {submittingStatus === "decline" ? "Processing..." : "Decline"}
             </button>
@@ -129,7 +124,7 @@ export default function PaymentSlipModal({
       bg-green text-white
       ${
         !slipUrl || isFinalized || submittingStatus !== null
-          ? "pointer-events-none opacity-60"
+          ? "pointer-events-none"
           : "hover:bg-green cursor-pointer"
       }`}
             >

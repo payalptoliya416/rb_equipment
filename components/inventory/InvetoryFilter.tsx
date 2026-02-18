@@ -716,85 +716,70 @@ export default function InventoryFilter({}: {}) {
                   const auction_id = product.auction_id;
                   const friendlyUrl = `/inventory/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`;
 
-                  
-                return product.is_purchase ? (
-  // 🔴 SOLD → NOT CLICKABLE
-  <div key={product.id} className="h-full">
-    <div
-      className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white
-      opacity-70 cursor-not-allowed flex flex-col"
-    >
-      {/* IMAGE */}
-      <div className="w-full flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
-        {product.first_image_url ? (
-          <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
-            <Image
-              src={product.first_image_url}
-              alt={product.name}
-              fill
-              className="object-cover"
-            />
-          </div>
-        ) : (
-          <div className="w-[216px] h-[123px]" />
-        )}
+                  return product.is_purchase ? (
+                    <div key={product.id} className="h-full">
+                      <div className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white cursor-not-allowed flex flex-col">
+                        <div className="w-full flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
+                          {product.first_image_url ? (
+                            <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
+                              <Image
+                                src={product.first_image_url}
+                                alt={product.name}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          ) : (
+                            <div className="w-[216px] h-[123px]"/>
+                          )}
+                          <div className=" absolute border border-red-300 rounded-md py-2 px-4 text-red-600 bg-red-50 font-semibold text-sm
+                          left-1/2 bottom-0 -translate-x-1/2 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:-translate-y-3" >
+                            SOLD
+                          </div>
+                        </div>
 
-        {/* SOLD BADGE */}
-        <div
-          className="
-            absolute border border-red-300 rounded-md py-2 px-4
-            text-red-600 bg-red-50 font-semibold text-sm
-            left-1/2 bottom-0 -translate-x-1/2
-            opacity-0 translate-y-3
-            group-hover:opacity-100 group-hover:-translate-y-3
-          "
-        >
-          SOLD
-        </div>
-      </div>
-
-      {/* DETAILS */}
-      <div className="px-2 mt-[15px]">
-        <h3 className="text-lg mb-2">{product.name}</h3>
-        <p className="text-sm text-text-gray mb-4">
-          {product.year} • {product.working_hours} hrs
-        </p>
-        <p className="text-green font-semibold">
-          Bid Price: {formatPrice(product.bid_start_price)}
-        </p>
-        <p className="text-green font-bold">
-          Buy Price: {formatPrice(product.buy_now_price)}
-        </p>
-      </div>
-    </div>
-  </div>
-) : (
-  // ✅ AVAILABLE → CLICKABLE
-  <Link
-    key={product.id}
-    href={friendlyUrl}
-    className="block h-full"
-  >
-    <div
-      className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white
+                        {/* DETAILS */}
+                        <div className="px-2 mt-[15px]">
+                          <h3 className="text-lg mb-2">{product.name}</h3>
+                          <p className="text-sm text-text-gray mb-4">
+                            {product.year} • {product.working_hours} hrs
+                          </p>
+                          <p className="text-green font-semibold">
+                            Bid Price: {formatPrice(product.bid_start_price)}
+                          </p>
+                          <p className="text-green font-bold">
+                            Buy Price: {formatPrice(product.buy_now_price)}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    // ✅ AVAILABLE → CLICKABLE
+                    <Link
+                      key={product.id}
+                      href={friendlyUrl}
+                      className="block h-full"
+                    >
+                      <div
+                        className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white
       cursor-pointer hover:shadow-md transition flex flex-col"
-    >
-      {/* IMAGE */}
-      <div className="w-full flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
-        {product.first_image_url && (
-          <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
-            <Image
-              src={product.first_image_url}
-              alt={product.name}
-              fill
-              className="object-cover"
-            />
-          </div>
-        )}
+                      >
+                        {/* IMAGE */}
+                        <div className="w-full flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
+                          {product.first_image_url && (
+                            <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
+                              <Image
+                                src={product.first_image_url}
+                                alt={product.name}
+                                fill
+                                className="object-cover"
+                              />
+                            </div>
+                          )}
 
-        {/* BID OR BUY */}
-        <div
-          className="
+                          {/* BID OR BUY */}
+                          <div
+                            className="
             absolute border border-light-gray rounded-md py-2 px-4
             text-green bg-white text-sm
             left-1/2 bottom-0 -translate-x-1/2
@@ -802,28 +787,27 @@ export default function InventoryFilter({}: {}) {
             group-hover:opacity-100 group-hover:-translate-y-3
             transition
           "
-        >
-          BID OR BUY
-        </div>
-      </div>
+                          >
+                            BID OR BUY
+                          </div>
+                        </div>
 
-      {/* DETAILS */}
-      <div className="px-2 mt-[15px]">
-        <h3 className="text-lg mb-2">{product.name}</h3>
-        <p className="text-sm text-text-gray mb-4">
-          {product.year} • {product.working_hours} hrs
-        </p>
-        <p className="text-green font-semibold">
-          Bid Price: {formatPrice(product.bid_start_price)}
-        </p>
-        <p className="text-green font-bold">
-          Buy Price: {formatPrice(product.buy_now_price)}
-        </p>
-      </div>
-    </div>
-  </Link>
-);
-
+                        {/* DETAILS */}
+                        <div className="px-2 mt-[15px]">
+                          <h3 className="text-lg mb-2">{product.name}</h3>
+                          <p className="text-sm text-text-gray mb-4">
+                            {product.year} • {product.working_hours} hrs
+                          </p>
+                          <p className="text-green font-semibold">
+                            Bid Price: {formatPrice(product.bid_start_price)}
+                          </p>
+                          <p className="text-green font-bold">
+                            Buy Price: {formatPrice(product.buy_now_price)}
+                          </p>
+                        </div>
+                      </div>
+                    </Link>
+                  );
                 })
               )}
             </div>

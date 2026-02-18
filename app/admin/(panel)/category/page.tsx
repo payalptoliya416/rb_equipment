@@ -13,6 +13,7 @@ import ConfirmModal from "@/components/tables/ConfirmDialog";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import CategoryMobileCard from "@/adminpanel/CategoryMobileCard";
 import Loader from "@/components/common/Loader";
+import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
 
 /* ================= TYPES ================= */
 export type CategoryRow = {
@@ -34,12 +35,12 @@ export default function AdminCategory() {
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(10);
-const isMobile = useIsMobile();
+  const isMobile = useIsMobile();
   const [sortBy, setSortBy] = useState("id");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
-const [noDataMessage, setNoDataMessage] = useState<string | null>(null);
-const [deleteId, setDeleteId] = useState<number | null>(null);
-const [deleteLoading, setDeleteLoading] = useState(false);
+  const [noDataMessage, setNoDataMessage] = useState<string | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
   const [pagination, setPagination] = useState<any>(null);
   /* ================= FETCH ================= */
   const fetchCategories = async () => {
@@ -55,7 +56,7 @@ const [deleteLoading, setDeleteLoading] = useState(false);
       });
 
       if (!res?.data || res.data.length === 0) {
-        setData([]);                               
+        setData([]);
         setPagination(res.pagination ?? null);
         setNoDataMessage(res.message || "No categories found");
         return;
@@ -63,24 +64,22 @@ const [deleteLoading, setDeleteLoading] = useState(false);
 
       const mapped: CategoryRow[] = res.data.map((item) => ({
         id: item.id,
-         image_urls: item.image_urls?.length ? item.image_urls[0] : null,
+        image_urls: item.image_urls?.length ? item.image_urls[0] : null,
         categoryName: item.category_name,
         totalMachinery: item.total_machinery,
         createdDate: new Date(item.created_at).toLocaleDateString(),
         lastUpdated: new Date(item.updated_at).toLocaleDateString(),
       }));
 
-     setData(mapped);
-    setPagination(res.pagination);
-    setNoDataMessage(null);
-
-    }  catch (error) {
-    console.error(error);
-    setData([]);
-    setPagination(null);
-    setNoDataMessage("Failed to fetch categories");
-  }
-  finally {
+      setData(mapped);
+      setPagination(res.pagination);
+      setNoDataMessage(null);
+    } catch (error) {
+      console.error(error);
+      setData([]);
+      setPagination(null);
+      setNoDataMessage("Failed to fetch categories");
+    } finally {
       setLoading(false);
     }
   };
@@ -117,7 +116,7 @@ const [deleteLoading, setDeleteLoading] = useState(false);
     try {
       setDeleteLoading(true);
       await handleDelete(deleteId); // 🔥 reuse logic
-      setDeleteId(null);            // close modal
+      setDeleteId(null); // close modal
     } finally {
       setDeleteLoading(false);
     }
@@ -128,19 +127,18 @@ const [deleteLoading, setDeleteLoading] = useState(false);
     {
       key: "image",
       header: "Image",
-      render: (row) => (
-          row.image_urls && (
-            <div className="relative w-[44px] h-[44px] overflow-hidden rounded-lg">
-      <Image
-        src={row.image_urls}
-        alt={row.categoryName}
-        fill
-        className="object-cover"
-        sizes="44px"
-      />
-</div>
-    )
-      ),
+      render: (row) =>
+        row.image_urls && (
+          <div className="relative w-[44px] h-[44px] overflow-hidden rounded-lg">
+            <Image
+              src={row.image_urls}
+              alt={row.categoryName}
+              fill
+              className="object-cover"
+              sizes="44px"
+            />
+          </div>
+        ),
       className: "w-[90px]",
     },
     {
@@ -175,10 +173,20 @@ const [deleteLoading, setDeleteLoading] = useState(false);
       header: "Actions",
       render: (row) => (
         <div className="flex items-center gap-3">
-          {/* <HiOutlineEye className="text-[#3C97FF] cursor-pointer" size={18} /> */}
-          <BiEdit className="text-[#EDB423] cursor-pointer" size={18}  onClick={() =>
-          router.push(`/admin/category/add?id=${row.id}`)}/>
-          <HiOutlineTrash className="text-[#DD3623] cursor-pointer" size={18} onClick={() => setDeleteId(row.id)} />
+          <TooltipWrapper content="Edit category">
+            <BiEdit
+              className="text-[#EDB423] cursor-pointer"
+              size={18}
+              onClick={() => router.push(`/admin/category/add?id=${row.id}`)}
+            />
+          </TooltipWrapper>
+          <TooltipWrapper content="Delete category">
+            <HiOutlineTrash
+              className="text-[#DD3623] cursor-pointer"
+              size={18}
+              onClick={() => setDeleteId(row.id)}
+            />
+          </TooltipWrapper>
         </div>
       ),
       className: "w-[120px]",
@@ -202,7 +210,7 @@ const [deleteLoading, setDeleteLoading] = useState(false);
               setPage(1);
               setSearch(e.target.value);
             }}
-           className="w-full py-[12px] pl-[44px] pr-4 text-sm border rounded-lg border-[#E9E9E9]"
+            className="w-full py-[12px] pl-[44px] pr-4 text-sm border rounded-lg border-[#E9E9E9]"
           />
         </div>
 
@@ -216,52 +224,50 @@ const [deleteLoading, setDeleteLoading] = useState(false);
       </div>
 
       {isMobile ? (
-  <div className="space-y-4">
-    {loading && (
-      <div className="flex justify-center items-center h-full"><Loader/></div>
-    )}
+        <div className="space-y-4">
+          {loading && (
+            <div className="flex justify-center items-center h-full">
+              <Loader />
+            </div>
+          )}
 
-    {!loading && data.length === 0 && (
-      <p className="text-center text-sm text-gray-500">
-        {noDataMessage}
-      </p>
-    )}
+          {!loading && data.length === 0 && (
+            <p className="text-center text-sm text-gray-500">{noDataMessage}</p>
+          )}
 
-    {data.map((item) => (
-      <CategoryMobileCard
-        key={item.id}
-        item={item}
-        onEdit={() =>
-          router.push(`/admin/category/add?id=${item.id}`)
-        }
-        onDelete={() => setDeleteId(item.id)}
+          {data.map((item) => (
+            <CategoryMobileCard
+              key={item.id}
+              item={item}
+              onEdit={() => router.push(`/admin/category/add?id=${item.id}`)}
+              onDelete={() => setDeleteId(item.id)}
+            />
+          ))}
+        </div>
+      ) : (
+        <AdminDataTable
+          columns={columns}
+          data={data}
+          loading={loading}
+          pagination={pagination}
+          onPageChange={setPage}
+          onPageSizeChange={(size) => {
+            setPage(1);
+            setPerPage(size);
+          }}
+          noDataMessage={noDataMessage}
+        />
+      )}
+
+      <ConfirmModal
+        open={deleteId !== null}
+        title="Delete Category"
+        description="Are you sure you want to delete this category? This action cannot be undone."
+        confirmText="Yes, Delete"
+        loading={deleteLoading}
+        onConfirm={confirmDelete}
+        onClose={() => setDeleteId(null)}
       />
-    ))}
-  </div>
-) : (
-  <AdminDataTable
-    columns={columns}
-    data={data}
-    loading={loading}
-    pagination={pagination}
-    onPageChange={setPage}
-     onPageSizeChange={(size) => {
-    setPage(1);     
-    setPerPage(size);
-  }}
-    noDataMessage={noDataMessage}
-  />
-)}
-
-            <ConfirmModal
-      open={deleteId !== null}
-      title="Delete Category"
-      description="Are you sure you want to delete this category? This action cannot be undone."
-      confirmText="Yes, Delete"
-      loading={deleteLoading}
-      onConfirm={confirmDelete}
-      onClose={() => setDeleteId(null)}
-    />
     </div>
   );
 }

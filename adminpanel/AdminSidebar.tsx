@@ -13,6 +13,8 @@ import {
   FaUsers,
   FaGavel,
   FaCogs,
+  FaShoppingCart,
+  FaTrophy,
 } from "react-icons/fa";
 
 const menu = [
@@ -22,8 +24,8 @@ const menu = [
   { label: "Machinery", icon: FaBoxes, href: "/admin/machinery/" },
   { label: "Category", icon: FaTags, href: "/admin/category/" },
   { label: "Bidding", icon: FaGavel, href: "/admin/bidding/" },
-  { label: "Orders", icon: FaCogs, href: "/admin/orders/" },
-  { label: "Won User", icon: FaCogs, href: "/admin/won-user/" },
+  { label: "Orders", icon: FaShoppingCart, href: "/admin/orders/" },
+  { label: "Won User", icon: FaTrophy, href: "/admin/won-user/" },
   { label: "Settings", icon: FaCogs, href: "/admin/settings/" },
 ];
 
@@ -97,10 +99,10 @@ export default function AdminSidebar({
                   }
                 `}
                 onClick={() => {
-                  router.push(item.href);   // 🔥 instant navigation
+                  router.push(item.href);  
 
                   if (mobile && onItemClick) {
-                    onItemClick();         // 🔥 sidebar immediately close
+                    onItemClick();        
                   }
                 }}
               >

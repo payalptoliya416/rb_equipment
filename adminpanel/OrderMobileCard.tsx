@@ -66,9 +66,9 @@ export default function OrderMobileCard({
         </div>
       </div>
       <div className="text-sm">
-  <span className="text-gray-500">Machinery:</span>{" "}
-  <span className="font-medium">{order.machineryName}</span>
-</div>
+        <span className="text-gray-500">Machinery:</span>{" "}
+        <span className="font-medium">{order.machineryName}</span>
+      </div>
 
       <div className="border-t border-[#E9E9E9]" />
 
@@ -77,12 +77,12 @@ export default function OrderMobileCard({
       <Field label="Phone Number" value={order.phone} />
       <Field label="Order Date" value={order.orderDate} />
       <Field label="Order Amount" value={order.orderAmount} />
-{/* Payment Slip Status */}
-<div className="flex justify-between items-center">
-  <span className="text-sm text-gray-500">Payment Slip</span>
+      {/* Payment Slip Status */}
+      <div className="flex justify-between items-center">
+        <span className="text-sm text-gray-500">Payment Slip</span>
 
-  <PaymentSlipBadge status={order.paymentSlipStatus} />
-</div>
+        <PaymentSlipBadge status={order.paymentSlipStatus} />
+      </div>
 
       {/* Status */}
       <div className="flex justify-between items-center">
@@ -93,29 +93,30 @@ export default function OrderMobileCard({
           onUpdated={onUpdated}
         />
       </div>
-        <div className="flex justify-between items-start flex-col gap-2">
-      <button
-  onClick={() => onOpenPaymentSlip(order)}
-  className="flex items-center gap-2 text-orange text-sm font-medium cursor-pointer"
->
-  <IoReceiptSharp size={18} />
-  Payment Slip
-</button>
-<button
-  onClick={() => order.invoiceUrl && window.open(order.invoiceUrl, "_blank")}
-  disabled={!order.invoiceUrl}
-  className={`mt-2 flex items-center gap-2 text-sm font-medium
+      <div className="flex justify-between items-start flex-col gap-2">
+        <button
+          onClick={() => onOpenPaymentSlip(order)}
+          className="flex items-center gap-2 text-orange text-sm font-medium cursor-pointer">
+          <IoReceiptSharp size={18} />
+          Payment Slip
+        </button>
+        <button
+          onClick={() =>
+            order.invoiceUrl && window.open(order.invoiceUrl, "_blank")
+          }
+          disabled={!order.invoiceUrl}
+          className={`mt-2 flex items-center gap-2 text-sm font-medium
     ${
       order.invoiceUrl
         ? "text-green cursor-pointer"
         : "text-gray-600 cursor-not-allowed opacity-50"
     }
   `}
->
-  <FaFilePdf size={20} />
-  Invoice
-</button>
-        </div>
+        >
+          <FaFilePdf size={20} />
+          Invoice
+        </button>
+      </div>
       {/* Actions */}
       {/* <div className="flex justify-end gap-4 pt-4 border-t border-[#E9E9E9]">
         <button onClick={onEdit}><BiEdit /></button>

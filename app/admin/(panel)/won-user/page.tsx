@@ -6,13 +6,12 @@ import { HiOutlineEye } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import {
-  adminWonUsersService,
-} from "@/api/admin/biddingWonUsers";
+import { adminWonUsersService } from "@/api/admin/biddingWonUsers";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import WonUserMobileCard from "@/adminpanel/WonUserMobileCard";
 import Loader from "@/components/common/Loader";
 import { formatPrice } from "@/hooks/formate";
+import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
 
 /* ================= TYPES ================= */
 
@@ -22,13 +21,7 @@ type WonUserRow = {
   machineryName: string;
   phone: string;
   wonBidPrice: string;
-  status:
-    | "Pending"
-    | "Send"
-    | "Signed"
-    | "Rejected"
-    | "Approved"
-    | "Unknown";
+  status: "Pending" | "Send" | "Signed" | "Rejected" | "Approved" | "Unknown";
   contractUrl: string | null;
 };
 
@@ -45,7 +38,7 @@ const statusClassMap: Record<WonUserRow["status"], string> = {
 
 export default function WonUser() {
   const router = useRouter();
-const isMobile = useIsMobile();
+  const isMobile = useIsMobile();
   const [data, setData] = useState<WonUserRow[]>([]);
   const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState<any>(null);
@@ -70,12 +63,12 @@ const isMobile = useIsMobile();
         sort_order: sortOrder,
       });
 
-       if (!res?.data || res.data.length === 0) {
-      setData([]);                                   // ✅ clear old rows
-      setPagination(res.pagination ?? null);
-      setNoDataMessage(res.message || "No won users found");
-      return;
-    }
+      if (!res?.data || res.data.length === 0) {
+        setData([]); // ✅ clear old rows
+        setPagination(res.pagination ?? null);
+        setNoDataMessage(res.message || "No won users found");
+        return;
+      }
 
       const mapped: WonUserRow[] = res.data.map((item) => ({
         id: item.machinery_id,
@@ -87,17 +80,16 @@ const isMobile = useIsMobile();
         contractUrl: item.contract_file_url,
       }));
 
-        setData(mapped);
-    setPagination(res.pagination);
-    setNoDataMessage(null); // ✅ reset message
-
+      setData(mapped);
+      setPagination(res.pagination);
+      setNoDataMessage(null); // ✅ reset message
     } catch (error) {
-    console.error(error);
-    setData([]);
-    setPagination(null);
-    setNoDataMessage("Failed to fetch won users");
-    toast.error("Failed to fetch won users");
-  } finally {
+      console.error(error);
+      setData([]);
+      setPagination(null);
+      setNoDataMessage("Failed to fetch won users");
+      toast.error("Failed to fetch won users");
+    } finally {
       setLoading(false);
     }
   };
@@ -157,12 +149,14 @@ const isMobile = useIsMobile();
       key: "actions",
       header: "Actions",
       render: (row) => (
-        <button
-         onClick={() => router.push(`/admin/won-user/won-user-details/?id=${row.id}`)} 
-          className="w-9 h-9 flex items-center justify-center rounded-full text-blue-500 cursor-pointer"
-        >
-          <HiOutlineEye size={18} />
-        </button>
+        <TooltipWrapper content="View won user">
+          <button
+            onClick={() =>router.push(`/admin/won-user/won-user-details/?id=${row.id}`)}
+            className="w-9 h-9 flex items-center justify-center rounded-full 
+                   text-blue-500 cursor-pointer">
+            <HiOutlineEye size={18} />
+          </button>
+        </TooltipWrapper>
       ),
     },
   ];
@@ -186,47 +180,42 @@ const isMobile = useIsMobile();
         />
       </div>
 
-     {isMobile ? (
-  <div className="space-y-4">
-    {loading && (
-      <p className="flex justify-center items-center h-full">
-       <Loader/>
-      </p>
-    )}
+      {isMobile ? (
+        <div className="space-y-4">
+          {loading && (
+            <p className="flex justify-center items-center h-full">
+              <Loader />
+            </p>
+          )}
 
-    {!loading && data.length === 0 && (
-      <p className="text-center text-sm text-gray-500">
-        {noDataMessage}
-      </p>
-    )}
+          {!loading && data.length === 0 && (
+            <p className="text-center text-sm text-gray-500">{noDataMessage}</p>
+          )}
 
-    {data.map((item) => (
-      <WonUserMobileCard
-        key={item.id}
-        item={item}
-        onView={() =>
-          router.push(
-            `/admin/won-user/won-user-details/?id=${item.id}`
-          )
-        }
-      />
-    ))}
-  </div>
-) : (
-  <AdminDataTable
-    columns={columns}
-    data={data}
-    loading={loading}
-    pagination={pagination}
-    onPageChange={setPage}
-    onPageSizeChange={(size) => {
-    setPage(1);   
-    setPerPage(size);
-  }}
-    noDataMessage={noDataMessage}
-  />
-)}
-
+          {data.map((item) => (
+            <WonUserMobileCard
+              key={item.id}
+              item={item}
+              onView={() =>
+                router.push(`/admin/won-user/won-user-details/?id=${item.id}`)
+              }
+            />
+          ))}
+        </div>
+      ) : (
+        <AdminDataTable
+          columns={columns}
+          data={data}
+          loading={loading}
+          pagination={pagination}
+          onPageChange={setPage}
+          onPageSizeChange={(size) => {
+            setPage(1);
+            setPerPage(size);
+          }}
+          noDataMessage={noDataMessage}
+        />
+      )}
     </div>
   );
 }
