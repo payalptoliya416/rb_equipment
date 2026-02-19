@@ -198,8 +198,8 @@ export default function InventoryFilter({}: {}) {
         );
 
         if (res?.success) {
-          const visible = res.data.filter((p: any) => p.is_view === 1);
-          setProducts(res.data);
+          const visible = res.data.filter((p: any) => Number(p.is_view) === 1);
+          setProducts(visible);
           if (visible.length === 0) {
             setTotalPages(1);
           } else {
