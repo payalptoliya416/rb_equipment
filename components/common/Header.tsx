@@ -28,6 +28,7 @@ function MobileNavItem({
   level = 0,
   resetKey,
   pathname,
+  slugify,
 }: {
   item: NavItem;
   router: any;
@@ -35,6 +36,7 @@ function MobileNavItem({
   level?: number;
   resetKey: number;
   pathname: string;
+  slugify: (text: string) => string;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -67,7 +69,12 @@ function MobileNavItem({
               return;
             }
             if (!hasChildren) {
-              router.push(item.path);
+             
+              let url = item.path;
+              if (item.path === "#") {
+                url = `/inventory?category=${slugify(item.name)}`;
+              }
+               router.push(url);
               router.refresh();
               closeMenu();
               return;
@@ -133,6 +140,7 @@ function MobileNavItem({
               level={level + 1}
               resetKey={resetKey}
               pathname={pathname}
+              slugify={slugify}
             />
           ))}
         </ul>
@@ -248,7 +256,9 @@ function Header() {
 
   const [settings, setSettings] = useState<any>(null);
   const getGroupCategoryUrl = (group: NavItem) => {
-    if (!group.submenu || group.submenu.length === 0) return group.path;
+    if (!group.submenu || group.submenu.length === 0) {
+      return `/inventory?category=${slugify(group.name)}`;
+    }
 
     const categories = group.submenu
       .map((sub) => sub.path.split("category=")[1])
@@ -329,16 +339,16 @@ function Header() {
           {navItems.map((item) => (
             <li
               key={item.path}
-  className="relative dropdown-parent flex items-center gap-1"
-  onMouseEnter={() => {
-    if (disableHover) return;
-    setOpenDropdown(item.name);
-  }}
-  onMouseLeave={() => {
-    setOpenDropdown(null);
-    setActiveGroup(null);
-    setClickedGroup(null);
-  }}
+              className="relative dropdown-parent flex items-center gap-1"
+              onMouseEnter={() => {
+                if (disableHover) return;
+                setOpenDropdown(item.name);
+              }}
+              onMouseLeave={() => {
+                setOpenDropdown(null);
+                setActiveGroup(null);
+                setClickedGroup(null);
+              }}
             >
               {/* ✅ Inventory Name Click → Page Open */}
               <button
@@ -425,26 +435,29 @@ function Header() {
                               e.preventDefault();
                               e.stopPropagation();
 
+                              let url = "";
+
                               if (hasSubmenu) {
-                                const url = getGroupCategoryUrl(group);
-                                  setDisableHover(true);
-                                setOpenDropdown(null);
-                                setActiveGroup(null);
-                                setClickedGroup(null);
+                                // Multiple categories
+                                const categories = group.submenu
+                                  ?.map((sub) => sub.path.split("category=")[1])
+                                  .filter(Boolean)
+                                  .join(",");
 
-                                router.push(url);
-                                router.refresh();
-                                  setTimeout(() => setDisableHover(false), 300);
-                                return;
-                              }
-
-                              if (clickedGroup === group.name) {
-                                setClickedGroup(null);
-                                setActiveGroup(null);
+                                url = `/inventory?category=${categories}`;
                               } else {
-                                setClickedGroup(group.name);
-                                setActiveGroup(group.name);
+                                // ✅ No submenu → use group name
+                                url = `/inventory?category=${slugify(group.name)}`;
                               }
+
+                              setDisableHover(true);
+                              setOpenDropdown(null);
+                              setActiveGroup(null);
+                              setClickedGroup(null);
+
+                              router.push(url);
+                              router.refresh();
+                              setTimeout(() => setDisableHover(false), 300);
                             }}
                             className="
                                 w-full flex justify-between items-center
@@ -588,6 +601,7 @@ function Header() {
                 closeMenu={handleCloseMenu}
                 resetKey={resetKey}
                 pathname={pathname}
+                slugify={slugify}
               />
             ))}
           </ul>

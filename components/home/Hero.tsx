@@ -68,8 +68,7 @@ function Hero() {
       rounded-lg bg-green px-7 py-3
       font-semibold text-white mont-text
       transition-all duration-300
-      hover:bg-green-700 hover:shadow-md
-      focus:outline-none focus:ring-2 focus:ring-green-400
+      hover:bg-green/90 hover:shadow-md
     "
               >
                 Browse Inventory
