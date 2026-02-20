@@ -63,13 +63,8 @@ function Hero() {
               </ul>
               <Link
                 href="/inventory"
-                className="
-      inline-flex w-fit items-center justify-center
-      rounded-lg bg-green px-7 py-3
-      font-semibold text-white mont-text
-      transition-all duration-300
-      hover:bg-green/90 hover:shadow-md
-    "
+                className="inline-flex w-fit items-center justify-center rounded-lg bg-green px-7 py-3
+             font-semibold text-white mont-text transition-all duration-300 hover:bg-green/90 hover:shadow-md"
               >
                 Browse Inventory
               </Link>
