@@ -85,7 +85,6 @@ const [recentOrders, setRecentOrders] = useState<any[]>([]);
           }))
         );
 
-        /* ================= RECENT ORDERS ================= */
         setRecentOrders(
           data.recent_orders.map((o: any) => ({
             orderId: o.order_id,
@@ -94,6 +93,7 @@ const [recentOrders, setRecentOrders] = useState<any[]>([]);
             date: formatDateTime(o.order_date),
             amount: formatPrice(o.amount),
             status: o.status,
+            type: o.type_text,
           }))
         );
 
@@ -108,18 +108,36 @@ const [recentOrders, setRecentOrders] = useState<any[]>([]);
   }, []);
 const orderBadge = (status: string) => {
   switch (status) {
-    case "Pending":
+    case "Order Submitted":
       return "bg-gray-400 text-white";
-    case "Process":
+
+    case "Sales Agreement":
+      return "bg-purple-500 text-white";
+
+    case "Awaiting Invoice":
+      return "bg-orange-400 text-white";
+
+    case "Settle Payment":
       return "bg-yellow-400 text-black";
-    case "Shipped":
-      return "bg-blue-500 text-white";
-    case "In Transit":
+
+    case "Confirmation":
+      return "bg-teal-500 text-white";
+
+    case "Processing":
+      return "bg-blue-400 text-white";
+
+    case "Shipping":
       return "bg-indigo-500 text-white";
+
+    case "In Transit":
+      return "bg-indigo-600 text-white";
+
     case "Delivered":
       return "bg-green-500 text-white";
+
     case "Cancelled":
       return "bg-red-500 text-white";
+
     default:
       return "bg-gray-200 text-black";
   }
@@ -322,6 +340,7 @@ const userBadge = (status: string) =>
           <tr className="bg-[#F2F8F7] text-left">
             {[
               "Order ID",
+              "Type",   
               "User Name",
               "Phone Number",
               "Order Date",
@@ -347,7 +366,13 @@ const userBadge = (status: string) =>
               <td className="px-[15px] py-[18px] text-sm border-r border-[#E9E9E9] whitespace-nowrap">
                 {row.orderId}
               </td>
-
+                <td className="px-[15px] py-[18px] text-sm border-r border-[#E9E9E9] whitespace-nowrap">
+                  <span
+                    className={`px-3 py-1 rounded text-xs font-medium`}
+                  >
+                    {row.type}
+                  </span>
+                </td>
               <td className="px-[15px] py-[18px] text-sm border-r border-[#E9E9E9] whitespace-nowrap">
                 {row.userName}
               </td>
@@ -368,9 +393,7 @@ const userBadge = (status: string) =>
 
               <td className="px-[15px] py-[18px] text-sm whitespace-nowrap">
                 <span
-                  className={`px-4 py-2 rounded-[6px] text-sm font-medium inline-block w-[110px] text-center ${orderBadge(
-                    row.status
-                  )}`}
+                  className={`px-4 py-2 rounded-[6px] text-sm font-medium inline-block w-[160px] text-center ${orderBadge( row.status )}`}
                 >
                   {row.status}
                 </span>

@@ -11,7 +11,6 @@ import { formatPrice } from "@/hooks/formate";
 import { FaFilePdf } from "react-icons/fa6";
 import PaymentSlipModal from "@/adminpanel/PaymentSlipModal";
 import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
-import { MdOutlineReceiptLong, MdPayment } from "react-icons/md";
 import { IoReceiptSharp } from "react-icons/io5";
 
 /* ================= TYPES ================= */
@@ -24,16 +23,21 @@ export type OrderRow = {
   phone: string;
   orderDate: string;
   orderAmount: string;
+  typeText: string;
   status:
-    | "Pending"
-    | "Process"
-    | "Shipped"
-    | "In Transit"
-    | "Delivered"
-    | "Cancelled";
+  | "Order Submitted"
+  | "Sales Agreement"
+  | "Awaiting Invoice"
+  | "Settle Payment"
+  | "Confirmation"
+  | "Processing"
+  | "Shipping"
+  | "In Transit"
+  | "Delivered"
+  | "Cancelled";
   invoiceUrl?: string;
+  contractUrl?: string;
   paymentSlipUrl?: string;
-
   paymentSlipStatus: "Pending" | "Approve" | "Decline";
 };
 
@@ -53,12 +57,12 @@ export default function AdminOrder() {
 
   const [pagination, setPagination] = useState<any>(null);
   const [noDataMessage, setNoDataMessage] = useState<string | null>(null);
- const [slipModal, setSlipModal] = useState<{
-  open: boolean;
-  orderId?: number;
-  slipUrl?: string;
-  paymentSlipStatus?: "Pending" | "Approve" | "Decline";
-}>({ open: false });
+  const [slipModal, setSlipModal] = useState<{
+    open: boolean;
+    orderId?: number;
+    slipUrl?: string;
+    paymentSlipStatus?: "Pending" | "Approve" | "Decline";
+  }>({ open: false });
 
   /* ================= FETCH ================= */
   const fetchOrders = async () => {
@@ -72,7 +76,6 @@ export default function AdminOrder() {
         sort_by: sortBy,
         sort_order: sortOrder,
       });
-
       if (!res?.data || res.data.length === 0) {
         setData([]);
         setPagination(res.pagination ?? null);
@@ -83,13 +86,15 @@ export default function AdminOrder() {
         id: item.id,
         orderId: item.order_id,
         machineryId: item.machinery_id,
-         machineryName: item.machinery_name, 
+        machineryName: item.machinery_name,
         userName: item.user_full_name,
         phone: item.phone_no,
         orderDate: item.order_date,
         orderAmount: `${formatPrice(item.order_amount)}`,
+        typeText: item.type_text,
         status: item.status,
         invoiceUrl: item.invoice_url,
+        contractUrl: item.contract_url || undefined,
         paymentSlipUrl: item.payment_slip_url,
         paymentSlipStatus: item.payment_slip_status_text,
       }));
@@ -111,34 +116,32 @@ export default function AdminOrder() {
 
   /* ================= COLUMNS ================= */
   const columns: Column<OrderRow>[] = [
-   {
-  key: "orderId",
-  header: "Order ID",
-  sortable: true,
-  onSort: () => {
-    setSortBy("order_id");
-    setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
-  },
-  render: (row) => (
-    <span className="text-xs whitespace-nowrap">
-      {row.orderId}
-    </span>
-  ),
-},
     {
-  key: "machineryName",
-  header: "Machinery Name",
-  sortable: true,
-  onSort: () => {
-    setSortBy("machinery_name");
-    setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
-  },
-  render: (row) => (
-    <span className="text-xs font-medium text-gray-800">
-      {row.machineryName}
-    </span>
-  ),
-},
+      key: "orderId",
+      header: "Order ID",
+      sortable: true,
+      onSort: () => {
+        setSortBy("order_id");
+        setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
+      },
+      render: (row) => (
+        <span className="text-xs whitespace-nowrap">{row.orderId}</span>
+      ),
+    },
+    {
+      key: "machineryName",
+      header: "Machinery Name",
+      sortable: true,
+      onSort: () => {
+        setSortBy("machinery_name");
+        setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
+      },
+      render: (row) => (
+        <span className="text-xs font-medium text-gray-800">
+          {row.machineryName}
+        </span>
+      ),
+    },
     {
       key: "userName",
       header: "User Name",
@@ -148,22 +151,18 @@ export default function AdminOrder() {
         setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
       },
     },
-  {
-  key: "phone",
-  header: "Phone Number",
-  render: (row) => (
-    <span className="text-xs whitespace-nowrap">
-      {row.phone}
-    </span>
-  ),
-},
+    {
+      key: "phone",
+      header: "Phone Number",
+      render: (row) => (
+        <span className="text-xs whitespace-nowrap">{row.phone}</span>
+      ),
+    },
     {
       key: "orderDate",
       header: "Order Date",
       render: (r) => (
-        <span className="py-1 rounded-md text-xs">
-          {r.orderDate}
-        </span>
+        <span className="py-1 rounded-md text-xs">{r.orderDate}</span>
       ),
     },
 
@@ -175,6 +174,15 @@ export default function AdminOrder() {
         setSortBy("order_amount");
         setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
       },
+    },
+    {
+      key: "typeText",
+      header: "Order Type",
+      render: (row) => (
+        <span className="text-xs">
+          {row.typeText}
+        </span>
+      ),
     },
     {
       key: "paymentSlipStatus",
@@ -217,7 +225,8 @@ export default function AdminOrder() {
         <OrderStatusDropdown
           value={row.status}
           orderId={row.id}
-          onUpdated={fetchOrders} // 🔥 refresh after change
+           orderType={row.typeText as "Checkout" | "Bidding"}   
+          onUpdated={fetchOrders} 
         />
       ),
     },
@@ -243,6 +252,28 @@ export default function AdminOrder() {
                 <FaFilePdf size={20} />
               </button>
             </TooltipWrapper>
+                    <TooltipWrapper
+            content={
+              row.contractUrl && row.contractUrl.trim() !== ""
+                ? "View Contract"
+                : "Contract Not Available"
+            }
+          >
+            <button
+              disabled={!row.contractUrl || row.contractUrl.trim() === ""}
+              onClick={() => {
+                if (!row.contractUrl || row.contractUrl.trim() === "") return;
+                window.open(row.contractUrl, "_blank");
+              }}
+              className={`transition ${
+                row.contractUrl && row.contractUrl.trim() !== ""
+                  ? "text-[#EDB423] hover:text-[#EDB423] cursor-pointer"
+                  : "text-gray-400 cursor-not-allowed"
+              }`}
+            >
+              <FaFilePdf size={20} />
+            </button>
+          </TooltipWrapper>
 
             <TooltipWrapper
               content={
@@ -272,10 +303,12 @@ export default function AdminOrder() {
                 <IoReceiptSharp size={20} />
               </button>
             </TooltipWrapper>
+
+            
           </div>
         );
       },
-    }
+    },
   ];
 
   return (
@@ -331,7 +364,7 @@ export default function AdminOrder() {
           pagination={pagination}
           onPageChange={setPage}
           onPageSizeChange={(size) => {
-            setPage(1);        
+            setPage(1);
             setPerPage(size);
           }}
           noDataMessage={noDataMessage}

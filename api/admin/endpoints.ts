@@ -11,3 +11,6 @@ export const BIDDING_API = {
   MACHINERY_BIDDING_INFO: "/bidding/machinery-bidding-info",
 };
 
+export const ADMIN_SETTINGS_API = {
+  CHANGE_PASSWORD: "/settings/change-admin-password",
+};

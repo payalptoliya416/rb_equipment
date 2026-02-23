@@ -5,53 +5,55 @@ import { getSettingsByKeysFooter } from "@/api/categoryActions";
 import { SettingsData } from "@/api/data";
 
 interface SettingsContextType {
-    settings: SettingsData | null;
-    companyName: string;
-    isLoading: boolean;
+  settings: SettingsData | null;
+  companyName: string;
+  phoneNumber: string;
+  isLoading: boolean;
 }
 
 const SettingsContext = createContext<SettingsContextType>({
-    settings: null,
-    companyName: "Stiopa Equipment", // fallback
-    isLoading: true,
+  settings: null,
+  companyName: "Stiopa Equipment",
+  phoneNumber: "",
+  isLoading: true,
 });
 
 export const useSettings = () => {
-    const context = useContext(SettingsContext);
-    if (!context) {
-        throw new Error("useSettings must be used within SettingsProvider");
-    }
-    return context;
+  const context = useContext(SettingsContext);
+  if (!context) {
+    throw new Error("useSettings must be used within SettingsProvider");
+  }
+  return context;
 };
 
 export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
-    children,
+  children,
 }) => {
-    const [settings, setSettings] = useState<SettingsData | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+  const [settings, setSettings] = useState<SettingsData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchSettings = async () => {
-            try {
-                const res = await getSettingsByKeysFooter();
-                if (res.success && res.data) {
-                    setSettings(res.data);
-                }
-            } catch (error) {
-                console.error("Failed to fetch settings:", error);
-            } finally {
-                setIsLoading(false);
-            }
-        };
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const res = await getSettingsByKeysFooter();
+        if (res.success && res.data) {
+          setSettings(res.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch settings:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-        fetchSettings();
-    }, []);
+    fetchSettings();
+  }, []);
+  const companyName = settings?.company_name || "Stiopa Equipment";
+  const phoneNumber = settings?.phone_no || "";
 
-    const companyName = settings?.company_name || "Stiopa Equipment";
-
-    return (
-        <SettingsContext.Provider value={{ settings, companyName, isLoading }}>
-            {children}
-        </SettingsContext.Provider>
-    );
+  return (
+    <SettingsContext.Provider value={{ settings, companyName, isLoading ,  phoneNumber }}>
+      {children}
+    </SettingsContext.Provider>
+  );
 };

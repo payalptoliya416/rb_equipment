@@ -58,6 +58,7 @@ export default function OrderMobileCard({
 }: Props) {
   const isPaymentSlipDisabled =
     order.paymentSlipStatus === "Pending" && !order.paymentSlipUrl;
+    const isContractDisabled = !order.contractUrl || order.contractUrl.trim() === "";
   return (
     <div className="border border-[#E9E9E9] rounded-xl p-4 bg-white space-y-4">
       {/* Order ID */}
@@ -92,25 +93,12 @@ export default function OrderMobileCard({
         <OrderStatusDropdown
           value={order.status}
           orderId={order.id}
+          orderType={order.typeText as "Checkout" | "Bidding"}
           onUpdated={onUpdated}
         />
       </div>
       <div className="flex justify-between items-start flex-col gap-2">
-        <button
-          disabled={isPaymentSlipDisabled}
-          onClick={() => !isPaymentSlipDisabled && onOpenPaymentSlip(order)}
-          className={`flex items-center gap-2 text-sm font-medium transition
-    ${
-      isPaymentSlipDisabled
-        ? "text-orange  cursor-not-allowed"
-        : "text-orange cursor-pointer hover:opacity-80"
-    }
-  `}
-        >
-          <IoReceiptSharp size={18} />
-          Payment Receipt
-        </button>
-        <button
+         <button
           onClick={() =>
             order.invoiceUrl && window.open(order.invoiceUrl, "_blank")
           }
@@ -125,6 +113,39 @@ export default function OrderMobileCard({
         >
           <FaFilePdf size={20} />
           Invoice
+        </button>
+       
+        <button
+          onClick={() =>
+            !isContractDisabled &&
+            window.open(order.contractUrl, "_blank", "noopener,noreferrer")
+          }
+          disabled={isContractDisabled}
+          className={`mt-2 flex items-center gap-2 text-sm font-medium transition
+            ${
+              isContractDisabled
+                ? "text-[#EDB423] cursor-not-allowed"
+                : "text-[#EDB423] cursor-pointer hover:opacity-80"
+            }
+          `}
+        >
+          <FaFilePdf size={20} />
+          Contract
+        </button>
+
+         <button
+          disabled={isPaymentSlipDisabled}
+          onClick={() => !isPaymentSlipDisabled && onOpenPaymentSlip(order)}
+          className={`flex items-center gap-2 text-sm font-medium transition mt-2
+    ${
+      isPaymentSlipDisabled
+        ? "text-orange  cursor-not-allowed"
+        : "text-orange cursor-pointer hover:opacity-80"
+    }
+  `}
+        >
+          <IoReceiptSharp size={18} />
+          Payment Receipt
         </button>
       </div>
       {/* Actions */}

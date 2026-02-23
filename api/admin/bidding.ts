@@ -1,5 +1,5 @@
 import { adminApi } from "@/api/admin/http";
-import { BIDDING_API } from "@/api/admin/endpoints";
+import { ADMIN_SETTINGS_API, BIDDING_API } from "@/api/admin/endpoints";
 
 export interface GetBiddingParams {
   search?: string;
@@ -41,6 +41,28 @@ export const adminBiddingService = {
       method: "POST",
       body: JSON.stringify(params),
     }),
+};
+
+export interface ChangePasswordPayload {
+  current_password: string;
+  new_password: string;
+  confirm_password: string;
+}
+
+export interface ChangePasswordResponse {
+  success: boolean;
+  message: string;
+}
+
+export const adminSettingsService = {
+  changePassword: (payload: ChangePasswordPayload) =>
+    adminApi<ChangePasswordResponse>(
+      ADMIN_SETTINGS_API.CHANGE_PASSWORD,
+      {
+        method: "POST",
+        body: JSON.stringify(payload),
+      }
+    ),
 };
 
 /* ================= MACHINERY INFO ================= */

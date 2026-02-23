@@ -109,10 +109,13 @@ export const wonBidService = {
 };
 
 export type DeliveryStatus =
-  | "Pending"
+  | "Order Submitted"
+  | "Sales Agreement"
+  | "Awaiting Invoice"
+  | "Settle Payment"
   | "Confirmation"
-  | "Process"
-  | "Shipped"
+  | "Processing"
+  | "Shipping"
   | "In Transit"
   | "Delivered"
   | "Cancelled";
@@ -136,8 +139,18 @@ export interface OrderApiItem {
   year: string;
   invoice_url?: string;
   contract_url?: string;
-  current_status: "Pending" | "Process" | "Shipped" | "In Transit" | "Delivered";
+  current_status: | "Order Submitted"
+  | "Sales Agreement"
+  | "Awaiting Invoice"
+  | "Settle Payment"
+  | "Confirmation"
+  | "Processing"
+  | "Shipping"
+  | "In Transit"
+  | "Delivered"
+  | "Cancelled";
   delivery_status: number;
+  type_text : string;
   delivery_status_text: string;
   delivery_contact: string | null;
   delivery_timeline: DeliveryTimelineItem[];

@@ -240,7 +240,7 @@ const handlePlaceBid = async () => {
         <button
           type="button"
           onClick={handlePlus}
-          className="px-4 bg-green text-white text-sm font-medium hover:bg-green/90 transition-colors"
+          className="px-4 bg-green text-white text-sm font-medium hover:bg-green/90 transition-colors cursor-pointer"
         >
           + $100
         </button>

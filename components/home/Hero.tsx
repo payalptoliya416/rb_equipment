@@ -4,7 +4,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSettings } from "@/contexts/SettingsContext";
-import { FiTruck, FiRefreshCw, FiShield, FiTool } from "react-icons/fi";
+import { FiTruck, FiRefreshCw, FiShield } from "react-icons/fi";
 
 function Hero() {
   const { companyName } = useSettings();

@@ -227,8 +227,8 @@ function InventoryDetail() {
     <div className="container-custom mt-10 lg:mt-20 mb-20 lg:mb-[110px]">
       <div className="grid grid-cols-12 gap-5">
         <div className="col-span-12 xl:col-span-7 order-2 xl:order-1">
-          {data && <ProductSlider data={data} />}
-          <div className="w-full space-y-5">
+       <div className="hidden xl:block">  {data && <ProductSlider data={data} />}</div> 
+          <div className="w-full space-y-5 hidden xl:block">
             <h2 className="text-[22px] font-semibold text-[#333333] mb-[22px] mont-text">
               Overview
             </h2>
@@ -379,7 +379,7 @@ function InventoryDetail() {
                   <p className="text-text-gray mb-[6px] text-base leading-[16px]">
                     Serial Number
                   </p>
-                  <p className="text-gray font-semibold text-xl leading-[20px] mont-text">
+                  <p className="text-gray font-semibold text-base xl:text-xl leading-[20px] mont-text break-all">
                     {data?.serial_number}
                   </p>
                 </div>
@@ -387,7 +387,7 @@ function InventoryDetail() {
             </div>
             <div className="border-t border-light-gray"></div>
           </div>
-          <div className="mt-[30px]">
+          <div className="mt-[30px] hidden xl:block">
             <h3 className="mb-[15px] text-[#333333] text-[22px] leading-[22px] mont-text font-semibold">
               Description
             </h3>
@@ -432,6 +432,7 @@ function InventoryDetail() {
             <h2 className="text-[#373737] text-[26px] sm:text-[28px] sm:leading-[38px] mb-[30px] font-semibold mont-text">
               {data?.name}
             </h2>
+             <div className="block xl:hidden">  {data && <ProductSlider data={data} />}</div> 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-[17px] mb-[30px]">
               {[
                 { label: "Days", value: timeLeft.days },
@@ -481,7 +482,175 @@ function InventoryDetail() {
               />
             )}
             <div className="border-t border-light-gray my-[30px]"></div>
+            <div className="w-full space-y-5 block xl:hidden">
+              <h2 className="text-[22px] font-semibold text-[#333333] mb-[22px] mont-text">
+                Overview
+              </h2>
 
+              {/* Row 1 */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-1">
+                {/* Year */}
+                <div className="flex items-center gap-[10px]">
+                  <div>
+                    <div className="w-[50px] h-[50px] bg-green rounded-md flex items-center justify-center">
+                      <span className="text-white text-2xl">
+                        <Image
+                          src="/assets/n1.svg"
+                          alt="icon"
+                          width={23}
+                          height={23}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-text-gray mb-[6px] text-base leading-[16px]">
+                      Year
+                    </p>
+                    <p className="text-gray font-semibold text-xl leading-[20px] mont-text">
+                      {data?.year}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Weight */}
+                <div className="flex items-center gap-[10px]">
+                  <div>
+                    <div className="w-[50px] h-[50px] bg-green rounded-md flex items-center justify-center">
+                      <span className="text-white text-2xl">
+                        <Image
+                          src="/assets/n2.svg"
+                          alt="icon"
+                          width={23}
+                          height={23}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-text-gray mb-[6px] text-base leading-[16px]">
+                      Weight
+                    </p>
+                    <p className="text-gray font-semibold text-xl leading-[20px] mont-text">
+                      {data?.weight}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Working Hours */}
+                <div className="flex items-center gap-[10px]">
+                  <div>
+                    <div className="w-[50px] h-[50px] bg-green rounded-md flex items-center justify-center">
+                      <span className="text-white text-2xl">
+                        <Image
+                          src="/assets/n3.svg"
+                          alt="icon"
+                          width={23}
+                          height={23}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-text-gray mb-[6px] text-base leading-[16px]">
+                      Working Hours
+                    </p>
+                    <p className="text-gray font-semibold text-xl leading-[20px] mont-text">
+                      {data?.working_hours}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="border-t border-light-gray"></div>
+
+              {/* Row 2 */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-1">
+                {/* Fuel Type */}
+                <div className="flex items-center gap-[10px]">
+                  <div>
+                    <div className="w-[50px] h-[50px] bg-green rounded-md flex items-center justify-center">
+                      <span className="text-white text-2xl">
+                        <Image
+                          src="/assets/n4.svg"
+                          alt="icon"
+                          width={23}
+                          height={23}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-text-gray mb-[6px] text-base leading-[16px]">
+                      Fuel Type
+                    </p>
+                    <p className="text-gray font-semibold text-xl leading-[20px] mont-text">
+                      {data?.fuel}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Condition */}
+                <div className="flex items-center gap-[10px]">
+                  <div>
+                    <div className="w-[50px] h-[50px] bg-green rounded-md flex items-center justify-center">
+                      <span className="text-white text-2xl">
+                        <Image
+                          src="/assets/n5.svg"
+                          alt="icon"
+                          width={23}
+                          height={23}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-gray mb-[6px] text-base leading-[16px] mont-text font-semibold">
+                      Condition{" "}
+                    </p>
+                    <button className="bg-[#1DAF50] text-[12px] leading-[12px] text-white text-sm px-2 py-[6px] rounded-md whitespace-nowrap block">
+                      {data?.condition}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Serial Number */}
+                <div className="flex items-center gap-[10px] pe-1">
+                  <div>
+                    <div className="w-[50px] h-[50px] bg-green rounded-md flex items-center justify-center">
+                      <span className="text-white text-2xl">
+                        <Image
+                          src="/assets/n6.svg"
+                          alt="icon"
+                          width={23}
+                          height={23}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-text-gray mb-[6px] text-base leading-[16px]">
+                      Serial Number
+                    </p>
+                    <p className="text-gray font-semibold text-base xl:text-xl leading-[20px] mont-text break-all">
+                      {data?.serial_number}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="border-t border-light-gray my-[30px]"></div>
+            </div>
+              <div className="mt-[30px] block xl:hidden">
+            <h3 className="mb-[15px] text-[#333333] text-[22px] leading-[22px] mont-text font-semibold">
+              Description
+            </h3>
+            <div
+              className="text-text-gray mb-[15px] text-base font-normal"
+              dangerouslySetInnerHTML={{ __html: data?.description ?? "" }}
+            />
+          </div>
+          <div className="border-t border-light-gray my-[30px]"></div>
             <div className="w-full space-y-5">
               <h2 className="text-lg font-semibold text-gray mb-[10px] mont-text">
                 Delivery cost calculator

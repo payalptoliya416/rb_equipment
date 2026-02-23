@@ -16,6 +16,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { FaFilePdf } from "react-icons/fa6";
 import { FiUploadCloud } from "react-icons/fi";
 import { FaRegImage } from "react-icons/fa";
+import { useSettings } from "@/contexts/SettingsContext";
 /* ================= TYPES ================= */
 
 type OrderData = {
@@ -31,31 +32,40 @@ type OrderData = {
   delivery_contact: string | null;
   delivery_status_text: DeliveryStatus;
   delivery_timeline: DeliveryTimelineItem[];
+  type_text: "Checkout" | "Bidding";
   invoice_url?: string;
   payment_slip_url?: string | null;
 };
-
+type StepItem = {
+  key: DeliveryStatus;
+  title: string;
+};
 type UIStepStatus = DeliveryStatus | "Confirmation";
 /* ================= HELPERS ================= */
-const statusToStep: Record<DeliveryStatus, number> = {
-  Pending: 0,
-  Confirmation: 1,
-  Process: 2,
-  Shipped: 3,
-  "In Transit": 4,
-  Delivered: 5,
-  Cancelled: 6, // optional handling
+const statusToStep: Record<string, number> = {
+  "Order Submitted": 0,
+  "Sales Agreement": 1,
+  "Awaiting Invoice": 2,
+  "Settle Payment": 3,
+  Confirmation: 4,
+  Processing: 5,
+  Shipping: 6,
+  "In Transit": 7,
+  Delivered: 8,
+  Cancelled: 9,
 };
 
-const STEPS: { key: DeliveryStatus; title: string }[] = [
-  { key: "Pending", title: "Pending" },
+const STEPS: StepItem[] = [
+  { key: "Order Submitted", title: "Order Submitted" },
+  { key: "Sales Agreement", title: "Sales Agreement" },
+  { key: "Awaiting Invoice", title: "Awaiting Invoice" },
+  { key: "Settle Payment", title: "Settle Payment" },
   { key: "Confirmation", title: "Confirmation" },
-  { key: "Process", title: "Processing" },
-  { key: "Shipped", title: "Shipped" },
+  { key: "Processing", title: "Processing" },
+  { key: "Shipping", title: "Shipping" },
   { key: "In Transit", title: "In Transit" },
   { key: "Delivered", title: "Delivered" },
 ];
-
 const formatDateTime = (date: string) =>
   new Date(date).toLocaleString("en-US", {
     month: "short",
@@ -69,6 +79,7 @@ const formatDateTime = (date: string) =>
 /* ================= PAGE ================= */
 
 export default function MyBuyOrders() {
+  const { phoneNumber } = useSettings();
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState<OrderData[]>([]);
   const [openOrderId, setOpenOrderId] = useState<string | null>(null);
@@ -96,6 +107,7 @@ export default function MyBuyOrders() {
     delivery_status_text: item.delivery_status_text as DeliveryStatus,
     delivery_timeline: item.delivery_timeline,
     invoice_url: item.invoice_url,
+    type_text: item.type_text as "Checkout" | "Bidding",
     payment_slip_url: item.payment_slip_url ?? null,
   });
 
@@ -202,11 +214,22 @@ export default function MyBuyOrders() {
       url.toLowerCase().endsWith(".png") ||
       url.toLowerCase().endsWith(".webp"));
 
-  const getCurrentStepFromTimeline = (timeline: DeliveryTimelineItem[]) => {
+  const getCurrentStepFromTimeline = (
+    timeline: DeliveryTimelineItem[],
+    steps: StepItem[],
+  ) => {
     if (!timeline || timeline.length === 0) return 0;
 
-    const max = Math.max(...timeline.map((t) => t.status_code));
-    return max;
+    const completedStatuses: DeliveryStatus[] = timeline.map((t) => t.status);
+
+    const lastCompletedIndex = steps.reduce((acc, step, index) => {
+      if (completedStatuses.includes(step.key)) {
+        return index;
+      }
+      return acc;
+    }, 0);
+
+    return lastCompletedIndex;
   };
 
   if (loading) {
@@ -232,15 +255,23 @@ export default function MyBuyOrders() {
         )}
         <div className="space-y-6">
           {orders.map((data) => {
-            const step = getCurrentStepFromTimeline(data.delivery_timeline);
-            const MAX_STEP = STEPS.length - 1;
+            const filteredSteps =
+              data.type_text === "Bidding"
+                ? STEPS
+                : STEPS.filter((s) => s.key !== "Awaiting Invoice");
+
+            const step = getCurrentStepFromTimeline(
+              data.delivery_timeline,
+              filteredSteps,
+            );
+            const MAX_STEP = filteredSteps.length - 1;
 
             const safeStep = Math.min(step, MAX_STEP);
             const isConfirmed = !!data.payment_slip_url;
             const confirmationDate = isConfirmed
               ? new Date().toISOString()
               : null;
-              
+
             return (
               <Accordion
                 key={data.order_id}
@@ -271,20 +302,41 @@ export default function MyBuyOrders() {
                             <p>Hours: {data.working_hours}</p>
                             <p>Total Weight: {data.weight}</p>
                             <p>Year: {data.year}</p>
-                           {data.invoice_url && data.payment_slip_url && (
-                              <div className="flex items-center gap-3">
-                                <a
-                                  href={data.invoice_url}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="flex items-center gap-2 p-1 rounded-lg
-                                    text-sm text-[#373737] hover:bg-gray-100 transition"
-                                >
-                                  <FaFilePdf className="text-lg text-green" />
-                                  <span>View Invoice</span>
-                                </a>
-                              </div>
-                            )}
+                            {data.invoice_url &&
+                              data.payment_slip_url &&
+                              step >= statusToStep["Settle Payment"] && (
+                                <div className="flex items-center gap-3">
+                                  <a
+                                    href={data.invoice_url ?? "#"}
+                                    target={
+                                      data.invoice_url ? "_blank" : undefined
+                                    }
+                                    rel="noopener noreferrer"
+                                    onClick={(e) => {
+                                      if (!data.invoice_url) e.preventDefault();
+                                    }}
+                                    className={`flex items-center gap-2 p-1 rounded-lg text-sm transition
+                                          ${
+                                            data.invoice_url
+                                              ? "text-[#373737] hover:bg-gray-100 cursor-pointer"
+                                              : "text-gray-400 cursor-not-allowed"
+                                          }`}
+                                  >
+                                    <FaFilePdf
+                                      className={`text-lg ${
+                                        data.invoice_url
+                                          ? "text-green"
+                                          : "text-gray-400"
+                                      }`}
+                                    />
+                                    <span>
+                                      {data.invoice_url
+                                        ? "View Invoice"
+                                        : "Invoice Not Available"}
+                                    </span>
+                                  </a>
+                                </div>
+                              )}
                           </div>
                         </div>
                       </div>
@@ -313,7 +365,16 @@ export default function MyBuyOrders() {
                   <div className="flex items-center gap-4">
                     <div>
                       <h3 className="text-xl font-medium">Delivery Contact</h3>
-                      <p className="text-[#7A7A7A]">(603) 555-0123</p>
+                      {phoneNumber ? (
+                        <a
+                          href={`tel:${phoneNumber}`}
+                          className="text-[#7A7A7A] hover:text-green transition"
+                        >
+                          {phoneNumber}
+                        </a>
+                      ) : (
+                        <p className="text-gray-400">Not Available</p>
+                      )}
                     </div>
                     <div className="w-[38px] h-[38px] flex justify-center items-center rounded-full bg-[#E9E9E9]">
                       <IoCallOutline />
@@ -323,30 +384,38 @@ export default function MyBuyOrders() {
 
                 {/* ================= TIMELINE ================= */}
 
-                <div className="grid grid-cols-1 lg:grid-cols-6 relative z-20">
+                <div
+                  className="relative z-20 flex flex-col lg:grid "
+                  style={{
+                    gridTemplateColumns:
+                      typeof window !== "undefined"
+                        ? `repeat(${filteredSteps.length}, minmax(0, 1fr))`
+                        : undefined,
+                  }}
+                >
                   {/* BACK LINE */}
                   <div
                     className="hidden lg:block absolute top-[18px] h-[6px] bg-[#E8E8E8] rounded -z-10"
                     style={{
-                      left: "calc(50% / 6)",
-                      right: "calc(50% / 6)",
+                      left: `calc(50% / ${filteredSteps.length})`,
+                      right: `calc(50% / ${filteredSteps.length})`,
                     }}
                   />
                   {/* ACTIVE LINE */}
                   <div
                     className="hidden lg:block absolute top-[18px] h-[6px] bg-[#0A7F71] rounded -z-10 transition-all"
                     style={{
-                      left: "calc(50% / 6)",
-                      width: `calc(${Math.min(step, STEPS.length - 1)} * (100% / 6))`,
+                      left: `calc(50% / ${filteredSteps.length})`,
+                      width: `calc(${Math.min(step, filteredSteps.length - 1)} * (100% / ${filteredSteps.length}))`,
                     }}
                   />
 
-                  {STEPS.map((s, idx) => {
+                  {filteredSteps.map((s, idx) => {
                     const completed =
-                      s.key === "Confirmation" ? isConfirmed : step >= idx;
+                      s.key === "Settle Payment" ? isConfirmed : step >= idx;
 
                     const item =
-                      s.key === "Confirmation"
+                      s.key === "Settle Payment"
                         ? null
                         : data.delivery_timeline?.find(
                             (t) => t.status === s.key,
@@ -355,36 +424,49 @@ export default function MyBuyOrders() {
                       <div
                         key={s.key}
                         onClick={() => {
-                          if (s.key === "Confirmation") {
+                          if (s.key === "Settle Payment") {
                             setSelectedOrderId(data.id!);
                             setSelectedOrderNumber(data.order_id);
                             setOpenConfirmationModal(true);
                             setPaymentFile(null);
                           }
                         }}
-                        className={`flex lg:flex-col gap-3 items-start lg:items-center mb-8 lg:mb-0 ${s.key === "Confirmation" ? "cursor-pointer group" : ""}`}
+                        className={`flex items-start gap-4
+            lg:flex-col lg:items-center
+            ${s.key === "Settle Payment" ? "cursor-pointer group" : ""}`}
                       >
-                        <div
-                          className={`w-[36px] h-[36px] rounded-full flex items-center justify-center transition
-                        ${
-                          s.key === "Confirmation"
-                            ? "bg-[#E6F4F1] group-hover:scale-110 group-hover:ring-1 group-hover:ring-green"
-                            : completed
-                              ? "bg-[#CCE4E1]"
-                              : "bg-[#E9E9E9]"
-                        }`}
-                        >
-                          <div
-                            className={`w-[22px] h-[22px] rounded-full ${
-                              completed ? "bg-[#0A7F71]" : "bg-[#D3D3D3]"
-                            }`}
-                          />
-                        </div>
+                       <div className="relative flex flex-col items-center">
+  <div
+    className={`w-[36px] h-[36px] rounded-full flex items-center justify-center transition
+      ${
+        s.key === "Settle Payment"
+          ? "bg-[#E6F4F1] group-hover:scale-110 group-hover:ring-1 group-hover:ring-green"
+          : completed
+            ? "bg-[#CCE4E1]"
+            : "bg-[#E9E9E9]"
+      }`}
+  >
+    <div
+      className={`w-[22px] h-[22px] rounded-full ${
+        completed ? "bg-[#0A7F71]" : "bg-[#D3D3D3]"
+      }`}
+    />
+  </div>
+
+  {/* 🔥 Vertical Line (Mobile Only) */}
+  {idx !== filteredSteps.length - 1 && (
+    <div
+      className={`lg:hidden w-[2px] h-8 ${
+        completed ? "bg-[#0A7F71]" : "bg-[#E8E8E8]"
+      }`}
+    />
+  )}
+</div>
 
                         <div className="lg:text-center">
                           <h3
                             className={`text-lg font-medium ${
-                              s.key === "Confirmation"
+                              s.key === "Settle Payment"
                                 ? "text-green"
                                 : "text-[#373737]"
                             }`}
@@ -392,7 +474,7 @@ export default function MyBuyOrders() {
                             {s.title}
                           </h3>
 
-                          {s.key === "Confirmation" && (
+                          {s.key === "Settle Payment" && (
                             <>
                               {!isConfirmed ? (
                                 <p className="text-xs text-green mt-1">

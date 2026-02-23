@@ -4,7 +4,7 @@ export function RecentOrderCard({ row }: any) {
       <p className="font-semibold text-sm text-gray-800">
         {row.orderId}
       </p>
-
+      <p className="text-sm text-gray-600">Type: {row.type}</p>
       <p className="text-sm text-gray-600">
         User: <span className="font-medium">{row.userName}</span>
       </p>

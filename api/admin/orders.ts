@@ -25,10 +25,19 @@ export interface OrderApiItem {
   order_date: string;
   order_amount: string;
   machinery_name: string;
-  // 👇 USE THIS ONLY
-  status:  "Process" | "Shipped" | "In Transit" | "Delivered" | "Cancelled" ;
+  status: | "Order Submitted"
+  | "Sales Agreement"
+  | "Awaiting Invoice"
+  | "Settle Payment"
+  | "Confirmation"
+  | "Processing"
+  | "Shipping"
+  | "In Transit"
+  | "Delivered"
+  | "Cancelled";
   invoice_url?: string;
-
+  contract_url?: string;
+  type_text: string;
   payment_slip_status: 0 | 1 | 2;
   payment_slip_status_text: "Pending" | "Approve" | "Decline";
  payment_slip_url?: string;

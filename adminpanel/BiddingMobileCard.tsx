@@ -1,6 +1,6 @@
 "use client";
 
-import { BiEdit } from "react-icons/bi";
+import { HiOutlineEye } from "react-icons/hi2";
 
 type Props = {
   item: any;
@@ -47,9 +47,9 @@ export default function BiddingMobileCard({ item, onEdit }: Props) {
 
         <button
           onClick={onEdit}
-          className="w-9 h-9 flex items-center justify-center rounded-full text-yellow-500 hover:bg-blue-50"
+          className="w-9 h-9 flex items-center justify-center rounded-full text-[#3C97FF] cursor-pointer"
         >
-          <BiEdit size={18} />
+          <HiOutlineEye size={18} />
         </button>
       </div>
     </div>

@@ -7,10 +7,13 @@ import toast from "react-hot-toast";
 import { adminOrdersService } from "@/api/admin/orders";
 
 type OrderStatus =
-  | "Pending"
-  | "Confirmed"
-  | "Process"
-  | "Shipped"
+  | "Order Submitted"
+  | "Sales Agreement"
+  | "Awaiting Invoice"
+  | "Settle Payment"
+  | "Confirmation"
+  | "Processing"
+  | "Shipping"
   | "In Transit"
   | "Delivered"
   | "Cancelled";
@@ -18,12 +21,14 @@ type OrderStatus =
 type Props = {
   value: OrderStatus;
   orderId: number;
+   orderType: "Checkout" | "Bidding";
   onUpdated: () => void;
 };
 
 export default function OrderStatusDropdown({
   value,
   orderId,
+  orderType,
   onUpdated,
 }: Props) {
   const [open, setOpen] = useState(false);
@@ -35,48 +40,62 @@ export default function OrderStatusDropdown({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   /* ================= STATUS CONFIG ================= */
- const statusConfig: Record<
+const statusConfig: Record<
   OrderStatus,
   { label: string; btnClass: string; apiValue: number }
 > = {
-  Pending: {
-    label: "Pending",
-    btnClass: "bg-yellow-400 text-black",
+  "Order Submitted": {
+    label: "Order Submitted",
+    btnClass: "bg-gray-400 text-white",
     apiValue: 0,
   },
-  Confirmed: {
-    label: "Confirmed",
-    btnClass: "bg-blue-500 text-white",
+  "Sales Agreement": {
+    label: "Sales Agreement",
+    btnClass: "bg-cyan-500 text-white",
     apiValue: 1,
   },
-  Process: {
-    label: "Process",
+  "Awaiting Invoice": {
+    label: "Awaiting Invoice",
     btnClass: "bg-purple-500 text-white",
     apiValue: 2,
   },
-  Shipped: {
-    label: "Shipped",
-    btnClass: "bg-blue-500 text-white",
+  "Settle Payment": {
+    label: "Settle Payment",
+    btnClass: "bg-orange-500 text-white",
     apiValue: 3,
+  },
+  "Confirmation": {
+    label: "Confirmation",
+    btnClass: "bg-yellow-400 text-black",
+    apiValue: 4,
+  },
+  "Processing": {
+    label: "Processing",
+    btnClass: "bg-blue-500 text-white",
+    apiValue: 5,
+  },
+  "Shipping": {
+    label: "Shipping",
+    btnClass: "bg-indigo-500 text-white",
+    apiValue: 6,
   },
   "In Transit": {
     label: "In Transit",
-    btnClass: "bg-indigo-500 text-white",
-    apiValue: 4,
+    btnClass: "bg-indigo-600 text-white",
+    apiValue: 7,
   },
-  Delivered: {
+  "Delivered": {
     label: "Delivered",
     btnClass: "bg-green-500 text-white",
-    apiValue: 5,
+    apiValue: 8,
   },
-  Cancelled: {
+  "Cancelled": {
     label: "Cancelled",
     btnClass: "bg-red-500 text-white",
-    apiValue: 6,
+    apiValue: 9,
   },
 };
-
-  const current = statusConfig[value] ?? statusConfig["Pending"];
+const current = statusConfig[value] ?? statusConfig["Order Submitted"];
 
   /* ================= MOBILE CHECK ================= */
   const isMobile = typeof window !== "undefined" && window.innerWidth < 992;
@@ -146,7 +165,23 @@ const openAccordion = () => {
   };
 
   /* ================= STATUS LIST ================= */
-  const allStatuses = Object.keys(statusConfig) as OrderStatus[];
+const baseStatuses: OrderStatus[] = [
+  "Order Submitted",
+  "Sales Agreement",
+  "Awaiting Invoice",
+  "Settle Payment",
+  "Confirmation",
+  "Processing",
+  "Shipping",
+  "In Transit",
+  "Delivered",
+  "Cancelled",
+];
+
+const allStatuses =
+  orderType === "Checkout"
+    ? baseStatuses.filter((s) => s !== "Awaiting Invoice")
+    : baseStatuses;
 
   return (
     <>
@@ -157,8 +192,8 @@ const openAccordion = () => {
         onClick={() => (open ? setOpen(false) : openAccordion())}
         className={`
           flex items-center justify-between gap-2
-          px-3 py-2 w-[140px]
-          rounded-lg text-sm font-medium
+          px-3 py-2 w-[158px]
+          rounded-lg text-sm font-medium whitespace-nowrap
           shadow-sm border border-[#E9E9E9]
           transition cursor-pointer
           ${current?.btnClass ?? "bg-gray-400 text-white"}
@@ -203,18 +238,25 @@ const openAccordion = () => {
             "
           >
                   {allStatuses.map((status) => {
-                    const currentValue = statusConfig[value].apiValue;
-                    const targetValue = statusConfig[status].apiValue;
-
+                    if (!statusConfig[value]) return null;
+                    const currentValue =
+  statusConfig[value as OrderStatus]?.apiValue ??
+  statusConfig["Order Submitted"].apiValue;
+                 const targetValue =
+  statusConfig[status]?.apiValue ??
+  statusConfig["Order Submitted"].apiValue;
                     const isCurrent = status === value;
                     const isBackward = targetValue < currentValue;
                     const isDelivered = value === "Delivered";
                     const isCancelled = status === "Cancelled";
+                    const isFinalStage =
+  value === "Delivered" || value === "Cancelled";
 
-                    const cancelBlocked =  isCancelled && value === "Delivered";
+                    const cancelBlocked =
+  isCancelled && currentValue >= statusConfig["Shipping"].apiValue;
 
-                    const disabled =
-                      isCurrent || isBackward || isDelivered || cancelBlocked;
+ const disabled =
+  isCurrent || isBackward || isFinalStage || cancelBlocked;
 
                     return (
                       <button

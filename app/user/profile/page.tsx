@@ -4,7 +4,6 @@ import Image from "next/image";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   getUserProfile,
   updateUserProfile,
@@ -14,11 +13,10 @@ import {
 import Loader from "@/components/common/Loader";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { uploadLicense, uploadLicenseData } from "@/api/user/license";
+import { uploadLicenseData } from "@/api/user/license";
 import toast from "react-hot-toast";
 import { MdInfo } from "react-icons/md";
 import { UploadBox } from "@/components/inventory/UploadBox";
-import { getCountryFromAddress } from "@/api/geoapify";
 
 /* ================= VALIDATION ================= */
 const schema = Yup.object({
@@ -35,7 +33,6 @@ const schema = Yup.object({
 
 /* ================= COMPONENT ========== ======= */
 export default function UserProfileForm() {
-  const router = useRouter();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [saving, setSaving] = useState(false);
