@@ -2,9 +2,12 @@ import AboutUsHero from "@/components/about-us/AboutUsHero";
 
 const termsData = [
   {
-    title: "1. About the Website",
+    title: "15. Contact Information",
     desc: [
-      `This website operates as an online platform for the sale, purchase, and auction of industrial, construction, and agricultural machinery and equipment. All equipment listings are provided by third-party sellers.`,
+      `If you have any questions regarding these Terms & Conditions, you may contact STIOPA EQUIPMENT, LLC at:`,
+      `Registered Address: 529 BROOKSIDE AVENUE, REDLANDS, CA 92373.`,
+      `Reg nº: 201702410607.`,
+      `You may also contact us through the Contact Us page on this website.`,
     ],
   },
   {
@@ -120,15 +123,22 @@ function TermsCondition() {
       <section className="my-10 lg:my-[120px]">
         <div className="container-custom mx-auto px-4 flex justify-center">
           <div className="w-full max-w-6xl bg-white border border-gray-200 rounded-2xl shadow-sm p-6 sm:p-10 lg:p-14">
-            
             {/* Title */}
             <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900">
               Terms & Conditions
             </h1>
 
             {/* Intro */}
+            <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-6">
+              Please read these Terms & Conditions carefully before using this
+              website. This website is owned and operated by{" "}
+              <strong>STIOPA EQUIPMENT, LLC</strong>, Reg nº: (201702410607),
+              Reg Address: 529 BROOKSIDE AVENUE, REDLANDS, CA 92373.
+            </p>
+
             <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-10">
-            Please read these Terms & Conditions carefully before using this website. By accessing or using this website, you agree to be bound by these Terms & Conditions.
+              By accessing or using this website, you agree to be bound by these
+              Terms & Conditions.
             </p>
 
             {/* Terms Sections */}
@@ -161,7 +171,6 @@ function TermsCondition() {
                 </div>
               ))}
             </div>
-
           </div>
         </div>
       </section>
