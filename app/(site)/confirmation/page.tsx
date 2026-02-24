@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaFileSignature } from "react-icons/fa";
 import { FaFileInvoiceDollar } from "react-icons/fa6";
-import { MdError, MdLocalShipping } from "react-icons/md";
+import { MdError, MdLocalShipping, MdVerified } from "react-icons/md";
 import { BsFillInfoCircleFill, BsFillPatchCheckFill } from "react-icons/bs";
 import { TbRosetteDiscountCheckFilled } from "react-icons/tb";
 import { usePathname } from "next/navigation";
@@ -38,67 +38,6 @@ type Step = {
   icon: any;
 };
 
-const steps: Step[] = [
-  {
-    title: "Confirm your order",
-    desc: `Once we check your request, you'll receive a link to review and confirm all your order details before electronically signing the order confirmation.`,
-    icon: FaFileSignature,
-  },
-  {
-    title: "Pay Pro-Forma Invoice",
-    desc: (email: string | Address) => (
-      <>
-        Once your order is confirmed, we will send the Pro-Forma Invoice to{" "}
-        <span className="font-bold text-green break-words break-all">
-          {typeof email === "string" ? email : "your email"}
-        </span>
-      </>
-    ),
-    icon: FaFileInvoiceDollar,
-  },
-  {
-    title: "Receive your equipment",
-    desc: (address: string | Address) => {
-      if (typeof address === "string") return null;
-
-      const parts = [
-        address.street,
-        address.city,
-        address.state,
-        address.zip,
-        address.country,
-      ].filter(Boolean);
-
-      return (
-        <>
-          We'll keep you posted on when your equipment will get delivered to{" "}
-          <span className="font-bold text-green break-words">
-            {parts.join(", ")}
-          </span>
-          .
-        </>
-      );
-    },
-    icon: MdLocalShipping,
-  },
-  {
-    title: "Test drive your purchase",
-    desc: (
-      <>
-        Test your equipment for 5 days or 25 engine hours. Not satisfied? Our
-        Money Back Guarantee covers a full refund of your purchase.{" "}
-        <Link
-          href="/terms-condition"
-          className="text-green font-semibold underline hover:text-black transition"
-        >
-          Buyer Terms & Conditions
-        </Link>
-        .
-      </>
-    ),
-    icon: BsFillPatchCheckFill,
-  },
-];
 
 function ConfirmationPage() {
  
@@ -111,7 +50,6 @@ function ConfirmationPage() {
   const [pageLoading, setPageLoading] = useState(true);
 const [userData, setUserData] = useState<UserDetails | null>(null);
 const [userLoading, setUserLoading] = useState(true);
-
 useEffect(() => {
   const fetchUserDetails = async () => {
     try {
@@ -214,6 +152,102 @@ const imageUrl = getFirstValidImage(product?.images);
     fetchProduct();
   }, [matchedCategory, matchedMake, matchedModel, auction_id]);
 
+const steps: Step[] = [
+  {
+    title: "1. Order Review & Preparation",
+    desc: `We have received your Buy Now request.
+Our team is currently reviewing your order details and preparing the transaction to ensure availability and final confirmation.`,
+    icon: FaFileSignature,
+  },
+
+  {
+    title: "2. Sales Agreement Signed – Invoice in Preparation",
+    desc: (email: string | Address) => {
+      const userEmail =
+        typeof email === "string" ? email : userData?.email;
+
+      return (
+        <>
+          Your Sales Agreement has been successfully signed.
+          <br />
+          We are now preparing your Invoice.
+          <br />
+          You will receive the invoice at{" "}
+          <span className="font-semibold text-[#006d5b]">
+            {userEmail || "your registered email"}
+          </span>{" "}
+          once it has been issued.
+        </>
+      );
+    },
+    icon: FaFileInvoiceDollar,
+  },
+
+  {
+    title: "3. Invoice Issued & Payment",
+    desc: `Once the Invoice is generated and sent: please complete the payment according to the provided instructions.
+Your order will move to the delivery stage after payment confirmation.`,
+    icon: MdLocalShipping,
+  },
+
+    {
+    title: "Receive your equipment",
+    desc: (address: string | Address) => {
+      if (typeof address === "string") return null;
+
+      const parts = [
+        address.street,
+        address.city,
+        address.state,
+        address.zip,
+        address.country,
+      ].filter(Boolean);
+
+      return (
+        <>
+          We'll keep you posted on when your equipment will get delivered to{" "}
+          <span className="font-bold text-green break-words">
+            {parts.join(", ")}
+          </span>
+          .
+        </>
+      );
+    },
+    icon: MdLocalShipping,
+  },
+ {
+    title: "Test drive your purchase",
+    desc: (
+      <>
+          Enjoy complete peace of mind with your purchase.
+      <br />
+      You benefit from a <strong>30-day hassle-free return policy</strong> and{" "}
+      <strong>6 months of warranty coverage</strong>.
+      <br />
+      For full details, please review our{" "}
+      <Link
+        href="/terms-condition"
+        className="text-green font-semibold underline hover:text-black transition"
+      >
+        Buyer Terms & Conditions
+      </Link>
+      .
+      <br />
+      <br />
+      You can also{" "}
+      <Link
+        href="/user/orders"
+        className="text-green font-semibold underline hover:text-black transition"
+      >
+        Track Order Progress
+      </Link>{" "}
+      anytime from your dashboard.
+      </>
+    ),
+    icon: BsFillPatchCheckFill,
+  },
+];
+
 if (pageLoading || userLoading) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-white z-[9999]">
@@ -260,6 +294,9 @@ if (pageLoading || userLoading) {
       <section className="pt-10">
         <div className="max-w-6xl mx-auto px-4">
           <div className="bg-white border border-light-gray rounded-xl p-2 md:p-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-[#212121] mb-8">
+  What happens next?
+</h2>
             {steps.map((step, index) => (
               <div
                 key={index}
@@ -297,18 +334,8 @@ if (pageLoading || userLoading) {
                   </h3>
 
               <p className="text-[#646464] text-base leading-[26px] mb-4">
-                    {typeof step.desc === "function"
-                      ? step.title === "Pay Pro-Forma Invoice"
-                        ? step.desc(userData?.email || "your email")
-                        : step.title === "Receive your equipment"
-                        ? step.desc({
-                            street: userData?.address,
-                            city: userData?.city,
-                            state: userData?.state,
-                            zip: userData?.zip_code,
-                            country: "USA",
-                          })
-                        : null
+                      {typeof step.desc === "function"
+                      ? step.desc(userData?.email || "your registered email")
                       : step.desc}
                   </p>
 

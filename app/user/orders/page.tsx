@@ -265,7 +265,9 @@ export default function MyBuyOrders() {
               filteredSteps,
             );
             const MAX_STEP = filteredSteps.length - 1;
-
+                const settleIndex = filteredSteps.findIndex(
+                  (step) => step.key === "Settle Payment"
+                );
             const safeStep = Math.min(step, MAX_STEP);
             const isConfirmed = !!data.payment_slip_url;
             const confirmationDate = isConfirmed

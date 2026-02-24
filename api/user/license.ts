@@ -13,6 +13,11 @@ export const uploadLicense = async (
     body: formData,
   });
 };
+export const getLicenseStatus = async (): Promise<any> => {
+  return api("/user/license/status", {
+    method: "POST",
+  });
+};
 export interface UploadLicenseResponse {
   status: boolean;
   message?: string;

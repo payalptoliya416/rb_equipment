@@ -4,6 +4,7 @@ import { useState, FormEvent } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import {
+  getLicenseStatus,
   uploadLicense,
   uploadLicenseData,
 } from "@/api/user/license";
@@ -19,9 +20,10 @@ export default function VerifyAccount() {
   const [backFile, setBackFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [profile, setProfile] = useState<UserProfile | null>(null);
-const router = useRouter();
-const searchParams = useSearchParams();
-const returnUrl = searchParams.get("returnUrl") || "/";
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const returnUrl = searchParams.get("returnUrl") || "/";
+  const [verifying, setVerifying] = useState(false);
 
   // useEffect(() => {
   //   getUserProfile().then((res) => {
@@ -32,34 +34,34 @@ const returnUrl = searchParams.get("returnUrl") || "/";
   const requiresBack = REQUIRES_BACK;
   const [country, setCountry] = useState<string | null>(null);
 
- useEffect(() => {
-  const loadProfileAndCountry = async () => {
-    const res = await getUserProfile();
-    if (!res.status) return;
+  useEffect(() => {
+    const loadProfileAndCountry = async () => {
+      const res = await getUserProfile();
+      if (!res.status) return;
 
-    setProfile(res.data);
+      setProfile(res.data);
 
-    try {
-      const geo = await getCountryFromAddress(
-        res.data.address,
-        res.data.city,
-        res.data.state,
-        res.data.zip_code,
-      );
+      try {
+        const geo = await getCountryFromAddress(
+          res.data.address,
+          res.data.city,
+          res.data.state,
+          res.data.zip_code,
+        );
 
-      if (!geo?.country_code) {
+        if (!geo?.country_code) {
+          setCountry("USA");
+          return;
+        }
+
+        setCountry(geo.country_code);
+      } catch (err) {
         setCountry("USA");
-        return;
       }
+    };
 
-      setCountry(geo.country_code);
-    } catch (err) {
-      setCountry("USA");
-    }
-  };
-
-  loadProfileAndCountry();
-}, []);
+    loadProfileAndCountry();
+  }, []);
 
   const submitLicenseToNewAPI = async () => {
     if (!frontFile) return;
@@ -81,6 +83,61 @@ const returnUrl = searchParams.get("returnUrl") || "/";
       console.error("New API error:", err);
     }
   };
+
+  // const handleSubmit = async (e: FormEvent) => {
+  //   e.preventDefault();
+
+  //   if (!frontFile) {
+  //     toast.error("Please upload document");
+  //     return;
+  //   }
+
+  //   if (requiresBack && !backFile) {
+  //     toast.error("Back side is required for this document");
+  //     return;
+  //   }
+
+  //   if (!profile?.email) {
+  //     toast.error("User profile not found. Please log in.");
+  //     return;
+  //   }
+
+  //   try {
+  //     setUploading(true);
+
+  //     const formData = new FormData();
+  //     formData.append("front", frontFile);
+
+  //     if (requiresBack && backFile) {
+  //       formData.append("back", backFile);
+  //     }
+
+  //    formData.append("docType", "DRIVERS");
+  //     if (country) {
+  //       formData.append("country", country);
+  //     }
+  //     const res = await uploadLicense(formData);
+
+  //     if (!res.status) {
+  //       toast.error(res.message || "Upload failed");
+  //       return;
+  //     }
+
+  //     toast.success("License uploaded successfully");
+  //     submitLicenseToNewAPI();
+  //     setFrontFile(null);
+  //     setBackFile(null);
+
+  //   setTimeout(() => {
+  //     router.replace(returnUrl);
+  //   }, 800);
+
+  //   } catch (err: any) {
+  //     toast.error(err.message || "Upload failed");
+  //   } finally {
+  //     setUploading(false);
+  //   }
+  // };
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -110,30 +167,28 @@ const returnUrl = searchParams.get("returnUrl") || "/";
         formData.append("back", backFile);
       }
 
-     formData.append("docType", "DRIVERS");
+      formData.append("docType", "DRIVERS");
       if (country) {
         formData.append("country", country);
       }
+
       const res = await uploadLicense(formData);
 
       if (!res.status) {
         toast.error(res.message || "Upload failed");
+        setUploading(false);
         return;
       }
-
-      toast.success("License uploaded successfully");
       submitLicenseToNewAPI();
-      setFrontFile(null);
-      setBackFile(null);
-      
-    setTimeout(() => {
+      setUploading(false);
+      setVerifying(true);
+      await new Promise((resolve) => setTimeout(resolve, 30000));
+      await getLicenseStatus();
       router.replace(returnUrl);
-    }, 800);
-     
     } catch (err: any) {
       toast.error(err.message || "Upload failed");
-    } finally {
       setUploading(false);
+      setVerifying(false);
     }
   };
 
@@ -143,7 +198,16 @@ const returnUrl = searchParams.get("returnUrl") || "/";
         <h3 className="text-3xl text-center mb-6 font-semibold">
           Verify your <span className="text-orange">account</span>
         </h3>
-
+          {verifying && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+              <div className="bg-white p-8 rounded-xl text-center shadow-xl">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange border-t-transparent mx-auto mb-4"></div>
+                <p className="text-lg font-semibold">
+                  Verifying your license...
+                </p>
+              </div>
+            </div>
+          )}
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <UploadBox
@@ -165,14 +229,23 @@ const returnUrl = searchParams.get("returnUrl") || "/";
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               type="submit"
-              disabled={uploading || !frontFile || (requiresBack && !backFile)}
+              disabled={
+                uploading ||
+                verifying ||
+                !frontFile ||
+                (requiresBack && !backFile)
+              }
               className={`px-6 py-3 rounded-lg text-white ${
                 uploading || !frontFile || (requiresBack && !backFile)
                   ? "bg-gray-400"
                   : "bg-green  cursor-pointer "
               }`}
             >
-              {uploading ? "Uploading..." : "Submit"}
+              {uploading
+                ? "Uploading..."
+                : verifying
+                  ? "Verifying..."
+                  : "Submit"}
             </motion.button>
           </div>
         </form>

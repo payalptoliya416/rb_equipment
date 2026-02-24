@@ -13,10 +13,11 @@ import {
 import Loader from "@/components/common/Loader";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
-import { uploadLicenseData } from "@/api/user/license";
+import { getLicenseStatus, uploadLicense, uploadLicenseData } from "@/api/user/license";
 import toast from "react-hot-toast";
 import { MdInfo } from "react-icons/md";
 import { UploadBox } from "@/components/inventory/UploadBox";
+import { getCountryFromAddress } from "@/api/geoapify";
 
 /* ================= VALIDATION ================= */
 const schema = Yup.object({
@@ -39,7 +40,37 @@ export default function UserProfileForm() {
   const [frontFile, setFrontFile] = useState<File | null>(null);
   const [backFile, setBackFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [verifying, setVerifying] = useState(false);
+    const [country, setCountry] = useState<string | null>(null);
   /* ================= API CALL ================= */
+  useEffect(() => {
+    const loadProfileAndCountry = async () => {
+      const res = await getUserProfile();
+      if (!res.status) return;
+
+      setProfile(res.data);
+
+      try {
+        const geo = await getCountryFromAddress(
+          res.data.address,
+          res.data.city,
+          res.data.state,
+          res.data.zip_code,
+        );
+
+        if (!geo?.country_code) {
+          setCountry("USA");
+          return;
+        }
+
+        setCountry(geo.country_code);
+      } catch (err) {
+        setCountry("USA");
+      }
+    };
+
+    loadProfileAndCountry();
+  }, []);
 
   const fetchProfile = async () => {
     try {
@@ -217,53 +248,67 @@ export default function UserProfileForm() {
     );
   };
 
-const submitLicenseToNewAPI = async () => {
-  if (!frontFile || !backFile) {
-    toast.error("Please upload both front & back side");
-    return;
-  }
-
-  try {
-    setUploading(true);
-
-    const fd = new FormData();
-    fd.append("front_side", frontFile);
-    fd.append("back_side", backFile);
-
-    const res = await uploadLicenseData(fd);
-
-    if (!res?.status) {
-      toast.error(res?.message || "License upload failed");
+  const submitLicenseToNewAPI = async () => {
+    if (!frontFile || !backFile) {
+      toast.error("Please upload both front & back side");
       return;
     }
 
-    toast.success("License uploaded successfully");
+    try {
+      setUploading(true);
 
-    // Clear files immediately
-    setFrontFile(null);
-    setBackFile(null);
+     const formData = new FormData();
+formData.append("front", frontFile);
 
-    // Optimistically update profile state to "Pending" for instant UI feedback
-    if (profile) {
-      setProfile({
-        ...profile,
-        license_status: "Pending",
-        is_license: 1, // 1 = Pending status
+if (backFile) {
+  formData.append("back", backFile);
+}
+
+formData.append("docType", "DRIVERS");
+
+if (country) {
+  formData.append("country", country);
+}
+
+const res = await uploadLicense(formData);
+
+
+      if (!res?.status) {
+        toast.error(res?.message || "License upload failed");
+        return;
+      }
+
+      toast.success("License uploaded successfully");
+
+      setFrontFile(null);
+      setBackFile(null);
+
+      if (profile) {
+        setProfile({
+          ...profile,
+          license_status: "Pending",
+          is_license: 1,
+        });
+      }
+
+      fetchProfile().catch((err) => {
+        console.error("Background profile fetch failed:", err);
       });
+
+      setUploading(false);
+      setVerifying(true);
+
+      await new Promise((resolve) => setTimeout(resolve, 30000));
+
+      await getLicenseStatus();
+    } catch (err) {
+      console.error("License upload error:", err);
+      toast.error("Something went wrong while uploading license");
+    } finally {
+      setUploading(false);
+      setVerifying(false);
     }
-
-    // Fetch updated profile in background (non-blocking)
-    fetchProfile().catch((err) => {
-      console.error("Background profile fetch failed:", err);
-    });
-  } catch (err) {
-    console.error("License upload error:", err);
-    toast.error("Something went wrong while uploading license");
-  } finally {
-    setUploading(false);
-  }
-};
-
+  };
 
   return (
     <section className="py-10">
@@ -314,7 +359,16 @@ const submitLicenseToNewAPI = async () => {
             {/* STATUS */}
             <LicenseStatusBadge status={profile.license_status} />
           </div>
-
+          {verifying && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+              <div className="bg-white p-8 rounded-xl text-center shadow-xl">
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-orange border-t-transparent mx-auto mb-4"></div>
+                <p className="text-lg font-semibold">
+                  Verifying your license...
+                </p>
+              </div>
+            </div>
+          )}
           {/* ================= FORM ================= */}
           <div className="px-6 pb-6">
             <Formik
@@ -450,7 +504,7 @@ const submitLicenseToNewAPI = async () => {
                       {/* LEFT SIDE */}
                       <div className="border border-[#E9E9E9] rounded-xl p-4">
                         {canUploadLicense ? (
-                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <UploadBox
                               label="Upload Front Side"
                               file={frontFile}
@@ -500,10 +554,11 @@ const submitLicenseToNewAPI = async () => {
                     </button>
                     <button
                       type="button"
-                        onClick={submitLicenseToNewAPI}
+                      onClick={submitLicenseToNewAPI}
                       disabled={
                         !canUploadLicense ||
                         uploading ||
+                        verifying ||
                         !frontFile ||
                         !backFile
                       }
@@ -516,7 +571,11 @@ const submitLicenseToNewAPI = async () => {
                           : "bg-green"
                       }`}
                     >
-                      {uploading ? "Uploading..." : "Upload License"}
+                      {uploading
+                        ? "Uploading..."
+                        : verifying
+                          ? "Verifying..."
+                          : "Upload License"}
                     </button>
                     <button
                       type="submit"

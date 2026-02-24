@@ -6,7 +6,10 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs } from "swiper/modules";
 import type { Swiper as SwiperType } from "swiper";
 import { SingleMachinery } from "@/types/apiType";
-
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import "swiper/css";
+import "swiper/css/navigation";
+import { MdChevronLeft, MdChevronRight } from "react-icons/md";
 interface ProductSliderProps {
   data: SingleMachinery;
 }
@@ -36,8 +39,8 @@ export default function ProductSlider({ data }: ProductSliderProps) {
               key={item.id}
               className="cursor-grab active:cursor-grabbing"
             >
-                <div
-        className="
+              <div
+                className="
           w-full
           max-w-[623px]
           mx-auto
@@ -48,27 +51,28 @@ export default function ProductSlider({ data }: ProductSliderProps) {
           rounded-xl
           overflow-hidden
           flex items-center justify-center
-        " >
-              {/* IMAGE */}
-                 {item.type === "image" && (
-          <Image
-            src={item.full_url}
-            alt={data.name}
-            fill
-             sizes="(max-width: 768px) 100vw, 623px"
-            priority
-             className="w-full h-full object-cover rounded-[12px]"
-          />
-        )}
+        "
+              >
+                {/* IMAGE */}
+                {item.type === "image" && (
+                  <Image
+                    src={item.full_url}
+                    alt={data.name}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 623px"
+                    priority
+                    className="w-full h-full object-cover rounded-[12px]"
+                  />
+                )}
 
                 {item.type === "video" && (
-          <video
-            src={item.full_url}
-            controls
-            className="w-full h-full object-contain"
-          />
-        )}
-      </div>
+                  <video
+                    src={item.full_url}
+                    controls
+                    className="w-full h-full object-contain"
+                  />
+                )}
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -101,11 +105,15 @@ export default function ProductSlider({ data }: ProductSliderProps) {
 
       {/* ================= THUMBNAILS ================= */}
       <Swiper
-        modules={[Thumbs]}
+        modules={[Thumbs, Navigation]}
         onSwiper={setThumbsSwiper}
         slidesPerView={6}
         spaceBetween={10}
         watchSlidesProgress
+        navigation={{
+          nextEl: ".thumb-next",
+          prevEl: ".thumb-prev",
+        }}
         className="mb-[30px]"
         breakpoints={{
           0: { slidesPerView: 2 },
@@ -116,8 +124,8 @@ export default function ProductSlider({ data }: ProductSliderProps) {
       >
         {activeMedia.map((item) => (
           <SwiperSlide key={item.id}>
-           <div
-          className="
+            <div
+              className="
             relative
             border border-light-gray
             w-[98px] h-[98px]
@@ -125,29 +133,34 @@ export default function ProductSlider({ data }: ProductSliderProps) {
             rounded-xl overflow-hidden
             cursor-pointer
           "
-        >
-          {item.type === "image" && (
-            <Image
-              src={item.full_url}
-              alt="thumb"
-              fill
-              className="object-cover"
-            />
-          )}
+            >
+              {item.type === "image" && (
+                <Image
+                  src={item.full_url}
+                  alt="thumb"
+                  fill
+                  className="object-cover"
+                />
+              )}
 
-          {item.type === "video" && (
-            <video
-              src={item.full_url}
-              muted
-              className="object-cover w-full h-full"
-            />
-          )}
-        </div>
-
+              {item.type === "video" && (
+                <video
+                  src={item.full_url}
+                  muted
+                  className="object-cover w-full h-full"
+                />
+              )}
+            </div>
           </SwiperSlide>
         ))}
+        <div className="thumb-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md w-6 sm:w-7 h-6 sm:h-7 flex items-center justify-center rounded-full cursor-pointer">
+          <MdChevronLeft size={21} />
+        </div>
+
+        <div className="thumb-next absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md w-6 sm:w-7 h-6 sm:h-7 flex items-center justify-center rounded-full cursor-pointer">
+          <MdChevronRight size={21} />
+        </div>
       </Swiper>
     </>
   );
 }
-
