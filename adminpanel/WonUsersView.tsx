@@ -81,7 +81,14 @@ useEffect(() => {
     }
   };
 
-  const handleApprove = async (bankDetails: string) => {
+  const handleApprove = async (values: {
+  bank_name: string;
+  beneficiary_name: string;
+  beneficiary_address: string;
+  account_number: string;
+  routing_number: string;
+  branch_address: string;
+}) => {
   if (!data) return;
 
   try {
@@ -90,7 +97,12 @@ useEffect(() => {
     const res = await adminUpdateContractStatusService({
       machinery_id: data.machinery_id,
       action: "approve",
-      bank_details: bankDetails, // 👈 new param
+      bank_name: values.bank_name,
+      beneficiary_name: values.beneficiary_name,
+      beneficiary_address: values.beneficiary_address,
+      account_number: values.account_number,
+      routing_number: values.routing_number,
+      branch_address: values.branch_address, 
     });
 
     if (res.success) {
@@ -180,7 +192,7 @@ const isActionAllowed = data?.contract_status === "Signed";
            <button
             disabled={!isActionAllowed || actionLoading !== null}
             onClick={() => handleAction("reject")}
-            className="px-6 py-2 rounded-md bg-[#EF4444] text-white text-sm flex items-center gap-2 disabled:opacity-60 cursor-pointer"
+            className="px-6 py-2 rounded-md bg-[#EF4444] text-white text-sm flex items-center gap-2 disabled:cursor-not-allowed cursor-pointer"
             >
             {actionLoading === "reject" && <Spinner />}
             Declined
@@ -189,7 +201,7 @@ const isActionAllowed = data?.contract_status === "Signed";
             <button
             disabled={!isActionAllowed || actionLoading !== null}
            onClick={() => setApproveModalOpen(true)}
-            className="px-6 py-2 rounded-md bg-[#22C55E] text-white text-sm flex items-center gap-2 disabled:opacity-60 cursor-pointer"
+            className="px-6 py-2 rounded-md bg-[#22C55E] text-white text-sm flex items-center gap-2  cursor-pointer disabled:cursor-not-allowed"
             >
             {actionLoading === "approve" && <Spinner />}
             Approve

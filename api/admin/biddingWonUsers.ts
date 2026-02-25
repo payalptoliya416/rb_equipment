@@ -116,7 +116,12 @@ export const adminWonDetailsService = (payload: WonDetailsPayload) => {
 export type UpdateContractStatusPayload = {
   machinery_id: number;
   action: "approve" | "reject";
-  bank_details? : string;
+  bank_name?: string;
+  beneficiary_name?: string;
+  beneficiary_address?: string;
+  account_number?: string;
+  routing_number?: string;
+  branch_address?: string;
 };
 
 export type UpdateContractStatusResponse = {

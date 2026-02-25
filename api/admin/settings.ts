@@ -14,7 +14,12 @@ export type AdminSettingsData = {
   linkedin: string;
   white_logo: string;
   dark_logo: string;
-  bank_details: string;
+   bank_name: string;
+  beneficiary_name: string;
+  beneficiary_address: string;
+  account_number: string;
+  routing_number: string;
+  branch_address: string;
 };
 
 export type AdminSettingsResponse = {

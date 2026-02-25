@@ -27,7 +27,12 @@ type SettingsFormValues = {
   linkedin: string;
   whiteLogo: File | null;
   darkLogo: File | null;
-  bankDetails: string;
+  bank_name: string;
+  beneficiary_name: string;
+  beneficiary_address: string;
+  account_number: string;
+  routing_number: string;
+  branch_address: string;
 };
 
 /* ---------------- VALIDATION ---------------- */
@@ -53,7 +58,12 @@ export const Schema = Yup.object({
     .typeError("Delivery cost must be a number")
     .positive("Delivery cost must be greater than 0")
     .required("Per mile delivery cost is required"),
-  bankDetails: Yup.string().required("Bank details are required"),
+  bank_name: Yup.string().required("Bank name is required"),
+  beneficiary_name: Yup.string().required("Beneficiary name is required"),
+  beneficiary_address: Yup.string().required("Beneficiary address is required"),
+  account_number: Yup.string().required("Account number is required"),
+  routing_number: Yup.string().required("Routing number is required"),
+  branch_address: Yup.string().required("Branch address is required"),
   facebook: Yup.string()
     .url("Enter a valid Twitter URL")
     .required("Facebook link is required"),
@@ -114,7 +124,12 @@ export default function CompanySettingUI() {
     linkedin: data?.linkedin || "",
     whiteLogo: null,
     darkLogo: null,
-    bankDetails: data?.bank_details || "",
+    bank_name: data?.bank_name || "",
+    beneficiary_name: data?.beneficiary_name || "",
+    beneficiary_address: data?.beneficiary_address || "",
+    account_number: data?.account_number || "",
+    routing_number: data?.routing_number || "",
+    branch_address: data?.branch_address || "",
   };
 
   const handleSubmit = async (
@@ -133,7 +148,12 @@ export default function CompanySettingUI() {
       formData.append("twitter", values.twitter);
       formData.append("instagram", values.instagram);
       formData.append("linkedin", values.linkedin);
-      formData.append("bank_details", values.bankDetails);
+      formData.append("bank_name", values.bank_name);
+      formData.append("beneficiary_name", values.beneficiary_name);
+      formData.append("beneficiary_address", values.beneficiary_address);
+      formData.append("account_number", values.account_number);
+      formData.append("routing_number", values.routing_number);
+      formData.append("branch_address", values.branch_address);
 
       if (values.whiteLogo) {
         formData.append("white_logo", values.whiteLogo);
@@ -330,10 +350,109 @@ export default function CompanySettingUI() {
 
           {/* ============= */}
           <div className="border border-[#E9E9E9] rounded-[14px] bg-white p-3 sm:p-5">
-            <label className="block mb-3 text-base font-normal text-[#333333]">
-              Bank Details <span className="text-[#ef4343]">*</span>
-            </label>
-             <QuillEditor name="bankDetails" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              {/* Bank Name */}
+              <div>
+                <label className="block mb-3 text-base font-normal text-[#333333]">
+                  Bank Name <span className="text-[#ef4343]">*</span>
+                </label>
+                <Field
+                  name="bank_name"
+                  placeholder="Enter bank name"
+                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                />
+                {errors.bank_name && touched.bank_name && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.bank_name}
+                  </p>
+                )}
+              </div>
+
+              {/* Beneficiary Name */}
+              <div>
+                <label className="block mb-3 text-base font-normal text-[#333333]">
+                  Beneficiary Name <span className="text-[#ef4343]">*</span>
+                </label>
+                <Field
+                  name="beneficiary_name"
+                  placeholder="Enter beneficiary name"
+                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                />
+                {errors.beneficiary_name && touched.beneficiary_name && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.beneficiary_name}
+                  </p>
+                )}
+              </div>
+
+              {/* Beneficiary Address */}
+              <div className="md:col-span-2">
+                <label className="block mb-3 text-base font-normal text-[#333333]">
+                  Beneficiary Address <span className="text-[#ef4343]">*</span>
+                </label>
+                <Field
+                  name="beneficiary_address"
+                  placeholder="Enter beneficiary address"
+                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                />
+                {errors.beneficiary_address && touched.beneficiary_address && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.beneficiary_address}
+                  </p>
+                )}
+              </div>
+
+              {/* Account Number */}
+              <div>
+                <label className="block mb-3 text-base font-normal text-[#333333]">
+                  Account Number <span className="text-[#ef4343]">*</span>
+                </label>
+                <Field
+                  name="account_number"
+                  placeholder="Enter account number"
+                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                />
+                {errors.account_number && touched.account_number && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.account_number}
+                  </p>
+                )}
+              </div>
+
+              {/* Routing Number */}
+              <div>
+                <label className="block mb-3 text-base font-normal text-[#333333]">
+                  Routing Number <span className="text-[#ef4343]">*</span>
+                </label>
+                <Field
+                  name="routing_number"
+                  placeholder="Enter routing number"
+                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                />
+                {errors.routing_number && touched.routing_number && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.routing_number}
+                  </p>
+                )}
+              </div>
+
+              {/* Branch Address */}
+              <div className="md:col-span-2">
+                <label className="block mb-3 text-base font-normal text-[#333333]">
+                  Branch Address <span className="text-[#ef4343]">*</span>
+                </label>
+                <Field
+                  name="branch_address"
+                  placeholder="Enter branch address"
+                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                />
+                {errors.branch_address && touched.branch_address && (
+                  <p className="text-xs text-red-500 mt-1">
+                    {errors.branch_address}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* ================= SOCIAL ================= */}
