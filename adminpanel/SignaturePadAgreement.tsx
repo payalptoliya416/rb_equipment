@@ -82,7 +82,7 @@ import Loader from "@/components/common/Loader";
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [data, setData] = useState<WonBid | null>(null);
     const [loading, setLoading] = useState(true);
-    const isAlreadySigned = data?.status === "Signed" || data?.status === "Send";
+    const isAlreadySigned = data?.status === "Signed" || data?.status === "Send" || data?.status === "Approved" || data?.status === "Rejected";
     const [contractHtml, setContractHtml] = useState<string>("");
   const [wonBidData, setWonBidData] = useState<any>(null);
   const [contractLoading, setContractLoading] = useState(true);
@@ -191,7 +191,6 @@ import Loader from "@/components/common/Loader";
 
       formData.append("sign_photo", signature);
 
-      // 🚀 SEND TO API
       const res = await signContract(formData);
 
       if (res.success) {
@@ -201,6 +200,7 @@ import Loader from "@/components/common/Loader";
         fetchBid();
         setIsSubmitted(true);
         setSignature("");
+         router.back();
       } else {
         toast.error(res.message || "Failed to send contract");
       }
@@ -278,7 +278,7 @@ import Loader from "@/components/common/Loader";
               <button
                 onClick={handleSendContract}
                 type="button"
-                disabled={submitting || isAlreadySigned}
+                disabled={submitting || isAlreadySigned || isSubmitted}
                 className={`h-[42px] px-5 rounded-lg text-sm font-medium text-white transition 
                               ${
                                 submitting || isAlreadySigned
@@ -286,9 +286,9 @@ import Loader from "@/components/common/Loader";
                                   : "bg-[#00796B] hover:bg-[#00695C] cursor-pointer"
                               }`}
               >
-                {isAlreadySigned ? (
-                  "Contract Already Signed"
-                ) : submitting ? (
+                                    {isAlreadySigned || isSubmitted ? (
+                        "Contract Already Signed"
+                      ) : submitting ? (
                   <div className="flex items-center gap-2">
                     <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     Sending...

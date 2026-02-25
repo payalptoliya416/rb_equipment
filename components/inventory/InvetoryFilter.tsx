@@ -181,41 +181,87 @@ export default function InventoryFilter({}: {}) {
       return;
     }
 
-    const fetchMachinery = async () => {
-      setLoading(true);
-      setHasFetched(false);
+    // const fetchMachinery = async () => {
+    //   setLoading(true);
+    //   setHasFetched(false);
 
-      try {
-        const res = await getMachineryByCategory(
-          categoryNames,
-          selectedSort.value,
-          debouncedYear.from,
-          debouncedYear.to,
-          selectedMake,
-          selectedModel,
-          currentPage,
-          ITEMS_PER_PAGE,
-        );
+    //   try {
+    //     const res = await getMachineryByCategory(
+    //       categoryNames,
+    //       selectedSort.value,
+    //       debouncedYear.from,
+    //       debouncedYear.to,
+    //       selectedMake,
+    //       selectedModel,
+    //       currentPage,
+    //       ITEMS_PER_PAGE,
+    //     );
 
-        if (res?.success) {
-          const visible = res.data.filter((p: any) => Number(p.is_view) === 1);
-          setProducts(visible);
-          if (visible.length === 0) {
-            setTotalPages(1);
-          } else {
-            setTotalPages(res.pagination.last_page);
-          }
-        } else {
-          setProducts([]);
-        }
-      } catch (err) {
-        setProducts([]);
-      } finally {
-        setLoading(false);
-        setHasFetched(true);
-      }
-    };
+    //     if (res?.success) {
+    //       const visible = res.data.filter((p: any) => Number(p.is_view) === 1);
+    //       setProducts(visible);
+    //       if (visible.length === 0) {
+    //         setTotalPages(1);
+    //       } else {
+    //         setTotalPages(res.pagination.last_page);
+    //       }
+    //     } else {
+    //       setProducts([]);
+    //     }
+    //   } catch (err) {
+    //     setProducts([]);
+    //   } finally {
+    //     setLoading(false);
+    //     setHasFetched(true);
+    //   }
+    // };
+const fetchMachinery = async () => {
+  setLoading(true);
+  setHasFetched(false);
 
+  try {
+    let visibleProducts: any[] = [];
+    let pageToFetch = currentPage;
+    let lastPageFromApi = 1;
+
+    while (visibleProducts.length < ITEMS_PER_PAGE) {
+      const res = await getMachineryByCategory(
+        categoryNames,
+        selectedSort.value,
+        debouncedYear.from,
+        debouncedYear.to,
+        selectedMake,
+        selectedModel,
+        pageToFetch,
+        ITEMS_PER_PAGE,
+      );
+
+      if (!res?.success || res.data.length === 0) break;
+
+      lastPageFromApi = res.pagination?.last_page || 1;
+
+      const filtered = res.data.filter(
+        (p: any) => Number(p.is_view) === 1,
+      );
+
+      visibleProducts = [...visibleProducts, ...filtered];
+
+      if (pageToFetch >= lastPageFromApi) break;
+
+      pageToFetch++;
+    }
+
+    setProducts(visibleProducts.slice(0, ITEMS_PER_PAGE));
+    setTotalPages(lastPageFromApi);
+
+  } catch (err) {
+    setProducts([]);
+    setTotalPages(1);
+  } finally {
+    setLoading(false);
+    setHasFetched(true);
+  }
+};
     fetchMachinery();
   }, [
     selectedCategories,
