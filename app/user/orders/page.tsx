@@ -66,6 +66,8 @@ const STEPS: StepItem[] = [
   { key: "In Transit", title: "In Transit" },
   { key: "Delivered", title: "Delivered" },
 ];
+
+
 const formatDateTime = (date: string) =>
   new Date(date).toLocaleString("en-US", {
     month: "short",
@@ -255,24 +257,25 @@ export default function MyBuyOrders() {
         )}
         <div className="space-y-6">
           {orders.map((data) => {
-            const filteredSteps =
-              data.type_text === "Bidding"
-                ? STEPS
-                : STEPS.filter((s) => s.key !== "Awaiting Invoice");
-
+            // const filteredSteps =
+            //   data.type_text === "Bidding"
+            //     ? STEPS
+            //     : STEPS.filter((s) => s.key !== "Awaiting Invoice");
+         const filteredSteps = STEPS;
             const step = getCurrentStepFromTimeline(
               data.delivery_timeline,
               filteredSteps,
             );
-            const MAX_STEP = filteredSteps.length - 1;
-                const settleIndex = filteredSteps.findIndex(
-                  (step) => step.key === "Settle Payment"
-                );
-            const safeStep = Math.min(step, MAX_STEP);
+           
             const isConfirmed = !!data.payment_slip_url;
             const confirmationDate = isConfirmed
               ? new Date().toISOString()
               : null;
+
+              const confirmationIndex = filteredSteps.findIndex(
+                (s) => s.key === "Confirmation"
+              );
+
 
             return (
               <Accordion
@@ -305,8 +308,7 @@ export default function MyBuyOrders() {
                             <p>Total Weight: {data.weight}</p>
                             <p>Year: {data.year}</p>
                             {data.invoice_url &&
-                              data.payment_slip_url &&
-                              step >= statusToStep["Settle Payment"] && (
+                              step >= confirmationIndex && (
                                 <div className="flex items-center gap-3">
                                   <a
                                     href={data.invoice_url ?? "#"}

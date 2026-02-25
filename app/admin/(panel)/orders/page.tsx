@@ -226,6 +226,8 @@ export default function AdminOrder() {
           value={row.status}
           orderId={row.id}
            orderType={row.typeText as "Checkout" | "Bidding"}   
+            paymentSlipStatus={row.paymentSlipStatus}
+           paymentSlipUrl={row.paymentSlipUrl}
           onUpdated={fetchOrders} 
         />
       ),

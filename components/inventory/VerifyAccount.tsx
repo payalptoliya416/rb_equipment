@@ -62,83 +62,7 @@ export default function VerifyAccount() {
 
     loadProfileAndCountry();
   }, []);
-
-  const submitLicenseToNewAPI = async () => {
-    if (!frontFile) return;
-
-    const fd = new FormData();
-    fd.append("front_side", frontFile);
-
-    if (requiresBack && backFile) {
-      fd.append("back_side", backFile);
-    }
-
-    try {
-      const res = await uploadLicenseData(fd);
-      if (!res?.status) {
-        console.error("New API upload failed:", res);
-        return;
-      }
-    } catch (err) {
-      console.error("New API error:", err);
-    }
-  };
-
-  // const handleSubmit = async (e: FormEvent) => {
-  //   e.preventDefault();
-
-  //   if (!frontFile) {
-  //     toast.error("Please upload document");
-  //     return;
-  //   }
-
-  //   if (requiresBack && !backFile) {
-  //     toast.error("Back side is required for this document");
-  //     return;
-  //   }
-
-  //   if (!profile?.email) {
-  //     toast.error("User profile not found. Please log in.");
-  //     return;
-  //   }
-
-  //   try {
-  //     setUploading(true);
-
-  //     const formData = new FormData();
-  //     formData.append("front", frontFile);
-
-  //     if (requiresBack && backFile) {
-  //       formData.append("back", backFile);
-  //     }
-
-  //    formData.append("docType", "DRIVERS");
-  //     if (country) {
-  //       formData.append("country", country);
-  //     }
-  //     const res = await uploadLicense(formData);
-
-  //     if (!res.status) {
-  //       toast.error(res.message || "Upload failed");
-  //       return;
-  //     }
-
-  //     toast.success("License uploaded successfully");
-  //     submitLicenseToNewAPI();
-  //     setFrontFile(null);
-  //     setBackFile(null);
-
-  //   setTimeout(() => {
-  //     router.replace(returnUrl);
-  //   }, 800);
-
-  //   } catch (err: any) {
-  //     toast.error(err.message || "Upload failed");
-  //   } finally {
-  //     setUploading(false);
-  //   }
-  // };
-
+  
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -179,7 +103,6 @@ export default function VerifyAccount() {
         setUploading(false);
         return;
       }
-      submitLicenseToNewAPI();
       setUploading(false);
       setVerifying(true);
       await new Promise((resolve) => setTimeout(resolve, 30000));

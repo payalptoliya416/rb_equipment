@@ -1,15 +1,21 @@
 "use client";
 
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
 import { useFormikContext } from "formik";
 
 interface Props {
   name: string;
+  label?: string;
+  required?: boolean;
 }
 
-export default function QuillEditor({ name }: Props) {
+export default function BankDetailsEditor({
+  name,
+  label = "Bank Details",
+  required = true,
+}: Props) {
   const { values, setFieldValue, errors, touched } =
     useFormikContext<any>();
 
@@ -45,12 +51,11 @@ export default function QuillEditor({ name }: Props) {
   },
 });
 
+  // Sync Quill with Formik
   useEffect(() => {
     if (!quill) return;
 
-    if (values[name]) {
-      quill.root.innerHTML = values[name];
-    }
+    quill.root.innerHTML = values[name] || "";
 
     quill.on("text-change", () => {
       setFieldValue(name, quill.root.innerHTML);
@@ -63,21 +68,22 @@ export default function QuillEditor({ name }: Props) {
       : "";
 
   return (
-    <div className="w-full">
+    <div className="border border-[#E9E9E9] rounded-[14px] bg-white p-3 sm:p-5">
+      <label className="block mb-3 text-base font-normal text-[#333333]">
+        {label}{" "}
+        {required && <span className="text-[#ef4343]">*</span>}
+      </label>
+
       <div
         className={`rounded-xl overflow-hidden border transition ${
-          errorMsg
-            ? "border-red-500"
-            : "border-[#e9e9e9]"
+          errorMsg ? "border-red-500" : "border-[#E9E9E9]"
         }`}
       >
-        <div ref={quillRef} className="bg-white"  />
+        <div ref={quillRef} className="bg-white min-h-[150px]" />
       </div>
 
       {errorMsg && (
-        <p className="text-red-500 text-xs mt-2">
-          {errorMsg}
-        </p>
+        <p className="text-xs text-red-500 mt-2">{errorMsg}</p>
       )}
     </div>
   );

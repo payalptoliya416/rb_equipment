@@ -6,6 +6,7 @@ import Loader from "@/components/common/Loader";
 import toast from "react-hot-toast";
 import { adminUpdateContractStatusService, adminWonDetailsService, WonDetailsData } from "@/api/admin/biddingWonUsers";
 import { formatPrice } from "@/hooks/formate";
+import ApproveContractModal from "./ApproveContractModal";
 
 /* ================= STATUS COLORS ================= */
 
@@ -21,7 +22,7 @@ const statusStyleMap: Record<string, string> = {
 export default function WonUsersView() {
   const searchParams = useSearchParams();
   const machineryId = Number(searchParams.get("id"));
-
+const [approveModalOpen, setApproveModalOpen] = useState(false);
   const [data, setData] = useState<WonDetailsData | null>(null);
   const [loading, setLoading] = useState(true);
     const [actionLoading, setActionLoading] = useState<
@@ -71,7 +72,7 @@ useEffect(() => {
 
       if (res.success) {
         toast.success(res.message || "Status updated successfully");
-        await fetchDetails(); // 🔄 refresh UI
+        await fetchDetails(); 
       }
     } catch {
       toast.error("Failed to update status");
@@ -79,6 +80,30 @@ useEffect(() => {
       setActionLoading(null);
     }
   };
+
+  const handleApprove = async (bankDetails: string) => {
+  if (!data) return;
+
+  try {
+    setActionLoading("approve");
+
+    const res = await adminUpdateContractStatusService({
+      machinery_id: data.machinery_id,
+      action: "approve",
+      bank_details: bankDetails, // 👈 new param
+    });
+
+    if (res.success) {
+      toast.success(res.message || "Approved successfully");
+      setApproveModalOpen(false);
+      await fetchDetails();
+    }
+  } catch {
+    toast.error("Failed to approve");
+  } finally {
+    setActionLoading(null);
+  }
+};
 
  const isFinalStatus = ["Approved", "Rejected"].includes(
     data?.contract_status || ""
@@ -163,7 +188,7 @@ const isActionAllowed = data?.contract_status === "Signed";
 
             <button
             disabled={!isActionAllowed || actionLoading !== null}
-            onClick={() => handleAction("approve")}
+           onClick={() => setApproveModalOpen(true)}
             className="px-6 py-2 rounded-md bg-[#22C55E] text-white text-sm flex items-center gap-2 disabled:opacity-60 cursor-pointer"
             >
             {actionLoading === "approve" && <Spinner />}
@@ -171,17 +196,7 @@ const isActionAllowed = data?.contract_status === "Signed";
             </button>
           </div>
         </div>
-{/* 
-        {data.contract_file_url ? (
-          <iframe
-            src={data.contract_file_url}
-            className="w-full h-[600px] rounded-md border"
-          />
-        ) : (
-          <p className="text-sm text-gray-500">
-            No contract uploaded
-          </p>
-        )} */}
+
         {data.contract_file_url ? (
         <div className="w-full overflow-hidden">
           <iframe
@@ -202,6 +217,12 @@ const isActionAllowed = data?.contract_status === "Signed";
       )}
 
       </div>
+      <ApproveContractModal
+  open={approveModalOpen}
+  onClose={() => setApproveModalOpen(false)}
+  onSubmit={handleApprove}
+  loading={actionLoading === "approve"}
+/>
     </div>
   );
 }

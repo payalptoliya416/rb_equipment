@@ -94,6 +94,8 @@ export default function OrderMobileCard({
           value={order.status}
           orderId={order.id}
           orderType={order.typeText as "Checkout" | "Bidding"}
+            paymentSlipStatus={order.paymentSlipStatus}
+          paymentSlipUrl={order.paymentSlipUrl}
           onUpdated={onUpdated}
         />
       </div>

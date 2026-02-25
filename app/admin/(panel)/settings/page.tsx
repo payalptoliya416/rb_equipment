@@ -13,6 +13,7 @@ import {
 } from "@/api/admin/settings";
 import Loader from "@/components/common/Loader";
 import toast from "react-hot-toast";
+import QuillEditor from "@/adminpanel/QuillEditor";
 
 type SettingsFormValues = {
   companyName: string;
@@ -26,6 +27,7 @@ type SettingsFormValues = {
   linkedin: string;
   whiteLogo: File | null;
   darkLogo: File | null;
+  bankDetails: string;
 };
 
 /* ---------------- VALIDATION ---------------- */
@@ -39,9 +41,9 @@ export const Schema = Yup.object({
     .email("Enter a valid email address")
     .required("Email address is required"),
 
-phone: Yup.string()
-  .required("Phone number is required")
-  .matches(/^[0-9]{10}$/, "Enter 10 digit phone number"),
+  phone: Yup.string()
+    .required("Phone number is required")
+    .matches(/^[0-9]{10}$/, "Enter 10 digit phone number"),
 
   address: Yup.string()
     .min(5, "Address must be at least 5 characters")
@@ -51,7 +53,7 @@ phone: Yup.string()
     .typeError("Delivery cost must be a number")
     .positive("Delivery cost must be greater than 0")
     .required("Per mile delivery cost is required"),
-
+  bankDetails: Yup.string().required("Bank details are required"),
   facebook: Yup.string()
     .url("Enter a valid Twitter URL")
     .required("Facebook link is required"),
@@ -112,6 +114,7 @@ export default function CompanySettingUI() {
     linkedin: data?.linkedin || "",
     whiteLogo: null,
     darkLogo: null,
+    bankDetails: data?.bank_details || "",
   };
 
   const handleSubmit = async (
@@ -130,6 +133,7 @@ export default function CompanySettingUI() {
       formData.append("twitter", values.twitter);
       formData.append("instagram", values.instagram);
       formData.append("linkedin", values.linkedin);
+      formData.append("bank_details", values.bankDetails);
 
       if (values.whiteLogo) {
         formData.append("white_logo", values.whiteLogo);
@@ -322,6 +326,14 @@ export default function CompanySettingUI() {
             {errors.perMile && touched.perMile && (
               <p className="text-xs text-red-500 mt-1">{errors.perMile}</p>
             )}
+          </div>
+
+          {/* ============= */}
+          <div className="border border-[#E9E9E9] rounded-[14px] bg-white p-3 sm:p-5">
+            <label className="block mb-3 text-base font-normal text-[#333333]">
+              Bank Details <span className="text-[#ef4343]">*</span>
+            </label>
+             <QuillEditor name="bankDetails" />
           </div>
 
           {/* ================= SOCIAL ================= */}

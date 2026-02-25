@@ -272,7 +272,6 @@ if (country) {
 
 const res = await uploadLicense(formData);
 
-
       if (!res?.status) {
         toast.error(res?.message || "License upload failed");
         return;

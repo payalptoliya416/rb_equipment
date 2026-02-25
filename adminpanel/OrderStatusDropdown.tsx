@@ -21,7 +21,9 @@ type OrderStatus =
 type Props = {
   value: OrderStatus;
   orderId: number;
-   orderType: "Checkout" | "Bidding";
+  orderType: "Checkout" | "Bidding";
+  paymentSlipStatus: "Pending" | "Approve" | "Decline";
+  paymentSlipUrl?: string;
   onUpdated: () => void;
 };
 
@@ -29,6 +31,8 @@ export default function OrderStatusDropdown({
   value,
   orderId,
   orderType,
+  paymentSlipStatus,
+  paymentSlipUrl,
   onUpdated,
 }: Props) {
   const [open, setOpen] = useState(false);
@@ -40,89 +44,88 @@ export default function OrderStatusDropdown({
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   /* ================= STATUS CONFIG ================= */
-const statusConfig: Record<
-  OrderStatus,
-  { label: string; btnClass: string; apiValue: number }
-> = {
-  "Order Submitted": {
-    label: "Order Submitted",
-    btnClass: "bg-gray-400 text-white",
-    apiValue: 0,
-  },
-  "Sales Agreement": {
-    label: "Sales Agreement",
-    btnClass: "bg-cyan-500 text-white",
-    apiValue: 1,
-  },
-  "Awaiting Invoice": {
-    label: "Awaiting Invoice",
-    btnClass: "bg-purple-500 text-white",
-    apiValue: 2,
-  },
-  "Settle Payment": {
-    label: "Settle Payment",
-    btnClass: "bg-orange-500 text-white",
-    apiValue: 3,
-  },
-  "Confirmation": {
-    label: "Confirmation",
-    btnClass: "bg-yellow-400 text-black",
-    apiValue: 4,
-  },
-  "Processing": {
-    label: "Processing",
-    btnClass: "bg-blue-500 text-white",
-    apiValue: 5,
-  },
-  "Shipping": {
-    label: "Shipping",
-    btnClass: "bg-indigo-500 text-white",
-    apiValue: 6,
-  },
-  "In Transit": {
-    label: "In Transit",
-    btnClass: "bg-indigo-600 text-white",
-    apiValue: 7,
-  },
-  "Delivered": {
-    label: "Delivered",
-    btnClass: "bg-green-500 text-white",
-    apiValue: 8,
-  },
-  "Cancelled": {
-    label: "Cancelled",
-    btnClass: "bg-red-500 text-white",
-    apiValue: 9,
-  },
-};
-const current = statusConfig[value] ?? statusConfig["Order Submitted"];
+  const statusConfig: Record<
+    OrderStatus,
+    { label: string; btnClass: string; apiValue: number }
+  > = {
+    "Order Submitted": {
+      label: "Order Submitted",
+      btnClass: "bg-gray-400 text-white",
+      apiValue: 0,
+    },
+    "Sales Agreement": {
+      label: "Sales Agreement",
+      btnClass: "bg-cyan-500 text-white",
+      apiValue: 1,
+    },
+    "Awaiting Invoice": {
+      label: "Awaiting Invoice",
+      btnClass: "bg-purple-500 text-white",
+      apiValue: 2,
+    },
+    "Settle Payment": {
+      label: "Settle Payment",
+      btnClass: "bg-orange-500 text-white",
+      apiValue: 3,
+    },
+    Confirmation: {
+      label: "Confirmation",
+      btnClass: "bg-yellow-400 text-black",
+      apiValue: 4,
+    },
+    Processing: {
+      label: "Processing",
+      btnClass: "bg-blue-500 text-white",
+      apiValue: 5,
+    },
+    Shipping: {
+      label: "Shipping",
+      btnClass: "bg-indigo-500 text-white",
+      apiValue: 6,
+    },
+    "In Transit": {
+      label: "In Transit",
+      btnClass: "bg-indigo-600 text-white",
+      apiValue: 7,
+    },
+    Delivered: {
+      label: "Delivered",
+      btnClass: "bg-green-500 text-white",
+      apiValue: 8,
+    },
+    Cancelled: {
+      label: "Cancelled",
+      btnClass: "bg-red-500 text-white",
+      apiValue: 9,
+    },
+  };
+  const current = statusConfig[value] ?? statusConfig["Order Submitted"];
 
   /* ================= MOBILE CHECK ================= */
   const isMobile = typeof window !== "undefined" && window.innerWidth < 992;
 
   /* ================= OPEN ================= */
-const openAccordion = () => {
-  if (!btnRef.current) return;
+  const openAccordion = () => {
+    if (!btnRef.current) return;
 
-  const rect = btnRef.current.getBoundingClientRect();
-  const dropdownHeight = 280; // approx
-  const margin = 8;
+    const rect = btnRef.current.getBoundingClientRect();
+    const dropdownHeight = 280; // approx
+    const margin = 8;
 
-  let top = rect.top - dropdownHeight - margin;
-  let left = rect.left;
+    let top = rect.top - dropdownHeight - margin;
+    let left = rect.left;
 
-  if (top < margin) {
-    top = rect.bottom + margin; // niche khule
-  }
+    if (top < margin) {
+      top = rect.bottom + margin; // niche khule
+    }
 
-  if (left + 200 > window.innerWidth) {
-    left = window.innerWidth - 210;
-  }
+    if (left + 200 > window.innerWidth) {
+      left = window.innerWidth - 210;
+    }
 
-  setPos({ top, left });
-  setOpen(true);
-};
-
+    setPos({ top, left });
+    setOpen(true);
+  };
 
   /* ================= CLICK OUTSIDE ================= */
   useEffect(() => {
@@ -165,23 +168,20 @@ const openAccordion = () => {
   };
 
   /* ================= STATUS LIST ================= */
-const baseStatuses: OrderStatus[] = [
-  "Order Submitted",
-  "Sales Agreement",
-  "Awaiting Invoice",
-  "Settle Payment",
-  "Confirmation",
-  "Processing",
-  "Shipping",
-  "In Transit",
-  "Delivered",
-  "Cancelled",
-];
+  const baseStatuses: OrderStatus[] = [
+    "Order Submitted",
+    "Sales Agreement",
+    "Awaiting Invoice",
+    "Settle Payment",
+    "Confirmation",
+    "Processing",
+    "Shipping",
+    "In Transit",
+    "Delivered",
+    "Cancelled",
+  ];
 
-const allStatuses =
-  orderType === "Checkout"
-    ? baseStatuses.filter((s) => s !== "Awaiting Invoice")
-    : baseStatuses;
+  const allStatuses = baseStatuses;
 
   return (
     <>
@@ -237,33 +237,46 @@ const allStatuses =
               overflow-hidden
             "
           >
-                  {allStatuses.map((status) => {
-                    if (!statusConfig[value]) return null;
-                    const currentValue =
-  statusConfig[value as OrderStatus]?.apiValue ??
-  statusConfig["Order Submitted"].apiValue;
-                 const targetValue =
-  statusConfig[status]?.apiValue ??
-  statusConfig["Order Submitted"].apiValue;
-                    const isCurrent = status === value;
-                    const isBackward = targetValue < currentValue;
-                    const isDelivered = value === "Delivered";
-                    const isCancelled = status === "Cancelled";
-                    const isFinalStage =
-  value === "Delivered" || value === "Cancelled";
+            {allStatuses.map((status) => {
+              if (!statusConfig[value]) return null;
+              const currentValue =
+                statusConfig[value as OrderStatus]?.apiValue ??
+                statusConfig["Order Submitted"].apiValue;
+              const targetValue =
+                statusConfig[status]?.apiValue ??
+                statusConfig["Order Submitted"].apiValue;
+              const isCurrent = status === value;
+              const isBackward = targetValue < currentValue;
+              const isDelivered = value === "Delivered";
+              const isCancelled = status === "Cancelled";
+              const isFinalStage =
+                value === "Delivered" || value === "Cancelled";
 
-                    const cancelBlocked =
-  isCancelled && currentValue >= statusConfig["Shipping"].apiValue;
+              const cancelBlocked =
+                isCancelled &&
+                currentValue >= statusConfig["Shipping"].apiValue;
 
- const disabled =
-  isCurrent || isBackward || isFinalStage || cancelBlocked;
+              // const disabled =
+              //   isCurrent || isBackward || isFinalStage || cancelBlocked;
+              const settleValue = statusConfig["Settle Payment"].apiValue;
 
-                    return (
-                      <button
-                        key={status}
-                        disabled={disabled || updating}
-                        onClick={() => handleChange(status)}
-                        className={`
+              const slipNotUploaded =
+                !paymentSlipUrl || paymentSlipUrl.trim() === "";
+              const isAfterSettle = targetValue > settleValue;
+              const blockAfterSettle = slipNotUploaded && isAfterSettle;
+
+              const disabled =
+                isCurrent ||
+                isBackward ||
+                isFinalStage ||
+                cancelBlocked ||
+                blockAfterSettle;
+              return (
+                <button
+                  key={status}
+                  disabled={disabled || updating}
+                  onClick={() => handleChange(status)}
+                  className={`
               w-full px-4 py-3
               flex justify-between items-center
               text-sm border-b last:border-b-0 border-light-gray

@@ -14,6 +14,7 @@ export type AdminSettingsData = {
   linkedin: string;
   white_logo: string;
   dark_logo: string;
+  bank_details: string;
 };
 
 export type AdminSettingsResponse = {
