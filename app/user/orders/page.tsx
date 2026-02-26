@@ -278,15 +278,10 @@ export default function MyBuyOrders() {
 
 
             return (
-              <Accordion
-                key={data.order_id}
-                open={openOrderId === data.order_id}
-                onToggle={() =>
-                  setOpenOrderId((prev) =>
-                    prev === data.order_id ? null : data.order_id,
-                  )
-                }
-                header={
+             <div
+              key={data.order_id}
+              className="border border-[#E9E9E9] rounded-[14px] overflow-hidden mb-6"
+            >
                   <div className="p-[15px]">
                     <div className="grid grid-cols-12 items-center gap-5">
                       <div className="col-span-12 lg:col-span-7 lg:flex gap-5 items-center">
@@ -356,10 +351,8 @@ export default function MyBuyOrders() {
                       </div>
                     </div>
                   </div>
-                }
-              >
                 {/* ================= BODY ================= */}
-
+               <div className="border-t px-6 py-6 bg-white border-light-gray">
                 <div className="flex justify-between mb-10 flex-wrap gap-5">
                   <div>
                     <h3 className="text-xl font-medium">Order ID</h3>
@@ -385,11 +378,11 @@ export default function MyBuyOrders() {
                     </div>
                   </div>
                 </div>
-
+               </div>
                 {/* ================= TIMELINE ================= */}
 
                 <div
-                  className="relative z-20 flex flex-col lg:grid "
+                  className="relative z-20 flex flex-col lg:grid pb-3"
                   style={{
                     gridTemplateColumns:
                       typeof window !== "undefined"
@@ -502,7 +495,7 @@ export default function MyBuyOrders() {
                     );
                   })}
                 </div>
-              </Accordion>
+              </div>
             );
           })}
         </div>

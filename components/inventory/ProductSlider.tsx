@@ -28,6 +28,7 @@ export default function ProductSlider({ data }: ProductSliderProps) {
 
   return (
     <>
+    <div className="group">
       {/* ================= MAIN SLIDER ================= */}
       <div className="border border-light-gray  rounded-[15px] mb-[25px]">
         <Swiper
@@ -114,7 +115,7 @@ export default function ProductSlider({ data }: ProductSliderProps) {
           nextEl: ".thumb-next",
           prevEl: ".thumb-prev",
         }}
-        className="mb-[30px]"
+        className="mb-[30px] relative rounded-xl"
         breakpoints={{
           0: { slidesPerView: 2 },
           480: { slidesPerView: 4 },
@@ -128,7 +129,7 @@ export default function ProductSlider({ data }: ProductSliderProps) {
               className="
             relative
             border border-light-gray
-            w-[98px] h-[98px]
+            w-full h-[98px]
             2xl:w-[130px] 2xl:h-[130px]
             rounded-xl overflow-hidden
             cursor-pointer
@@ -153,14 +154,31 @@ export default function ProductSlider({ data }: ProductSliderProps) {
             </div>
           </SwiperSlide>
         ))}
-        <div className="thumb-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md w-6 sm:w-7 h-6 sm:h-7 flex items-center justify-center rounded-full cursor-pointer">
-          <MdChevronLeft size={21} />
-        </div>
+        {/* PREV */}
+      <div
+  className="thumb-prev absolute left-0 top-1/2 -translate-y-1/2 z-20
+  h-full w-8 flex items-center justify-center rounded-l-xl
+  bg-gray-100 shadow-md cursor-pointer
+  xl:opacity-0 xl:-translate-x-full
+  group-hover:opacity-100 xl:group-hover:translate-x-0
+  transition-all duration-100 ease-out"
+>
+  <MdChevronLeft size={22} />
+</div>
 
-        <div className="thumb-next absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-white shadow-md w-6 sm:w-7 h-6 sm:h-7 flex items-center justify-center rounded-full cursor-pointer">
-          <MdChevronRight size={21} />
-        </div>
+        {/* NEXT */}
+<div
+  className="thumb-next absolute right-0 top-1/2 -translate-y-1/2 z-20
+  h-full w-8 flex items-center justify-center rounded-r-xl
+  bg-gray-100 shadow-md cursor-pointer
+  xl:opacity-0 xl:translate-x-full
+  group-hover:opacity-100 xl:group-hover:translate-x-0
+  transition-all duration-100 ease-out"
+>
+  <MdChevronRight size={22} />
+</div>
       </Swiper>
+    </div>
     </>
   );
 }
