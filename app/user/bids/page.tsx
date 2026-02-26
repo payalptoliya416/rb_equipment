@@ -239,7 +239,7 @@ export default function Bids() {
         disabled={isLoading}
         onClick={() => {
           setLoadingRowId(row.id);
-          router.push(`/user/bids/bid-details?id=${row.id}`);
+          router.replace(`/user/bids/bid-details?id=${row.id}`);
         }}
         className="cursor-pointer flex items-center justify-center"
       >
@@ -297,7 +297,7 @@ export default function Bids() {
           row={row}
            loading={loadingRowId === row.id}
           onView={() =>
-            router.push(`/user/bids/bid-details?id=${row.id}`)
+            router.replace(`/user/bids/bid-details?id=${row.id}`)
           }
         />
       ))

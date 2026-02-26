@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getSettingsByKeysFooter } from "@/api/categoryActions";
 import Image from "next/image";
@@ -18,15 +18,14 @@ import {
 } from "react-icons/fa";
 
 const menu = [
-  { label: "Dashboard", icon: FaTachometerAlt, href: "/admin/dashboard/" },
-  // { label: "Won User", icon: FaTrophy, href: "/admin/won-user/" },
-  { label: "User Management", icon: FaUsers, href: "/admin/user-management/" },
-  { label: "Machinery", icon: FaBoxes, href: "/admin/machinery/" },
-  { label: "Category", icon: FaTags, href: "/admin/category/" },
-  { label: "Bidding", icon: FaGavel, href: "/admin/bidding/" },
-  { label: "Orders", icon: FaShoppingCart, href: "/admin/orders/" },
-  { label: "Won User", icon: FaTrophy, href: "/admin/won-user/" },
-  { label: "Settings", icon: FaCogs, href: "/admin/settings/" },
+  { label: "Dashboard", icon: FaTachometerAlt, href: "/admin/dashboard" },
+  { label: "User Management", icon: FaUsers, href: "/admin/user-management" },
+  { label: "Machinery", icon: FaBoxes, href: "/admin/machinery" },
+  { label: "Category", icon: FaTags, href: "/admin/category" },
+  { label: "Bidding", icon: FaGavel, href: "/admin/bidding" },
+  { label: "Orders", icon: FaShoppingCart, href: "/admin/orders" },
+  { label: "Won User", icon: FaTrophy, href: "/admin/won-user" },
+  { label: "Settings", icon: FaCogs, href: "/admin/settings" },
 ];
 
 export default function AdminSidebar({
@@ -37,7 +36,6 @@ export default function AdminSidebar({
   onItemClick?: () => void;
 }) {
   const pathname = usePathname();
-  const router = useRouter();
   const [settings, setSettings] = useState<any>(null);
 
   useEffect(() => {
@@ -85,8 +83,11 @@ export default function AdminSidebar({
             const isActive = pathname.startsWith(item.href);
 
             return (
-              <button
+              <Link
                 key={item.label}
+                href={item.href}
+                prefetch
+                  scroll={false}
                 className={`
                   flex items-center gap-[10px]
                   px-4 py-[11px]
@@ -99,19 +100,18 @@ export default function AdminSidebar({
                   }
                 `}
                 onClick={() => {
-                  router.push(item.href);  
-
                   if (mobile && onItemClick) {
-                    onItemClick();        
+                    onItemClick();
                   }
                 }}
               >
                 <Icon
-                  className={`text-base group-hover:text-white ${isActive ? "text-white" : "text-[#7A7A7A]"
-                    }`}
+                  className={`text-base group-hover:text-white ${
+                    isActive ? "text-white" : "text-[#7A7A7A]"
+                  }`}
                 />
                 {item.label}
-              </button>
+              </Link>
             );
           })}
         </div>

@@ -2,11 +2,10 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import { Disclosure } from "@headlessui/react";
-import { Listbox, Transition } from "@headlessui/react";
 import { FaChevronDown } from "react-icons/fa";
 import { HiMiniBars3BottomLeft } from "react-icons/hi2";
 import { Category } from "@/api/data";
@@ -24,7 +23,6 @@ import { formatPrice } from "@/hooks/formate";
 export default function InventoryFilter({}: {}) {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
-
   const categorySlugsFromUrl = categoryParam ? categoryParam.split(",") : [];
   const min = 1990;
   const max = new Date().getFullYear();
@@ -76,6 +74,20 @@ export default function InventoryFilter({}: {}) {
       .trim()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
+
+      useEffect(() => {
+  products.forEach((product) => {
+    if (!product.is_purchase) {
+      const categorySlug = slugify(product.category?.category_name ?? "");
+      const makeSlug = slugify(product.make ?? "");
+      const modelSlug = slugify(product.model ?? "");
+      const auction_id = product.auction_id;
+
+      const url = `/inventory/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`;
+      router.prefetch(url);
+    }
+  });
+}, [products]);
 
   useEffect(() => {
     window.scrollTo({
@@ -804,6 +816,7 @@ const fetchMachinery = async () => {
                     <Link
                       key={product.id}
                       href={friendlyUrl}
+                      prefetch={true}
                       className="block h-full"
                     >
                       <div

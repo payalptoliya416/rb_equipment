@@ -205,7 +205,7 @@ export default function Machinery() {
               className="text-[#EDB423] cursor-pointer"
               size={18}
               onClick={() => {
-                router.push(`/admin/machinery/add?id=${row.id}`);
+               router.replace(`/admin/machinery/add?id=${row.id}`);
               }}
             />
           </TooltipWrapper>
@@ -320,7 +320,7 @@ export default function Machinery() {
         </div>
 
         <button
-          onClick={() => router.push("/admin/machinery/add")}
+          onClick={() => router.replace("/admin/machinery/add")}
           className=" gradient-btn px-5 py-[12px] text-sm text-white rounded-lg cursor-pointer transition-all duration-200 ease-in-out
         hover:brightness-110 hover:shadow-md active:brightness-90 active:scale-95"
         >
@@ -339,7 +339,7 @@ export default function Machinery() {
             <MachineryMobileCard
               key={item.id}
               item={item}
-              onEdit={() => router.push(`/admin/machinery/add?id=${item.id}`)}
+              onEdit={() => router.replace(`/admin/machinery/add?id=${item.id}`)}
               onDelete={() => setDeleteId(item.id)}
             />
           ))}

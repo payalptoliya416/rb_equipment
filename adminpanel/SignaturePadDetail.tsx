@@ -338,7 +338,7 @@ function SignaturePadDetail() {
     };
 
     localStorage.setItem("wonBidUserOut", JSON.stringify(payload));
-    router.push(`/user/won-bids/signaturepad/agreement/?id=${id}`);
+   router.replace(`/user/won-bids/signaturepad/agreement/?id=${id}`);
   };
   const DeliveryCostBox = () => (
     <div className="mt-5 p-4 rounded-xl border bg-gray-50 border-light-gray">
@@ -398,7 +398,7 @@ function SignaturePadDetail() {
         </h1>
         <p className="text-sm text-[#7A7A7A] mb-[15px]">
           <span
-            onClick={() => router.push("/user/won-bids")}
+            onClick={() => router.replace("/user/won-bids")}
             className="cursor-pointer"
           >
             My Won Bids

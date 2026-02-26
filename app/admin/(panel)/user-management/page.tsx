@@ -241,7 +241,7 @@ const fetchUsers = async () => {
        <div className="flex items-center">
      <TooltipWrapper content="View user">
         <button
-          onClick={() => router.push(`/admin/user-management/user-license?id=${r.id}`)}
+          onClick={() => router.replace(`/admin/user-management/user-license?id=${r.id}`)}
           className="w-9 h-9 flex items-center justify-center rounded-full text-blue-500 transition cursor-pointer">
           <HiOutlineEye size={18} />
         </button>
@@ -249,7 +249,7 @@ const fetchUsers = async () => {
 
      <TooltipWrapper content="Edit user">
         <button
-          onClick={() => router.push(`/admin/user-management/add?id=${r.id}`)}
+          onClick={() => router.replace(`/admin/user-management/add?id=${r.id}`)}
           className="w-9 h-9 flex items-center justify-center rounded-full text-yellow-500 transition cursor-pointer">
           <BiEdit size={18} />
         </button>
@@ -304,9 +304,9 @@ const fetchUsers = async () => {
           <UserMobileCard
             key={user.id}
             user={user}
-            onEdit={() => router.push(`/admin/user-management/add?id=${user.id}`)}
+            onEdit={() => router.replace(`/admin/user-management/add?id=${user.id}`)}
             onView={() =>
-              router.push(`/admin/user-management/user-license?id=${user.id}`)
+              router.replace(`/admin/user-management/user-license?id=${user.id}`)
             }
             onDelete={() => setDeleteId(user.id)}
             onUpdated={fetchUsers}

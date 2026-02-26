@@ -240,7 +240,7 @@ export default function MyWonBids() {
         disabled={isLoading}
         onClick={() => {
           setLoadingRowId(row.id);
-          router.push(`/user/won-bids/signaturepad?id=${row.id}`);
+          router.replace(`/user/won-bids/signaturepad?id=${row.id}`);
         }}
         className="cursor-pointer flex items-center justify-center"
       >
@@ -299,7 +299,7 @@ export default function MyWonBids() {
           row={row}
           loading={loadingRowId === row.id}
           onView={() =>
-            router.push(`/user/won-bids/signaturepad?id=${row.id}`)
+            router.replace(`/user/won-bids/signaturepad?id=${row.id}`)
           }
         />
       ))

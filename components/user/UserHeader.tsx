@@ -79,7 +79,7 @@ const [userName, setUserName] = useState<string>("User");
   setOpen(false);
   clearToken();
   localStorage.removeItem("userdata");
-  router.push("/user/signin");
+  router.replace("/user/signin");
 };
 
 useEffect(() => {
@@ -179,7 +179,7 @@ useEffect(() => {
 
   const handleMenuNavigate = (path: string) => {
   setOpen(false);
-  router.push(path);
+  router.replace(path);
 };
   if (!isHeaderReady) {
     return <FullPageLoader />;

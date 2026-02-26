@@ -169,7 +169,7 @@ export default function BiddingManagement() {
           <TooltipWrapper content="View bidding details">
             <button
               onClick={() =>
-                router.push(`/admin/bidding/bidding-list?id=${r.id}`)
+                router.replace(`/admin/bidding/bidding-list?id=${r.id}`)
               }
               className="w-9 h-9 flex items-center justify-center rounded-full text-[#3C97FF] cursor-pointer"
             >
@@ -220,7 +220,7 @@ export default function BiddingManagement() {
               key={item.id}
               item={item}
               onEdit={() =>
-                router.push(`/admin/bidding/bidding-list?id=${item.id}`)
+                router.replace(`/admin/bidding/bidding-list?id=${item.id}`)
               }
             />
           ))}

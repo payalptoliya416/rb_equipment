@@ -34,7 +34,7 @@ export default function UserDashboardNav() {
             return (
               <button
                 key={item.name}
-                onClick={() => router.push(item.href)}
+                onClick={() => router.replace(item.href)}
                 className={`
                   text-white
                   rounded-lg

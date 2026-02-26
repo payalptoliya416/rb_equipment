@@ -51,7 +51,7 @@ useEffect(() => {
       toast.success(res.message || "Login successful");
 
       // ✅ Redirect to dashboard
-      router.push("/admin/dashboard");
+      router.replace("/admin/dashboard");
     } catch (error : any) {
        toast.error(error.message || "Login failed");
     } finally {

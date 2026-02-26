@@ -100,7 +100,7 @@ const checkLoginAndLicense = async (): Promise<boolean> => {
     loginRes = await loginCheck();
   } catch (err) {
     toast.error(MESSAGES.LOGIN_REQUIRED);
-    router.push(`/user/signin?returnUrl=${encodeURIComponent(returnUrl)}`);
+    router.replace(`/user/signin?returnUrl=${encodeURIComponent(returnUrl)}`);
     return false;
   }
 
@@ -111,7 +111,7 @@ const checkLoginAndLicense = async (): Promise<boolean> => {
     !loginRes.is_logged_in
   ) {
     toast.error(MESSAGES.LOGIN_REQUIRED);
-    router.push(`/user/signin?returnUrl=${encodeURIComponent(returnUrl)}`);
+    router.replace(`/user/signin?returnUrl=${encodeURIComponent(returnUrl)}`);
     return false;
   }
 
@@ -119,7 +119,7 @@ const checkLoginAndLicense = async (): Promise<boolean> => {
 
   if (!licenseRes.is_upload) {
     toast.error(MESSAGES.LICENSE_REQUIRED);
-    router.push(
+    router.replace(
       `/verify-account?returnUrl=${encodeURIComponent(
         returnUrl
       )}`
@@ -130,7 +130,7 @@ const checkLoginAndLicense = async (): Promise<boolean> => {
   if (licenseRes.is_reject) {
     toast.error(MESSAGES.LICENSE_REJECTED);
     setTimeout(() => {
-      router.push(
+      router.replace(
         `/verify-account?returnUrl=${encodeURIComponent(
           returnUrl
         )}`
@@ -172,7 +172,7 @@ const handlePlaceBid = async () => {
     onBidSuccess();
   } catch (err: any) {
     if (isAuthError(err)) {
-      router.push(`/user/signin?returnUrl=${encodeURIComponent(returnUrl)}`);
+      router.replace(`/user/signin?returnUrl=${encodeURIComponent(returnUrl)}`);
       return;
     }
     toast.error(err?.message || MESSAGES.BID_FAILED);
@@ -206,7 +206,7 @@ const handlePlaceBid = async () => {
         machineryId.toString()
       );
 
-      router.push(checkoutUrl);
+      router.replace(checkoutUrl);
 
     } catch (err: any) {
       toast.error(err?.message || MESSAGES.PURCHASE_FAILED);

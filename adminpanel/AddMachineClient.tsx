@@ -191,7 +191,7 @@ export default function AddMachineClient() {
         });
       } catch {
         toast.error("Failed to load machinery");
-        router.push("/admin/machinery");
+        router.replace("/admin/machinery");
       } finally {
         setLoading(false);
       }
@@ -326,7 +326,7 @@ const handleSubmit = async (values: any) => {
 
     if (res?.status) {
       toast.success(res.message || "Machinery saved successfully");
-      router.push("/admin/machinery");
+      router.replace("/admin/machinery");
     }
   } catch (error) {
     console.error(error);

@@ -93,7 +93,7 @@ function SaleAgreement() {
   const redirectToSignin = (router: any) => {
     toast.error("Please login to continue");
 
-    router.push(
+    router.replace(
       `/user/signin?returnUrl=${encodeURIComponent(window.location.pathname)}`,
     );
   };
@@ -222,7 +222,7 @@ function SaleAgreement() {
         toast.success(res.message);
         localStorage.removeItem("checkoutData");
 
-        router.push(
+       router.replace(
           `/confirmation/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`,
         );
       } else {

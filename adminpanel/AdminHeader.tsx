@@ -149,7 +149,7 @@ export default function AdminHeader({
                     <span key={idx} className="inline-flex items-center">
                       {idx === 0 ? (
                         <span
-                          onClick={() => router.push("/admin/" + seg)}
+                          onClick={() => router.replace("/admin/" + seg)}
                           className="cursor-pointer hover:text-[#0A7F71] font-medium"
                         >
                           {label}
@@ -218,7 +218,7 @@ export default function AdminHeader({
                   <button
                     onClick={() => {
                       setOpen(false);
-                      router.push("/admin/settings");
+                      router.replace("/admin/settings");
                     }}
                     className="w-full text-left px-4 py-2 text-sm
           hover:bg-gray-100 cursor-pointer"

@@ -53,18 +53,16 @@ function MobileNavItem({
         className="flex justify-between items-center w-full"
         style={{ paddingLeft: `${level * 14 + 8}px` }}
       >
-        {/* ✅ TEXT CLICK */}
         <button
           onClick={() => {
-            // ✅ Inventory click → Page open
             if (level === 1 && hasChildren) {
               const categories = item.submenu
                 ?.map((sub) => sub.path.split("category=")[1])
                 .filter(Boolean)
                 .join(",");
 
-              router.push(`/inventory?category=${categories}`);
-              router.refresh();
+              router.replace(`/inventory?category=${categories}`);
+            
               closeMenu();
               return;
             }
@@ -74,14 +72,12 @@ function MobileNavItem({
               if (item.path === "#") {
                 url = `/inventory?category=${slugify(item.name)}`;
               }
-               router.push(url);
-              router.refresh();
+               router.replace(url);
               closeMenu();
               return;
             }
 
-            router.push(item.path);
-            router.refresh();
+            router.replace(item.path);
             closeMenu();
           }}
           className={`
@@ -99,7 +95,6 @@ function MobileNavItem({
           {item.name}
         </button>
 
-        {/* ✅ PLUS ICON FOR ALL SUBMENU GROUPS */}
         {hasChildren && level !== 0 && (
           <button
             onClick={(e) => {
@@ -113,7 +108,6 @@ function MobileNavItem({
           </button>
         )}
 
-        {/* ✅ PLUS ICON FOR INVENTORY ALSO */}
         {hasChildren && level === 0 && (
           <button
             onClick={(e) => {
@@ -128,7 +122,6 @@ function MobileNavItem({
         )}
       </div>
 
-      {/* ✅ SUBMENU */}
       {hasChildren && open && (
         <ul className="mt-1 flex flex-col gap-1">
           {item.submenu?.map((sub) => (
@@ -297,6 +290,12 @@ function Header() {
     setLoggedIn(isLoggedIn());
   }, [pathname]);
 
+  useEffect(() => {
+    navItems.forEach((item) => {
+      router.prefetch(item.path);
+    });
+  }, []);
+
   const hasBgImage =
     (pathname !== "/inventory" &&
       pathname !== "/inventory/" &&
@@ -334,7 +333,6 @@ function Header() {
             />
           )}
         </Link>
-        {/* Desktop & Tablet Navbar */}
         <ul className="hidden lg:flex justify-center items-center gap-8 md:gap-12">
           {navItems.map((item) => (
             <li
@@ -350,9 +348,8 @@ function Header() {
                 setClickedGroup(null);
               }}
             >
-              {/* ✅ Inventory Name Click → Page Open */}
               <button
-                onClick={() => router.push(item.path)}
+                onClick={() =>router.replace(item.path)}
                 className={`text-base font-medium text-gray-700 hover:text-orange cursor-pointer relative
                 after:content-[''] after:absolute after:-bottom-1
                 after:left-1/2 after:-translate-x-1/2
@@ -373,11 +370,10 @@ function Header() {
                 {item.name}
               </button>
 
-              {/* ✅ Dropdown Icon Click → Open Dropdown */}
               {(item.submenu?.length ?? 0) > 0 && (
                 <button
                   onClick={(e) => {
-                    e.stopPropagation(); // prevent inventory click
+                    e.stopPropagation(); 
                     e.preventDefault();
                     setOpenDropdown(
                       openDropdown === item.name ? null : item.name,
@@ -438,7 +434,6 @@ function Header() {
                               let url = "";
 
                               if (hasSubmenu) {
-                                // Multiple categories
                                 const categories = group.submenu
                                   ?.map((sub) => sub.path.split("category=")[1])
                                   .filter(Boolean)
@@ -446,7 +441,6 @@ function Header() {
 
                                 url = `/inventory?category=${categories}`;
                               } else {
-                                // ✅ No submenu → use group name
                                 url = `/inventory?category=${slugify(group.name)}`;
                               }
 
@@ -455,8 +449,7 @@ function Header() {
                               setActiveGroup(null);
                               setClickedGroup(null);
 
-                              router.push(url);
-                              router.refresh();
+                             router.replace(url);
                               setTimeout(() => setDisableHover(false), 300);
                             }}
                             className="
@@ -474,7 +467,6 @@ function Header() {
                             )}
                           </button>
 
-                          {/* ✅ Right Side Submenu */}
                           {hasSubmenu && (
                             <ul
                               className={`
@@ -497,8 +489,7 @@ function Header() {
                                       setOpenDropdown(null);
                                       setActiveGroup(null);
                                       setClickedGroup(null);
-                                      router.push(subItem.path);
-                                      router.refresh();
+                                      router.replace(subItem.path);
                                     }}
                                     className="
                                         block w-full text-left py-2
@@ -537,7 +528,6 @@ function Header() {
           </Link>
         )}
 
-        {/* Hamburger Icon for Mobile */}
         <button
           ref={buttonRef}
           className="lg:hidden focus:outline-none cursor-pointer"
@@ -547,12 +537,10 @@ function Header() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
       <div
         ref={menuRef}
         className={`lg:hidden ${isMenuOpen ? "block" : "hidden"}`}
       >
-        {/* Overlay */}
         <div
           className={`lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300
             ${
@@ -563,7 +551,6 @@ function Header() {
           `}
           onClick={handleCloseMenu}
         ></div>
-        {/* Sidebar Menu */}
         <div
           ref={menuRef}
           className={`
@@ -584,7 +571,6 @@ function Header() {
               />
             )}
           </Link>
-          {/* Close Button */}
           <button
             onClick={handleCloseMenu}
             className="absolute top-2 right-2 text-white text-2xl bg-orange rounded-full p-[2px] cursor-pointer"

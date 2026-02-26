@@ -151,7 +151,7 @@ export default function WonUser() {
       render: (row) => (
         <TooltipWrapper content="View won user">
           <button
-            onClick={() =>router.push(`/admin/won-user/won-user-details/?id=${row.id}`)}
+            onClick={() =>router.replace(`/admin/won-user/won-user-details/?id=${row.id}`)}
             className="w-9 h-9 flex items-center justify-center rounded-full 
                    text-blue-500 cursor-pointer">
             <HiOutlineEye size={18} />
@@ -197,7 +197,7 @@ export default function WonUser() {
               key={item.id}
               item={item}
               onView={() =>
-                router.push(`/admin/won-user/won-user-details/?id=${item.id}`)
+                router.replace(`/admin/won-user/won-user-details/?id=${item.id}`)
               }
             />
           ))}

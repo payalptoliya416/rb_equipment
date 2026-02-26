@@ -342,8 +342,8 @@ export default function AdminOrder() {
             key={order.id}
             order={order}
             onUpdated={fetchOrders}
-            onView={() => router.push(`/admin/orders/view?id=${order.id}`)}
-            onEdit={() => router.push(`/admin/orders/edit?id=${order.id}`)}
+            onView={() => router.replace(`/admin/orders/view?id=${order.id}`)}
+            onEdit={() => router.replace(`/admin/orders/edit?id=${order.id}`)}
             onDelete={() => console.log("delete")}
             onOpenPaymentSlip={(order) =>
               setSlipModal({

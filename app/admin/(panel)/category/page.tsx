@@ -177,7 +177,7 @@ export default function AdminCategory() {
             <BiEdit
               className="text-[#EDB423] cursor-pointer"
               size={18}
-              onClick={() => router.push(`/admin/category/add?id=${row.id}`)}
+              onClick={() => router.replace(`/admin/category/add?id=${row.id}`)}
             />
           </TooltipWrapper>
           <TooltipWrapper content="Delete category">
@@ -217,7 +217,7 @@ export default function AdminCategory() {
         <button
           className="gradient-btn px-5 py-[12px] text-sm text-white rounded-lg cursor-pointer transition-all duration-200 ease-in-out
         hover:brightness-110 hover:shadow-md active:brightness-90 active:scale-95"
-          onClick={() => router.push("/admin/category/add")}
+          onClick={() => router.replace("/admin/category/add")}
         >
           + Add Category
         </button>
@@ -239,7 +239,7 @@ export default function AdminCategory() {
             <CategoryMobileCard
               key={item.id}
               item={item}
-              onEdit={() => router.push(`/admin/category/add?id=${item.id}`)}
+              onEdit={() => router.replace(`/admin/category/add?id=${item.id}`)}
               onDelete={() => setDeleteId(item.id)}
             />
           ))}
