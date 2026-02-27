@@ -5,10 +5,16 @@ import { Category } from "@/api/data";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Loader from "../common/Loader";
+import { usePathname } from "next/navigation";
 
 function Equipment() {
 const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
+  const pathname = usePathname();
+const [isNavigating, setIsNavigating] = useState(false);
+useEffect(() => {
+  setIsNavigating(false);
+}, [pathname]);
 const slugify = (text: string) =>
   text
     .toLowerCase()
@@ -44,6 +50,11 @@ const slugify = (text: string) =>
 
   return (
     <>
+    {isNavigating && (
+  <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white">
+    <Loader />
+  </div>
+)}
     { !categories.length  ?  <section className="container-custom mx-auto py-[50px]"></section> : 
     
     <section className="container-custom mx-auto my-20 lg:my-[110px]">
@@ -65,7 +76,7 @@ const slugify = (text: string) =>
                 key={item.id}
                 className="bg-green p-[15px] rounded-xl cursor-pointer "
               >
-                <Link href={`/inventory?category=${categorySlug}`} className="flex flex-col justify-between h-full">
+                <Link href={`/inventory?category=${categorySlug}`} className="flex flex-col justify-between h-full" onClick={() => setIsNavigating(true)}>
                <div className="rounded-xl overflow-hidden flex justify-center">
                   {/* <Image
                     src={item.image_url}

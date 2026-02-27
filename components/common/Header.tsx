@@ -9,11 +9,12 @@ import { Category } from "@/api/data";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { HiBars3BottomRight, HiMiniMinus, HiMiniPlus } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
 import { MdChevronRight } from "react-icons/md";
+import Loader from "./Loader";
 
 type NavItem = {
   name: string;
@@ -29,6 +30,7 @@ function MobileNavItem({
   resetKey,
   pathname,
   slugify,
+  handleNavigate
 }: {
   item: NavItem;
   router: any;
@@ -37,6 +39,7 @@ function MobileNavItem({
   resetKey: number;
   pathname: string;
   slugify: (text: string) => string;
+  handleNavigate: (url: string) => void;
 }) {
   const [open, setOpen] = useState(false);
 
@@ -61,7 +64,7 @@ function MobileNavItem({
                 .filter(Boolean)
                 .join(",");
 
-              router.replace(`/inventory?category=${categories}`);
+              handleNavigate(`/inventory?category=${categories}`);
             
               closeMenu();
               return;
@@ -72,12 +75,12 @@ function MobileNavItem({
               if (item.path === "#") {
                 url = `/inventory?category=${slugify(item.name)}`;
               }
-               router.replace(url);
+               handleNavigate(url);
               closeMenu();
               return;
             }
 
-            router.replace(item.path);
+            handleNavigate(item.path);
             closeMenu();
           }}
           className={`
@@ -134,6 +137,7 @@ function MobileNavItem({
               resetKey={resetKey}
               pathname={pathname}
               slugify={slugify}
+              handleNavigate={handleNavigate}
             />
           ))}
         </ul>
@@ -152,14 +156,20 @@ const inventoryGroups: Record<string, string[]> = {
   "Farm Tractors": [],
 };
 
-function Header() {
+function Header({
+  categories,
+  settings,
+}: {
+  categories: Category[];
+  settings: any;
+}) {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const [loggedIn, setLoggedIn] = useState(false);
   const router = useRouter();
-  const [categories, setCategories] = useState<Category[]>([]);
+  // const [categories, setCategories] = useState<Category[]>([]);
   const [resetKey, setResetKey] = useState(0);
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
   const [clickedGroup, setClickedGroup] = useState<string | null>(null);
@@ -172,6 +182,11 @@ function Header() {
       .replace(/^-+|-+$/g, "");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [disableHover, setDisableHover] = useState(false);
+const handleNavigate = (url: string) => {
+  if (pathname !== url) {
+    router.push(url, { scroll: true });
+  }
+};
   useEffect(() => {
     function close(e: MouseEvent) {
       if (!(e.target as HTMLElement).closest(".dropdown-parent")) {
@@ -183,7 +198,24 @@ function Header() {
     return () => document.removeEventListener("click", close);
   }, []);
 
-  const inventorySubmenu: NavItem[] = Object.entries(inventoryGroups).map(
+  // const inventorySubmenu: NavItem[] = Object.entries(inventoryGroups).map(
+  //   ([groupName, children]) => {
+  //     const matched = categories.filter((cat) =>
+  //       children.includes(cat.category_name),
+  //     );
+
+  //     return {
+  //       name: groupName,
+  //       path: "#",
+  //       submenu: matched.map((cat) => ({
+  //         name: cat.category_name,
+  //         path: `/inventory?category=${slugify(cat.category_name)}`,
+  //       })),
+  //     };
+  //   },
+  // );
+const inventorySubmenu: NavItem[] = useMemo(() => {
+  return Object.entries(inventoryGroups).map(
     ([groupName, children]) => {
       const matched = categories.filter((cat) =>
         children.includes(cat.category_name),
@@ -199,8 +231,22 @@ function Header() {
       };
     },
   );
+}, [categories]);
 
-  const navItems: NavItem[] = [
+  // const navItems: NavItem[] = [
+  //   { name: "Home", path: "/" },
+  //   {
+  //     name: "Inventory",
+  //     path: "/inventory",
+  //     submenu: inventorySubmenu,
+  //   },
+  //   { name: "About Us", path: "/about-us" },
+  //   { name: "Services", path: "/services" },
+  //   { name: "FAQ", path: "/faq" },
+  //   { name: "Contact Us", path: "/contact-us" },
+  // ];
+
+    const navItems: NavItem[] = useMemo(() => [
     { name: "Home", path: "/" },
     {
       name: "Inventory",
@@ -211,7 +257,7 @@ function Header() {
     { name: "Services", path: "/services" },
     { name: "FAQ", path: "/faq" },
     { name: "Contact Us", path: "/contact-us" },
-  ];
+  ], [inventorySubmenu]);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -247,40 +293,28 @@ function Header() {
     setIsMenuOpen(false);
   }, [pathname]);
 
-  const [settings, setSettings] = useState<any>(null);
-  const getGroupCategoryUrl = (group: NavItem) => {
-    if (!group.submenu || group.submenu.length === 0) {
-      return `/inventory?category=${slugify(group.name)}`;
-    }
+  // const [settings, setSettings] = useState<any>(null);
 
-    const categories = group.submenu
-      .map((sub) => sub.path.split("category=")[1])
-      .filter(Boolean)
-      .join(",");
+  // useEffect(() => {
+  //   getSettingsByKeysFooter().then((res) => {
+  //     if (res.success) {
+  //       setSettings(res.data);
+  //     }
+  //   });
+  // }, []);
 
-    return `/inventory?category=${categories}`;
-  };
+  // useEffect(() => {
+  //   const fetchCategories = async () => {
+  //     try {
+  //       const res = await getAllCategories();
+  //       if (res?.success) {
+  //         setCategories(res.data);
+  //       }
+  //     } catch (e) {}
+  // //   };
 
-  useEffect(() => {
-    getSettingsByKeysFooter().then((res) => {
-      if (res.success) {
-        setSettings(res.data);
-      }
-    });
-  }, []);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const res = await getAllCategories();
-        if (res?.success) {
-          setCategories(res.data);
-        }
-      } catch (e) {}
-    };
-
-    fetchCategories();
-  }, []);
+  //   fetchCategories();
+  // }, []);
 
   const handleCloseMenu = () => {
     setIsMenuOpen(false);
@@ -290,17 +324,11 @@ function Header() {
     setLoggedIn(isLoggedIn());
   }, [pathname]);
 
-  useEffect(() => {
-    navItems.forEach((item) => {
-      router.prefetch(item.path);
-    });
-  }, []);
-
+const isInventoryDetail =
+  pathname.startsWith("/inventory/") &&
+  pathname.split("/").filter(Boolean).length > 1;
   const hasBgImage =
-    (pathname !== "/inventory" &&
-      pathname !== "/inventory/" &&
-      pathname.startsWith("/inventory/")) ||
-    pathname.startsWith("/inventory") ||
+    isInventoryDetail ||
     pathname.startsWith("/signin") ||
     pathname.startsWith("/verify-account/") ||
     pathname.startsWith("/verify-account") ||
@@ -308,8 +336,14 @@ function Header() {
     pathname.startsWith("/confirmation") ||
     pathname.startsWith("/sale-agreement") ||
     pathname.startsWith("/checkout");
-
+    
   return (
+    <>
+    {/* {isNavigating && (
+  <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white">
+  <Loader/>
+  </div>
+)} */}
     <header
       className={`
     w-full z-50 relative
@@ -348,8 +382,9 @@ function Header() {
                 setClickedGroup(null);
               }}
             >
-              <button
-                onClick={() =>router.replace(item.path)}
+              <Link
+  href={item.path}
+                onClick={() =>handleNavigate(item.path)}
                 className={`text-base font-medium text-gray-700 hover:text-orange cursor-pointer relative
                 after:content-[''] after:absolute after:-bottom-1
                 after:left-1/2 after:-translate-x-1/2
@@ -368,7 +403,7 @@ function Header() {
               `}
               >
                 {item.name}
-              </button>
+              </Link>
 
               {(item.submenu?.length ?? 0) > 0 && (
                 <button
@@ -449,7 +484,7 @@ function Header() {
                               setActiveGroup(null);
                               setClickedGroup(null);
 
-                             router.replace(url);
+                             handleNavigate(url);
                               setTimeout(() => setDisableHover(false), 300);
                             }}
                             className="
@@ -489,7 +524,7 @@ function Header() {
                                       setOpenDropdown(null);
                                       setActiveGroup(null);
                                       setClickedGroup(null);
-                                      router.replace(subItem.path);
+                                      handleNavigate(subItem.path);
                                     }}
                                     className="
                                         block w-full text-left py-2
@@ -588,6 +623,7 @@ function Header() {
                 resetKey={resetKey}
                 pathname={pathname}
                 slugify={slugify}
+                handleNavigate={handleNavigate}
               />
             ))}
           </ul>
@@ -619,6 +655,7 @@ function Header() {
         </div>
       </div>
     </header>
+    </>
   );
 }
 

@@ -16,11 +16,11 @@ import {
   getModels,
 } from "@/api/categoryActions";
 import Loader from "../common/Loader";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import SimpleSteps from "./SimpleSteps";
 import { formatPrice } from "@/hooks/formate";
 
-export default function InventoryFilter({}: {}) {
+export default function InventoryFilter({ }: {}) {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
   const categorySlugsFromUrl = categoryParam ? categoryParam.split(",") : [];
@@ -67,6 +67,11 @@ export default function InventoryFilter({}: {}) {
   const [hasFetched, setHasFetched] = useState(false);
   const [openMake, setOpenMake] = useState(false);
   const [openModel, setOpenModel] = useState(false);
+const [isNavigating, setIsNavigating] = useState(false);
+const pathname = usePathname();
+useEffect(() => {
+  setIsNavigating(false);
+}, [pathname]);
 
   const slugify = (text: string) =>
     text
@@ -75,19 +80,19 @@ export default function InventoryFilter({}: {}) {
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
 
-      useEffect(() => {
-  products.forEach((product) => {
-    if (!product.is_purchase) {
-      const categorySlug = slugify(product.category?.category_name ?? "");
-      const makeSlug = slugify(product.make ?? "");
-      const modelSlug = slugify(product.model ?? "");
-      const auction_id = product.auction_id;
+  useEffect(() => {
+    products.forEach((product) => {
+      if (!product.is_purchase) {
+        const categorySlug = slugify(product.category?.category_name ?? "");
+        const makeSlug = slugify(product.make ?? "");
+        const modelSlug = slugify(product.model ?? "");
+        const auction_id = product.auction_id;
 
-      const url = `/inventory/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`;
-      router.prefetch(url);
-    }
-  });
-}, [products]);
+        const url = `/inventory/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`;
+        router.prefetch(url);
+      }
+    });
+  }, [products]);
 
   useEffect(() => {
     window.scrollTo({
@@ -167,6 +172,7 @@ export default function InventoryFilter({}: {}) {
       if (selectedSlugs.length === 0) {
         router.replace("/inventory");
       } else {
+        setIsNavigating(true);
         router.replace(`/inventory?category=${selectedSlugs.join(",")}`);
       }
 
@@ -227,53 +233,50 @@ export default function InventoryFilter({}: {}) {
     //     setHasFetched(true);
     //   }
     // };
-const fetchMachinery = async () => {
-  setLoading(true);
-  setHasFetched(false);
+    const fetchMachinery = async () => {
+      setLoading(true);
+      setHasFetched(false);
 
-  try {
-    let visibleProducts: any[] = [];
-    let pageToFetch = currentPage;
-    let lastPageFromApi = 1;
+      try {
+        let visibleProducts: any[] = [];
+        let pageToFetch = currentPage;
+        let lastPageFromApi = 1;
 
-    while (visibleProducts.length < ITEMS_PER_PAGE) {
-      const res = await getMachineryByCategory(
-        categoryNames,
-        selectedSort.value,
-        debouncedYear.from,
-        debouncedYear.to,
-        selectedMake,
-        selectedModel,
-        pageToFetch,
-        ITEMS_PER_PAGE,
-      );
+        while (visibleProducts.length < ITEMS_PER_PAGE) {
+          const res = await getMachineryByCategory(
+            categoryNames,
+            selectedSort.value,
+            debouncedYear.from,
+            debouncedYear.to,
+            selectedMake,
+            selectedModel,
+            pageToFetch,
+            ITEMS_PER_PAGE,
+          );
 
-      if (!res?.success || res.data.length === 0) break;
+          if (!res?.success || res.data.length === 0) break;
 
-      lastPageFromApi = res.pagination?.last_page || 1;
+          lastPageFromApi = res.pagination?.last_page || 1;
 
-      const filtered = res.data.filter(
-        (p: any) => Number(p.is_view) === 1,
-      );
+          const filtered = res.data.filter((p: any) => Number(p.is_view) === 1);
 
-      visibleProducts = [...visibleProducts, ...filtered];
+          visibleProducts = [...visibleProducts, ...filtered];
 
-      if (pageToFetch >= lastPageFromApi) break;
+          if (pageToFetch >= lastPageFromApi) break;
 
-      pageToFetch++;
-    }
+          pageToFetch++;
+        }
 
-    setProducts(visibleProducts.slice(0, ITEMS_PER_PAGE));
-    setTotalPages(lastPageFromApi);
-
-  } catch (err) {
-    setProducts([]);
-    setTotalPages(1);
-  } finally {
-    setLoading(false);
-    setHasFetched(true);
-  }
-};
+        setProducts(visibleProducts.slice(0, ITEMS_PER_PAGE));
+        setTotalPages(lastPageFromApi);
+      } catch (err) {
+        setProducts([]);
+        setTotalPages(1);
+      } finally {
+        setLoading(false);
+        setHasFetched(true);
+      }
+    };
     fetchMachinery();
   }, [
     selectedCategories,
@@ -373,6 +376,11 @@ const fetchMachinery = async () => {
 
   return (
     <>
+    {/* {isNavigating && (
+  <div className="fixed inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-[9999]">
+    <Loader />
+  </div>
+)} */}
       <div className="w-full container-custom mx-auto my-[80px] lg:my-[110px]">
         <div className="w-full flex flex-col lg:flex-row gap-6">
           {/* ================= LEFT SIDEBAR ================= */}
@@ -389,11 +397,10 @@ const fetchMachinery = async () => {
             z-[999]
             overflow-y-auto
             transition-transform duration-300
-            ${
-              openSidebar
+            ${openSidebar
                 ? "translate-x-0"
                 : "-translate-x-full lg:translate-x-0"
-            }
+              }
           `}
           >
             {/* Close button for mobile */}
@@ -415,9 +422,8 @@ const fetchMachinery = async () => {
                       </h2>
 
                       <FaChevronDown
-                        className={`text-gray transition-transform duration-300 ${
-                          open ? "rotate-180" : "rotate-0"
-                        }`}
+                        className={`text-gray transition-transform duration-300 ${open ? "rotate-180" : "rotate-0"
+                          }`}
                       />
                     </Disclosure.Button>
 
@@ -473,7 +479,7 @@ const fetchMachinery = async () => {
             <div>
               {/* HEADER */}
               <button
-                onClick={() => {}}
+                onClick={() => { }}
                 className="w-full flex items-center justify-between mb-4 cursor-default"
               >
                 <h2 className="font-semibold text-lg text-gray mont-text">
@@ -496,9 +502,8 @@ const fetchMachinery = async () => {
                   >
                     {loadingMake ? "Loading..." : selectedMake}
                     <FaChevronDown
-                      className={`text-gray-500 text-xs transition-transform ${
-                        openMake ? "rotate-180" : ""
-                      }`}
+                      className={`text-gray-500 text-xs transition-transform ${openMake ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
@@ -516,11 +521,10 @@ const fetchMachinery = async () => {
                             setOpenMake(false);
                           }}
                           className={`w-full text-left px-4 py-2 text-sm transition
-                ${
-                  selectedMake === make
-                    ? "bg-green text-white"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
+                ${selectedMake === make
+                              ? "bg-green text-white"
+                              : "text-gray-700 hover:bg-gray-100"
+                            }`}
                         >
                           {make}
                         </button>
@@ -542,9 +546,8 @@ const fetchMachinery = async () => {
                   >
                     {loadingModel ? "Loading..." : selectedModel}
                     <FaChevronDown
-                      className={`text-gray-500 text-xs transition-transform ${
-                        openModel ? "rotate-180" : ""
-                      }`}
+                      className={`text-gray-500 text-xs transition-transform ${openModel ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
@@ -562,11 +565,10 @@ const fetchMachinery = async () => {
                             setOpenModel(false);
                           }}
                           className={`w-full text-left px-4 py-2 text-sm transition
-                ${
-                  selectedModel === model
-                    ? "bg-green text-white"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
+                ${selectedModel === model
+                              ? "bg-green text-white"
+                              : "text-gray-700 hover:bg-gray-100"
+                            }`}
                         >
                           {model}
                         </button>
@@ -587,9 +589,8 @@ const fetchMachinery = async () => {
                       Filter by Year
                     </h2>
                     <FaChevronDown
-                      className={`text-gray transition-transform duration-300 ${
-                        open ? "rotate-180" : ""
-                      }`}
+                      className={`text-gray transition-transform duration-300 ${open ? "rotate-180" : ""
+                        }`}
                     />
                   </Disclosure.Button>
 
@@ -723,9 +724,8 @@ const fetchMachinery = async () => {
                   >
                     {selectedSort.label}
                     <FaChevronDown
-                      className={`text-xs transition-transform ${
-                        sortOpen ? "rotate-180" : ""
-                      }`}
+                      className={`text-xs transition-transform ${sortOpen ? "rotate-180" : ""
+                        }`}
                     />
                   </button>
 
@@ -740,11 +740,10 @@ const fetchMachinery = async () => {
                             setSortOpen(false);
                           }}
                           className={`w-full text-left px-3 py-2 text-sm hover:bg-green/10
-            ${
-              selectedSort.value === option.value
-                ? "text-green font-medium"
-                : "text-text-gray"
-            }`}
+            ${selectedSort.value === option.value
+                              ? "text-green font-medium"
+                              : "text-text-gray"
+                            }`}
                         >
                           {option.label}
                         </button>
@@ -788,10 +787,12 @@ const fetchMachinery = async () => {
                               />
                             </div>
                           ) : (
-                            <div className="w-[216px] h-[123px]"/>
+                            <div className="w-[216px] h-[123px]" />
                           )}
-                          <div className=" absolute border border-red-300 rounded-md py-2 px-4 text-red-600 bg-red-50 font-semibold text-sm
-                          left-1/2 bottom-0 -translate-x-1/2 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:-translate-y-3" >
+                          <div
+                            className=" absolute border border-red-300 rounded-md py-2 px-4 text-red-600 bg-red-50 font-semibold text-sm
+                          left-1/2 bottom-0 -translate-x-1/2 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:-translate-y-3"
+                          >
                             SOLD
                           </div>
                         </div>
@@ -818,6 +819,7 @@ const fetchMachinery = async () => {
                       href={friendlyUrl}
                       prefetch={true}
                       className="block h-full"
+                      onClick={() => setIsNavigating(true)}
                     >
                       <div
                         className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white
@@ -839,13 +841,13 @@ const fetchMachinery = async () => {
                           {/* BID OR BUY */}
                           <div
                             className="
-            absolute border border-light-gray rounded-md py-2 px-4
-            text-green bg-white text-sm
-            left-1/2 bottom-0 -translate-x-1/2
-            opacity-0 translate-y-3
-            group-hover:opacity-100 group-hover:-translate-y-3
-            transition
-          "
+                            absolute border border-light-gray rounded-md py-2 px-4
+                            text-green bg-white text-sm
+                            left-1/2 bottom-0 -translate-x-1/2
+                            opacity-0 translate-y-3
+                            group-hover:opacity-100 group-hover:-translate-y-3
+                            transition
+                          "
                           >
                             BID OR BUY
                           </div>
@@ -877,11 +879,10 @@ const fetchMachinery = async () => {
                   disabled={currentPage === 1}
                   className={`flex items-center gap-2 w-8 sm:w-auto sm:px-3 justify-center py-2 border border-light-gray cursor-pointer
         rounded-md sm:rounded-xl text-text-gray transition-all h-8 sm:h-11 text-xs sm:text-base
-        ${
-          currentPage === 1
-            ? "opacity-40 cursor-not-allowed"
-            : "hover:bg-gray-100"
-        }`}
+        ${currentPage === 1
+                      ? "opacity-40 cursor-not-allowed"
+                      : "hover:bg-gray-100"
+                    }`}
                 >
                   <FaChevronLeft className="text-xs sm:text-sm" />
                   <span className="hidden md:block"> Back </span>
@@ -924,11 +925,10 @@ const fetchMachinery = async () => {
                         onClick={() => setCurrentPage(page as number)}
                         className={`w-8 h-8 sm:w-11 sm:h-11 flex items-center justify-center  cursor-pointer
              rounded-md sm:rounded-xl transition-all  text-xs sm:text-base
-              ${
-                currentPage === page
-                  ? "bg-green text-white"
-                  : "border border-light-gray text-text-gray hover:bg-gray-100"
-              }`}
+              ${currentPage === page
+                            ? "bg-green text-white"
+                            : "border border-light-gray text-text-gray hover:bg-gray-100"
+                          }`}
                       >
                         {page}
                       </button>
@@ -944,11 +944,10 @@ const fetchMachinery = async () => {
                   disabled={currentPage === totalPages}
                   className={`flex items-center gap-2 justify-center py-2 border border-light-gray cursor-pointer
         rounded-md sm:rounded-xl text-text-gray transition-all h-8 sm:h-11 w-8 sm:w-auto sm:px-3  text-xs sm:text-base
-        ${
-          currentPage === totalPages
-            ? "opacity-40 cursor-not-allowed"
-            : "hover:bg-gray-100"
-        }`}
+        ${currentPage === totalPages
+                      ? "opacity-40 cursor-not-allowed"
+                      : "hover:bg-gray-100"
+                    }`}
                 >
                   <span className="hidden md:block"> Next </span>
                   <FaChevronRight className="text-xs sm:text-sm" />

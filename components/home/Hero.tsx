@@ -5,11 +5,26 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSettings } from "@/contexts/SettingsContext";
 import { FiTruck, FiRefreshCw, FiShield } from "react-icons/fi";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import Loader from "../common/Loader";
 
 function Hero() {
   const { companyName } = useSettings();
+const pathname = usePathname();
+const [isNavigating, setIsNavigating] = useState(false);
+
+useEffect(() => {
+  setIsNavigating(false);
+}, [pathname]);
 
   return (
+    <>
+    {isNavigating && (
+  <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white">
+    <Loader />
+  </div>
+)}
     <section className="relative">
       <motion.div
         initial={{ opacity: 0 }}
@@ -63,9 +78,9 @@ function Hero() {
               </ul>
               <Link
                 href="/inventory"
+                 onClick={() => setIsNavigating(true)}
                 className="inline-flex w-fit items-center justify-center rounded-lg bg-green px-7 py-3
-             font-semibold text-white mont-text transition-all duration-300 hover:bg-green/90 hover:shadow-md"
-              >
+             font-semibold text-white mont-text transition-all duration-300 hover:bg-green/90 hover:shadow-md">
                 Browse Inventory
               </Link>
             </div>
@@ -89,6 +104,7 @@ function Hero() {
         </div>
       </div>
     </section>
+    </>
   );
 }
 
