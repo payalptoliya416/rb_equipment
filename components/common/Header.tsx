@@ -173,7 +173,21 @@ function Header({
   const [resetKey, setResetKey] = useState(0);
   const [activeGroup, setActiveGroup] = useState<string | null>(null);
   const [clickedGroup, setClickedGroup] = useState<string | null>(null);
+const [isNavigating, setIsNavigating] = useState(false);
+useEffect(() => {
+  setIsNavigating(false);
+}, [pathname]);
+useEffect(() => {
+  const handleComplete = () => {
+    setIsNavigating(false);
+  };
 
+  window.addEventListener("popstate", handleComplete);
+
+  return () => {
+    window.removeEventListener("popstate", handleComplete);
+  };
+}, []);
   const slugify = (text: string) =>
     text
       .toLowerCase()
@@ -184,7 +198,12 @@ function Header({
   const [disableHover, setDisableHover] = useState(false);
 const handleNavigate = (url: string) => {
   if (pathname !== url) {
-    router.push(url, { scroll: true });
+    setIsNavigating(true);
+    router.push(url);
+
+    setTimeout(() => {
+      setIsNavigating(false);
+    }, 1500); 
   }
 };
   useEffect(() => {
@@ -339,11 +358,11 @@ const isInventoryDetail =
     
   return (
     <>
-    {/* {isNavigating && (
+    {isNavigating && (
   <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-white">
   <Loader/>
   </div>
-)} */}
+)}
     <header
       className={`
     w-full z-50 relative

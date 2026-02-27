@@ -275,6 +275,7 @@ useEffect(() => {
       } finally {
         setLoading(false);
         setHasFetched(true);
+        setIsNavigating(false);
       }
     };
     fetchMachinery();
@@ -376,11 +377,11 @@ useEffect(() => {
 
   return (
     <>
-    {/* {isNavigating && (
+    {isNavigating && (
   <div className="fixed inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-[9999]">
     <Loader />
   </div>
-)} */}
+)}
       <div className="w-full container-custom mx-auto my-[80px] lg:my-[110px]">
         <div className="w-full flex flex-col lg:flex-row gap-6">
           {/* ================= LEFT SIDEBAR ================= */}

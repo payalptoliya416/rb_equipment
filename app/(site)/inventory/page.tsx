@@ -14,7 +14,6 @@ export default function Page() {
 
   const slugCount = segments.length - 1;
 
-  // ✅ Detail page: last segment must be numeric hours
   const isDetailPage =
     slugCount === 4 && !isNaN(Number(segments[segments.length - 1]));
 
