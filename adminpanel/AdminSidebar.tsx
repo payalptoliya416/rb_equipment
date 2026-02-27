@@ -1,7 +1,7 @@
-// components/admin/AdminSidebar.tsx
+
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getSettingsByKeysFooter } from "@/api/categoryActions";
@@ -16,6 +16,7 @@ import {
   FaShoppingCart,
   FaTrophy,
 } from "react-icons/fa";
+import Link from "next/link";
 
 const menu = [
   { label: "Dashboard", icon: FaTachometerAlt, href: "/admin/dashboard" },
@@ -31,12 +32,15 @@ const menu = [
 export default function AdminSidebar({
   mobile = false,
   onItemClick,
+  onNavigateStart
 }: {
   mobile?: boolean;
   onItemClick?: () => void;
+  onNavigateStart?: () => void;
 }) {
   const pathname = usePathname();
   const [settings, setSettings] = useState<any>(null);
+const router = useRouter();
 
   useEffect(() => {
     getSettingsByKeysFooter().then((res) => {
@@ -83,11 +87,16 @@ export default function AdminSidebar({
             const isActive = pathname.startsWith(item.href);
 
             return (
-              <Link
-                key={item.label}
-                href={item.href}
-                prefetch
-                  scroll={false}
+             <div
+  key={item.label}
+  onClick={() => {
+    onNavigateStart?.(); // 🔥 SHOW LOADER FIRST
+    router.push(item.href); // 🔥 THEN NAVIGATE
+
+    if (mobile && onItemClick) {
+      onItemClick();
+    }
+  }}
                 className={`
                   flex items-center gap-[10px]
                   px-4 py-[11px]
@@ -99,11 +108,12 @@ export default function AdminSidebar({
                     : "text-[#7A7A7A] hover:bg-green hover:text-white"
                   }
                 `}
-                onClick={() => {
-                  if (mobile && onItemClick) {
-                    onItemClick();
-                  }
-                }}
+                // onClick={() => {
+                //    onNavigateStart?.(); 
+                //   if (mobile && onItemClick) {
+                //     onItemClick();
+                //   }
+                // }}
               >
                 <Icon
                   className={`text-base group-hover:text-white ${
@@ -111,7 +121,7 @@ export default function AdminSidebar({
                   }`}
                 />
                 {item.label}
-              </Link>
+              </div>
             );
           })}
         </div>

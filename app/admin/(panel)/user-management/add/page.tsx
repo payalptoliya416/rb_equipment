@@ -1,9 +1,10 @@
+
 import EditUserForm from '@/adminpanel/EditUserForm'
-import React, { Suspense } from 'react'
+import  { Suspense } from 'react'
 
 function page() {
   return (
-    <Suspense fallback={null}>
+   <Suspense fallback={<div>Loading...</div>}>
       <EditUserForm/>
     </Suspense>
   )
