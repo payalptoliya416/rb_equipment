@@ -62,11 +62,11 @@ export default function AdminLayout({
         <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
 
         <main className="flex-1 overflow-y-auto relative">
-          {/* {pageLoading && (
+          {pageLoading && (
            <div className="flex justify-center mt-10 min-h-screen">
         <Loader />
       </div>
-          )} */}
+          )}
           {children}
         </main>
       </div>

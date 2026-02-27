@@ -41,6 +41,11 @@ export default function AdminSidebar({
   const pathname = usePathname();
   const [settings, setSettings] = useState<any>(null);
 const router = useRouter();
+useEffect(() => {
+  menu.forEach((item) => {
+    router.prefetch(item.href);
+  });
+}, []);
 
   useEffect(() => {
     getSettingsByKeysFooter().then((res) => {
@@ -90,9 +95,10 @@ const router = useRouter();
              <div
   key={item.label}
   onClick={() => {
-    onNavigateStart?.(); // 🔥 SHOW LOADER FIRST
-    router.push(item.href); // 🔥 THEN NAVIGATE
-
+       if (pathname !== item.href) {
+      onNavigateStart?.();   // 🔥 show loader
+      router.push(item.href); // 🔥 instant URL change
+    }
     if (mobile && onItemClick) {
       onItemClick();
     }

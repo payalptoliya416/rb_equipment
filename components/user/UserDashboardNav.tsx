@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -10,7 +9,11 @@ type MenuItem = {
   icon: string;
 };
 
-export default function UserDashboardNav() {
+export default function UserDashboardNav({
+  onNavigateStart,
+}: {
+  onNavigateStart?: () => void;
+}) {
   const pathname = usePathname();
   const router = useRouter();
   const menu: MenuItem[] = [
@@ -21,7 +24,12 @@ export default function UserDashboardNav() {
     // { name: "My Won Bids", href: "#", icon: "/assets/nav6.svg" },
     { name: "My Won Bids", href: "/user/won-bids", icon: "/assets/nav6.svg" },
   ];
-
+const handleNavigate = (url: string) => {
+  if (pathname !== url) {
+    onNavigateStart?.();  
+    router.push(url);
+  }
+};
   return (
     <nav className="bg-green w-full py-3">
       <div className="container-custom mx-auto">
@@ -34,7 +42,7 @@ export default function UserDashboardNav() {
             return (
               <button
                 key={item.name}
-                onClick={() => router.replace(item.href)}
+                onClick={() => handleNavigate(item.href)}
                 className={`
                   text-white
                   rounded-lg

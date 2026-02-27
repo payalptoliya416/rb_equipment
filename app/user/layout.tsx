@@ -1,7 +1,6 @@
 'use client'
 
 import { isLoggedIn } from "@/api/authToken";
-import Loader from "@/components/common/Loader";
 import UserFooter from "@/components/user/UserFooter";
 import UserHeader from "@/components/user/UserHeader";
 import { useRouter } from "next/navigation";

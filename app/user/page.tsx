@@ -105,6 +105,7 @@ const fetchDashboard = async () => {
         bg: "#F98686",
         count: data.total_bids_placed,
         label: "Total Bids Placed",
+        link: "/user/bids",
       },
       {
         id: 2,
@@ -112,6 +113,7 @@ const fetchDashboard = async () => {
         bg: "#78DBFF",
         count: data.active_bids,
         label: "Active Bids",
+         link: "/user/bids",
       },
       {
         id: 3,
@@ -119,6 +121,7 @@ const fetchDashboard = async () => {
         bg: "#A790F9",
         count: data.items_won,
         label: "Items Won",
+         link: "/user/won-bids",
       },
       {
         id: 4,
@@ -126,6 +129,7 @@ const fetchDashboard = async () => {
         bg: "#FC8AD6",
         count: data.items_purchased,
         label: "Items Purchased",
+         link: "/user/orders",
       },
     ]);
 
@@ -176,9 +180,10 @@ if (loading) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
           {cards.map((item) => (
-            <div
-              key={item.id}
-              className="border rounded-[10px] border-[#E9E9E9] p-[20px] sm:p-[25px] flex flex-col gap-[15px]"
+            <Link
+            key={item.id}
+            href={item.link}
+              className="border rounded-[10px] border-[#E9E9E9] p-[20px] sm:p-[25px] flex flex-col gap-[15px] justify-center items-center lg:items-start lg:justify-start"
             >
               <div
                 className="w-[60px] h-[60px] rounded-[18px] p-[15px] flex justify-center items-center"
@@ -199,7 +204,7 @@ if (loading) {
               <p className="text-[#909090] text-[18px] sm:text-[22px] leading-[22px]">
                 {item.label}
               </p>
-            </div>
+            </Link>
           ))}
         </div>
       <div className="grid  grid-cols-1 xl:grid-cols-2 gap-5">

@@ -12,16 +12,16 @@ import { HiBars3BottomRight } from "react-icons/hi2";
 import { getSettingsByKeysFooter } from "@/api/categoryActions";
 import FullPageLoader from "./FullPageLoader";
 
-function UserHeader() {
+function UserHeader({ onNavigateStart }: { onNavigateStart?: () => void }) {
   const router = useRouter();
   const rawPath = usePathname();
   const pathname = String(rawPath);
   const dropdownRef = useRef<HTMLDivElement>(null);
-const sidebarRef = useRef<HTMLDivElement>(null);
+  const sidebarRef = useRef<HTMLDivElement>(null);
 
   const isSigninPage =
     pathname === "/user/signin" || pathname.startsWith("/user/signin/");
-const [userName, setUserName] = useState<string>("User");
+  const [userName, setUserName] = useState<string>("User");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const navItems = [
@@ -42,22 +42,22 @@ const [userName, setUserName] = useState<string>("User");
   const [userLoading, setUserLoading] = useState(true);
 
   const getUserNameFromStorage = () => {
-  if (typeof window === "undefined") return "User";
+    if (typeof window === "undefined") return "User";
 
-  const user = localStorage.getItem("userdata");
-  if (!user) return "User";
+    const user = localStorage.getItem("userdata");
+    if (!user) return "User";
 
-  try {
-    const parsedUser = JSON.parse(user);
-    const first = parsedUser.first_name?.trim() || "";
-    const last = parsedUser.last_name?.trim() || "";
+    try {
+      const parsedUser = JSON.parse(user);
+      const first = parsedUser.first_name?.trim() || "";
+      const last = parsedUser.last_name?.trim() || "";
 
-    const fullName = `${first} ${last}`.trim();
-    return fullName || "User";
-  } catch {
-    return "User";
-  }
-};
+      const fullName = `${first} ${last}`.trim();
+      return fullName || "User";
+    } catch {
+      return "User";
+    }
+  };
 
   useEffect(() => {
     const loadSettings = async () => {
@@ -74,27 +74,26 @@ const [userName, setUserName] = useState<string>("User");
     loadSettings();
   }, []);
 
- 
   const handleLogout = () => {
-  setOpen(false);
-  clearToken();
-  localStorage.removeItem("userdata");
-  router.replace("/user/signin");
-};
-
-useEffect(() => {
-  const updateUser = () => {
-    setUserName(getUserNameFromStorage());
-    setUserLoading(false);
+    setOpen(false);
+    clearToken();
+    localStorage.removeItem("userdata");
+    router.replace("/user/signin");
   };
 
-  updateUser();
-  window.addEventListener("user-login", updateUser);
+  useEffect(() => {
+    const updateUser = () => {
+      setUserName(getUserNameFromStorage());
+      setUserLoading(false);
+    };
 
-  return () => {
-    window.removeEventListener("user-login", updateUser);
-  };
-}, []);
+    updateUser();
+    window.addEventListener("user-login", updateUser);
+
+    return () => {
+      window.removeEventListener("user-login", updateUser);
+    };
+  }, []);
 
   // useEffect(() => {
   //   const updateUser = () => {
@@ -128,15 +127,15 @@ useEffect(() => {
       setIsHeaderReady(true);
     }
   }, [settingsLoading, userLoading]);
- useEffect(() => {
-  const handler = (e: MouseEvent) => {
-    if (!dropdownRef.current?.contains(e.target as Node)) {
-      setOpen(false);
-    }
-  };
-  document.addEventListener("mousedown", handler);
-  return () => document.removeEventListener("mousedown", handler);
-}, []);
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (!dropdownRef.current?.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   useEffect(() => {
     if (isMenuOpen) {
@@ -178,9 +177,9 @@ useEffect(() => {
   }, [pathname]);
 
   const handleMenuNavigate = (path: string) => {
-  setOpen(false);
-  router.replace(path);
-};
+    setOpen(false);
+    router.replace(path);
+  };
   if (!isHeaderReady) {
     return <FullPageLoader />;
   }
@@ -295,7 +294,7 @@ useEffect(() => {
                     >
                       <button
                         disabled={menuLoading}
-                       onClick={() => handleMenuNavigate("/user/profile")}
+                        onClick={() => handleMenuNavigate("/user/profile")}
                         className="w-full text-left px-4 py-2 text-[14px] hover:bg-gray-100 cursor-pointer flex items-center gap-2"
                       >
                         {menuLoading ? "Profile..." : "Profile"}
@@ -327,7 +326,7 @@ useEffect(() => {
         >
           {/* Overlay */}
           <div
-          onClick={() => setIsMenuOpen(false)}
+            onClick={() => setIsMenuOpen(false)}
             className={`lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm transition-opacity duration-300
             ${
               isMenuOpen

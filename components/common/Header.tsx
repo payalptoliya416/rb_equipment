@@ -203,7 +203,7 @@ const handleNavigate = (url: string) => {
 
     setTimeout(() => {
       setIsNavigating(false);
-    }, 1500); 
+    }, 2000); 
   }
 };
   useEffect(() => {
@@ -567,19 +567,19 @@ const isInventoryDetail =
           ))}
         </ul>
         {loggedIn ? (
-          <Link
-            href="/user"
-            className="hidden lg:block text-green bg-white py-2 px-4 md:py-3 md:px-6 rounded-lg font-semibold hover:bg-orange hover:text-white transition"
+          <button
+  onClick={() => handleNavigate("/user")}
+            className="hidden lg:block text-green bg-white py-2 px-4 md:py-3 md:px-6 rounded-lg font-semibold hover:bg-orange hover:text-white transition cursor-pointer"
           >
             Dashboard
-          </Link>
+          </button>
         ) : (
-          <Link
-            href="/user/signin"
-            className="hidden lg:block text-green bg-white py-2 px-4 md:py-3 md:px-6 rounded-lg font-semibold hover:bg-orange hover:text-white transition"
+          <button
+              onClick={() => handleNavigate("/user/signin")}
+            className="hidden lg:block text-green bg-white py-2 px-4 md:py-3 md:px-6 rounded-lg font-semibold hover:bg-orange hover:text-white transition cursor-pointer"
           >
             Sign In
-          </Link>
+          </button>
         )}
 
         <button

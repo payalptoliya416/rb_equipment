@@ -2,7 +2,6 @@
 
 import { Suspense } from "react";
 import { usePathname } from "next/navigation";
-
 import Loader from "@/components/common/Loader";
 import InventoryHero from "@/components/inventory/InventoryHero";
 import InventoryFilter from "@/components/inventory/InvetoryFilter";

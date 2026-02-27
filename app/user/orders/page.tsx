@@ -35,6 +35,7 @@ type OrderData = {
   type_text: "Checkout" | "Bidding";
   invoice_url?: string;
   payment_slip_url?: string | null;
+  contract_url?: string;
 };
 type StepItem = {
   key: DeliveryStatus;
@@ -67,7 +68,6 @@ const STEPS: StepItem[] = [
   { key: "Delivered", title: "Delivered" },
 ];
 
-
 const formatDateTime = (date: string) =>
   new Date(date).toLocaleString("en-US", {
     month: "short",
@@ -84,7 +84,6 @@ export default function MyBuyOrders() {
   const { phoneNumber } = useSettings();
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState<OrderData[]>([]);
-  const [openOrderId, setOpenOrderId] = useState<string | null>(null);
   const [openConfirmationModal, setOpenConfirmationModal] = useState(false);
   const [paymentFile, setPaymentFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -111,6 +110,7 @@ export default function MyBuyOrders() {
     invoice_url: item.invoice_url,
     type_text: item.type_text as "Checkout" | "Bidding",
     payment_slip_url: item.payment_slip_url ?? null,
+    contract_url: item.contract_url
   });
 
   const [page, setPage] = useState(1);
@@ -261,128 +261,99 @@ export default function MyBuyOrders() {
             //   data.type_text === "Bidding"
             //     ? STEPS
             //     : STEPS.filter((s) => s.key !== "Awaiting Invoice");
-         const filteredSteps = STEPS;
+            const filteredSteps = STEPS;
             const step = getCurrentStepFromTimeline(
               data.delivery_timeline,
               filteredSteps,
             );
-           
+
             const isConfirmed = !!data.payment_slip_url;
             const confirmationDate = isConfirmed
               ? new Date().toISOString()
               : null;
 
-              const confirmationIndex = filteredSteps.findIndex(
-                (s) => s.key === "Confirmation"
-              );
-
+            const confirmationIndex = filteredSteps.findIndex(
+              (s) => s.key === "Settle Payment",
+            );
+            
+            const SalesAgreementIndex = filteredSteps.findIndex(
+              (s) => s.key === "Sales Agreement",
+            );
 
             return (
-             <div
-              key={data.order_id}
-              className="border border-[#E9E9E9] rounded-[14px] overflow-hidden mb-6"
-            >
-                  <div className="p-[15px]">
-                    <div className="grid grid-cols-12 items-center gap-5">
-                      <div className="col-span-12 lg:col-span-7 lg:flex gap-5 items-center">
-                        <div className=" rounded flex justify-center items-center mb-5 lg:mb-0">
-                          <Image
-                            src={data.first_image}
-                            alt={data.name}
-                            width={110}
-                            height={80}
-                          />
-                        </div>
-
-                        <div>
-                          <h2 className="mb-4 text-xl text-[#373737]">
-                            {data.name}
-                          </h2>
-                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-[#7A7A7A]">
-                            <p>Hours: {data.working_hours}</p>
-                            <p>Total Weight: {data.weight}</p>
-                            <p>Year: {data.year}</p>
-                            {data.invoice_url &&
-                              step >= confirmationIndex && (
-                                <div className="flex items-center gap-3">
-                                  <a
-                                    href={data.invoice_url ?? "#"}
-                                    target={
-                                      data.invoice_url ? "_blank" : undefined
-                                    }
-                                    rel="noopener noreferrer"
-                                    onClick={(e) => {
-                                      if (!data.invoice_url) e.preventDefault();
-                                    }}
-                                    className={`flex items-center gap-2 p-1 rounded-lg text-sm transition
-                                          ${
-                                            data.invoice_url
-                                              ? "text-[#373737] hover:bg-gray-100 cursor-pointer"
-                                              : "text-gray-400 cursor-not-allowed"
-                                          }`}
-                                  >
-                                    <FaFilePdf
-                                      className={`text-lg ${
-                                        data.invoice_url
-                                          ? "text-green"
-                                          : "text-gray-400"
-                                      }`}
-                                    />
-                                    <span>
-                                      {data.invoice_url
-                                        ? "View Invoice"
-                                        : "Invoice Not Available"}
-                                    </span>
-                                  </a>
-                                </div>
-                              )}
-                          </div>
-                        </div>
+              <div
+                key={data.order_id}
+                className="border border-[#E9E9E9] rounded-[14px] overflow-hidden mb-6"
+              >
+                <div className="p-[15px]">
+                  <div className="grid grid-cols-12 items-center gap-5">
+                    <div className="col-span-12 lg:col-span-7 lg:flex gap-5 items-center">
+                      <div className=" rounded flex justify-center items-center mb-5 lg:mb-0">
+                        <Image
+                          src={data.first_image}
+                          alt={data.name}
+                          width={110}
+                          height={80}
+                        />
                       </div>
 
-                      <div className="col-span-12 lg:col-span-5 lg:text-right">
-                        <h2 className="text-green text-[22px] mb-4 font-semibold">
-                          {formatPrice(data.price)}
+                      <div>
+                        <h2 className="mb-4 text-xl text-[#373737]">
+                          {data.name}
                         </h2>
-                        <p className="text-[#646464] mb-2">Serial Number</p>
-                        <span className="py-1 px-2 text-sm rounded bg-[#E9E9E9]">
-                          {data.serial_no}
-                        </span>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-[#7A7A7A]">
+                          <p>Hours: {data.working_hours}</p>
+                          <p>Total Weight: {data.weight}</p>
+                          <p>Year: {data.year}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                {/* ================= BODY ================= */}
-               <div className="border-t px-6 py-6 bg-white border-light-gray">
-                <div className="flex justify-between mb-10 flex-wrap gap-5">
-                  <div>
-                    <h3 className="text-xl font-medium">Order ID</h3>
-                    <p className="text-[#7A7A7A]">#{data.order_id}</p>
-                  </div>
 
-                  <div className="flex items-center gap-4">
-                    <div>
-                      <h3 className="text-xl font-medium">Delivery Contact</h3>
-                      {phoneNumber ? (
-                        <a
-                          href={`tel:${phoneNumber}`}
-                          className="text-[#7A7A7A] hover:text-green transition"
-                        >
-                          {phoneNumber}
-                        </a>
-                      ) : (
-                        <p className="text-gray-400">Not Available</p>
-                      )}
-                    </div>
-                    <div className="w-[38px] h-[38px] flex justify-center items-center rounded-full bg-[#E9E9E9]">
-                      <IoCallOutline />
+                    <div className="col-span-12 lg:col-span-5 lg:text-right">
+                      <h2 className="text-green text-[22px] mb-4 font-semibold">
+                        {formatPrice(data.price)}
+                      </h2>
+                      <p className="text-[#646464] mb-2">Serial Number</p>
+                      <span className="py-1 px-2 text-sm rounded bg-[#E9E9E9]">
+                        {data.serial_no}
+                      </span>
                     </div>
                   </div>
                 </div>
-               </div>
+                {/* ================= BODY ================= */}
+                <div className="border-t px-6 py-6 bg-white border-light-gray">
+                  <div className="flex justify-between mb-16 flex-wrap gap-5">
+                    <div>
+                      <h3 className="text-xl font-medium">Order ID</h3>
+                      <p className="text-[#7A7A7A]">#{data.order_id}</p>
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <div>
+                        <h3 className="text-xl font-medium">
+                          Delivery Contact
+                        </h3>
+                        {phoneNumber ? (
+                          <a
+                            href={`tel:${phoneNumber}`}
+                            className="text-[#7A7A7A] hover:text-green transition"
+                          >
+                            {phoneNumber}
+                          </a>
+                        ) : (
+                          <p className="text-gray-400">Not Available</p>
+                        )}
+                      </div>
+                      <div className="w-[38px] h-[38px] flex justify-center items-center rounded-full bg-[#E9E9E9]">
+                        <IoCallOutline />
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 {/* ================= TIMELINE ================= */}
 
                 <div
-                  className="relative z-20 flex flex-col lg:grid pb-3"
+                  className="relative z-20 flex flex-col lg:grid p-3"
                   style={{
                     gridTemplateColumns:
                       typeof window !== "undefined"
@@ -392,7 +363,7 @@ export default function MyBuyOrders() {
                 >
                   {/* BACK LINE */}
                   <div
-                    className="hidden lg:block absolute top-[18px] h-[6px] bg-[#E8E8E8] rounded -z-10"
+                    className="hidden lg:block absolute top-[26px] h-[6px] bg-[#E8E8E8] rounded -z-10"
                     style={{
                       left: `calc(50% / ${filteredSteps.length})`,
                       right: `calc(50% / ${filteredSteps.length})`,
@@ -400,7 +371,7 @@ export default function MyBuyOrders() {
                   />
                   {/* ACTIVE LINE */}
                   <div
-                    className="hidden lg:block absolute top-[18px] h-[6px] bg-[#0A7F71] rounded -z-10 transition-all"
+                    className="hidden lg:block absolute top-[26px] h-[6px] bg-[#0A7F71] rounded -z-10 transition-all"
                     style={{
                       left: `calc(50% / ${filteredSteps.length})`,
                       width: `calc(${Math.min(step, filteredSteps.length - 1)} * (100% / ${filteredSteps.length}))`,
@@ -418,78 +389,161 @@ export default function MyBuyOrders() {
                             (t) => t.status === s.key,
                           );
                     return (
-                      <div
-                        key={s.key}
-                        onClick={() => {
-                          if (s.key === "Settle Payment") {
-                            setSelectedOrderId(data.id!);
-                            setSelectedOrderNumber(data.order_id);
-                            setOpenConfirmationModal(true);
-                            setPaymentFile(null);
-                          }
-                        }}
-                        className={`flex items-start gap-4
-            lg:flex-col lg:items-center
-            ${s.key === "Settle Payment" ? "cursor-pointer group" : ""}`}
-                      >
-                       <div className="relative flex flex-col items-center">
-  <div
-    className={`w-[36px] h-[36px] rounded-full flex items-center justify-center transition
-      ${
-        s.key === "Settle Payment"
-          ? "bg-[#E6F4F1] group-hover:scale-110 group-hover:ring-1 group-hover:ring-green"
-          : completed
-            ? "bg-[#CCE4E1]"
-            : "bg-[#E9E9E9]"
-      }`}
-  >
-    <div
-      className={`w-[22px] h-[22px] rounded-full ${
-        completed ? "bg-[#0A7F71]" : "bg-[#D3D3D3]"
-      }`}
-    />
-  </div>
-
-  {/* 🔥 Vertical Line (Mobile Only) */}
-  {idx !== filteredSteps.length - 1 && (
-    <div
-      className={`lg:hidden w-[2px] h-8 ${
-        completed ? "bg-[#0A7F71]" : "bg-[#E8E8E8]"
-      }`}
-    />
-  )}
-</div>
-
-                        <div className="lg:text-center">
-                          <h3
-                            className={`text-lg font-medium ${
-                              s.key === "Settle Payment"
-                                ? "text-green"
-                                : "text-[#373737]"
-                            }`}
+                      <div className="relative">
+                        <div className="hidden lg:block">
+                     {s.key === "Sales Agreement" &&
+                      data.contract_url &&
+                      step >= SalesAgreementIndex && (
+                        <div className="
+                          mb-2
+                          lg:absolute lg:-top-20 lg:left-1/2 lg:-translate-x-1/2
+                          text-center
+                        ">
+                          <a
+                            href={data.contract_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-col items-center gap-1 text-xs text-[#373737]"
                           >
-                            {s.title}
-                          </h3>
+                            <span>View Agreement</span>
+                            <FaFilePdf className="text-[#FFCA42] text-lg" />
+                          </a>
+                        </div>
+                    )}
+                                          {s.key === "Settle Payment" &&
+                      data.invoice_url &&
+                      step >= confirmationIndex && (
+                        <div className="
+                          mb-2
+                          lg:absolute lg:-top-20 lg:left-1/2 lg:-translate-x-1/2
+                          text-center
+                        ">
+                          <a
+                            href={data.invoice_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-col items-center gap-1 text-xs text-[#373737]"
+                          >
+                            <span>View Invoice</span>
+                            <FaFilePdf className="text-green text-lg" />
+                          </a>
+                        </div>
+                    )}
+                        </div>
+                        <div
+                          key={s.key}
+                          onClick={() => {
+                            if (s.key === "Settle Payment") {
+                              setSelectedOrderId(data.id!);
+                              setSelectedOrderNumber(data.order_id);
+                              setOpenConfirmationModal(true);
+                              setPaymentFile(null);
+                            }
+                          }}
+                          className={`flex items-start gap-4
+                          lg:flex-col lg:items-center
+                          ${s.key === "Settle Payment" ? "cursor-pointer group" : ""}`}
+                        >
+                          <div className="relative flex flex-col items-center">
+                            <div
+                              className={`w-[36px] h-[36px] rounded-full flex items-center justify-center transition
+                                ${
+                                  s.key === "Settle Payment"
+                                    ? "bg-[#E6F4F1] group-hover:scale-110 group-hover:ring-1 group-hover:ring-green"
+                                    : completed
+                                      ? "bg-[#CCE4E1]"
+                                      : "bg-[#E9E9E9]"
+                                }`}
+                            >
+                              <div
+                                className={`w-[22px] h-[22px] rounded-full ${
+                                  completed ? "bg-[#0A7F71]" : "bg-[#D3D3D3]"
+                                }`}
+                              />
+                            </div>
 
-                          {s.key === "Settle Payment" && (
-                            <>
-                              {!isConfirmed ? (
-                                <p className="text-xs text-green mt-1">
-                                  Click to upload payment Receipt
-                                </p>
-                              ) : (
-                                <p className="text-sm text-[#7A7A7A]">
-                                  {formatDateTime(confirmationDate!)}
-                                </p>
-                              )}
-                            </>
-                          )}
+                            {/* 🔥 Vertical Line (Mobile Only) */}
+                            {idx !== filteredSteps.length - 1 && (
+                              <div
+                                className={`lg:hidden w-[3px] h-13 lg:h-8 ${
+                                  completed ? "bg-[#0A7F71]" : "bg-[#E8E8E8]"
+                                }`}
+                              />
+                            )}
+                          </div>
 
-                          {item?.date && (
-                            <p className="text-sm text-[#7A7A7A]">
-                              {formatDateTime(item.date)}
-                            </p>
-                          )}
+                          <div className="lg:text-center">
+                            <h3
+                              className={`text-lg font-medium ${
+                                s.key === "Settle Payment"
+                                  ? "text-green"
+                                  : "text-[#373737]"
+                              }`}
+                            >
+                              {s.title}
+                            </h3>
+
+                            {s.key === "Settle Payment" && (
+                              <>
+                                {!isConfirmed ? (
+                                  <p className="text-xs text-green mt-1">
+                                    Click to upload payment Receipt
+                                  </p>
+                                ) : (
+                                  <p className="text-sm text-[#7A7A7A]">
+                                    {formatDateTime(confirmationDate!)}
+                                  </p>
+                                )}
+                              </>
+                            )}
+
+                            {item?.date && (
+                              <p className="text-sm text-[#7A7A7A]">
+                                {formatDateTime(item.date)}
+                              </p>
+                            )}
+
+                             <div className="block lg:hidden">
+                     {s.key === "Sales Agreement" &&
+                      data.contract_url &&
+                      step >= SalesAgreementIndex && (
+                        <div className="
+                          mb-2
+                          lg:absolute lg:-top-20 lg:left-1/2 lg:-translate-x-1/2
+                          text-center
+                        ">
+                          <a
+                            href={data.contract_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-3 text-xs text-[#373737] mt-1"
+                          >
+                            <span>View Agreement</span>
+                            <FaFilePdf className="text-[#FFCA42] text-lg" />
+                          </a>
+                        </div>
+                    )}
+                                          {s.key === "Settle Payment" &&
+                      data.invoice_url &&
+                      step >= confirmationIndex && (
+                        <div className="
+                          mb-2
+                          lg:absolute lg:-top-20 lg:left-1/2 lg:-translate-x-1/2
+                          text-center
+                        ">
+                          <a
+                            href={data.invoice_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center gap-3 text-xs text-[#373737] mt-1"
+                          >
+                            <span>View Invoice</span>
+                            <FaFilePdf className="text-green text-lg" />
+                          </a>
+                        </div>
+                    )}
+                        </div>
+                          </div>
                         </div>
                       </div>
                     );

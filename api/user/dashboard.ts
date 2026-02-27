@@ -51,6 +51,7 @@ export interface DashboardCard {
   bg: string;
   count: number;
   label: string;
+  link: string; 
 }
 
 export const getUserDashboard = (): Promise<DashboardResponse> => {
