@@ -4,23 +4,26 @@ import { RecentBiddingCard } from "@/adminpanel/RecentBiddingCard";
 import { RecentOrderCard } from "@/adminpanel/RecentOrderCard";
 import { RecentUserCard } from "@/adminpanel/RecentUserCard";
 import { RecentWonUserCard } from "@/adminpanel/RecentWonUserCard";
-import { adminDashboardService, DashboardadminResponse, formatDateTime } from "@/api/admin/bidding";
+import { adminDashboardService, formatDateTime } from "@/api/admin/bidding";
 import Loader from "@/components/common/Loader";
 import { formatPrice } from "@/hooks/formate";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
+import { useRouter } from "next/navigation";
+import { HiArrowPath } from "react-icons/hi2";
 
 function Dashboard() {
  const [loading, setLoading] = useState(true);
 const isMobile = useIsMobile();
+const router = useRouter();
   const [stats, setStats] = useState<any[]>([]);
   const [rows, setRows] = useState<any[]>([]);
   const [rowsData, setRowsData] = useState<any[]>([]);
   const [recentManagement, setRecentManagement] = useState<any[]>([]);
-const [recentOrders, setRecentOrders] = useState<any[]>([]);
+  const [recentOrders, setRecentOrders] = useState<any[]>([]);
+  const [loadingLink, setLoadingLink] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchDashboard = async () => {
@@ -198,10 +201,24 @@ const userBadge = (status: string) =>
             <div className="p-[15px] border border-[#E9E9E9] rounded-[10px]">
               <div className="flex sm:items-center justify-between mb-5 flex-col sm:flex-row gap-2">
                 <h2 className="text-base font-semibold">Recent Bidding</h2>
-                <Link href="/admin/bidding/" className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md
+                {/* <Link href="/admin/bidding/" className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md
                   active:brightness-90 active:scale-95">
                   View All
-                </Link>
+                </Link> */}
+                <button
+                onClick={() => {
+                  setLoadingLink("bidding");
+                  router.push("/admin/bidding/");
+                }}
+                disabled={loadingLink === "bidding"}
+                className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md active:brightness-90 active:scale-95 flex items-center justify-center cursor-pointer h-9 min-w-[80px]"
+              >
+                {loadingLink === "bidding" ? (
+                  <HiArrowPath size={16} className="animate-spin" />
+                ) : (
+                  "View All"
+                )}
+              </button>
               </div>
                  <div className="grid grid-cols-12"> 
                      <div className="col-span-12">
@@ -260,10 +277,24 @@ const userBadge = (status: string) =>
             <div className="p-[15px] border border-[#E9E9E9] rounded-[10px]">
               <div className="flex sm:items-center justify-between mb-5 flex-col sm:flex-row gap-2">
                 <h2 className="text-base font-semibold">Recent Won User</h2>
-                <Link href="/admin/won-user/" className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md
+                {/* <Link href="/admin/won-user/" className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md
                   active:brightness-90 active:scale-95">
                   View All
-                </Link>
+                </Link> */}
+                <button
+                    onClick={() => {
+                      setLoadingLink("won-user");
+                      router.push("/admin/won-user/");
+                    }}
+                    disabled={loadingLink === "won-user"}
+                    className="gradient-btn px-[14px] py-2 text-sm text-white rounded-md flex items-center justify-center cursor-pointer h-9 min-w-[80px]"
+                  >
+                    {loadingLink === "won-user" ? (
+                      <HiArrowPath size={16} className="animate-spin" />
+                    ) : (
+                      "View All"
+                    )}
+                  </button>
               </div>
             <div className="grid grid-cols-12"> 
                   <div className="col-span-12">
@@ -322,14 +353,28 @@ const userBadge = (status: string) =>
     <h2 className="text-base font-semibold text-[#1A1A1A]">
       Recent Orders
     </h2>
-
+{/* 
     <Link
       href="/admin/orders"
       className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md
                   active:brightness-90 active:scale-95"
     >
       View All
-    </Link>
+    </Link> */}
+                <button
+              onClick={() => {
+                setLoadingLink("orders");
+                router.push("/admin/orders");
+              }}
+              disabled={loadingLink === "orders"}
+              className="gradient-btn px-[14px] py-2 text-sm text-white rounded-md flex items-center justify-center cursor-pointer h-9 min-w-[80px]"
+            >
+              {loadingLink === "orders" ? (
+                <HiArrowPath size={16} className="animate-spin" />
+              ) : (
+                "View All"
+              )}
+            </button>
   </div>
 
   {/* DESKTOP TABLE */}
@@ -426,10 +471,24 @@ const userBadge = (status: string) =>
                 <h2 className="text-base font-semibold text-[#1A1A1A]">
                 Recent User Management
                 </h2>
-                <Link href="/admin/user-management" className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md
+                {/* <Link href="/admin/user-management" className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md
                   active:brightness-90 active:scale-95">
                 View All
-                </Link>
+                </Link> */}
+                <button
+            onClick={() => {
+              setLoadingLink("user-management");
+              router.push("/admin/user-management");
+            }}
+            disabled={loadingLink === "user-management"}
+            className="gradient-btn  h-9 min-w-[80px] px-[14px] py-2 text-sm text-white rounded-md flex items-center justify-center cursor-pointer"
+          >
+            {loadingLink === "user-management" ? (
+              <HiArrowPath size={16} className="animate-spin" />
+            ) : (
+              "View All"
+            )}
+          </button>
             </div>
              <div className="grid grid-cols-12"> 
                 <div className="col-span-12">

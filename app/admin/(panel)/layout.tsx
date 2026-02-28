@@ -29,8 +29,8 @@ export default function AdminLayout({
   }, [router]);
 
   useEffect(() => {
-  setPageLoading(false);
-}, [pathname]);
+    setPageLoading(false);
+  }, [pathname]);
 
   if (!ready) {
     return (
@@ -43,7 +43,7 @@ export default function AdminLayout({
   return (
     <div className="flex min-h-screen overflow-x-hidden bg-[#F9F9F9]">
       <div className="hidden lg:block py-5 pl-5">
-       <AdminSidebar onNavigateStart={() => setPageLoading(true)} />
+        <AdminSidebar onNavigateStart={() => setPageLoading(true)} />
       </div>
 
       {sidebarOpen && (
@@ -53,7 +53,11 @@ export default function AdminLayout({
             onClick={() => setSidebarOpen(false)}
           />
           <div className="absolute left-0 top-0 h-screen w-[270px] bg-white">
-            <AdminSidebar mobile onItemClick={() => setSidebarOpen(false)}  onNavigateStart={() => setPageLoading(true)} />
+            <AdminSidebar
+              mobile
+              onItemClick={() => setSidebarOpen(false)}
+              onNavigateStart={() => setPageLoading(true)}
+            />
           </div>
         </div>
       )}
@@ -62,12 +66,13 @@ export default function AdminLayout({
         <AdminHeader onMenuClick={() => setSidebarOpen(true)} />
 
         <main className="flex-1 overflow-y-auto relative">
-          {pageLoading && (
-           <div className="flex justify-center mt-10 min-h-screen">
-        <Loader />
-      </div>
+          {pageLoading ? (
+            <div className="flex justify-center items-center min-h-[60vh]">
+              <Loader />
+            </div>
+          ) : (
+            children
           )}
-          {children}
         </main>
       </div>
     </div>

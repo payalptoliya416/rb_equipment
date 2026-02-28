@@ -8,12 +8,31 @@ import { FaXTwitter } from "react-icons/fa6";
 import { GrLocation } from "react-icons/gr";
 import { IoCallOutline, IoTimeOutline } from "react-icons/io5";
 import { LuMail } from "react-icons/lu";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import Loader from "./Loader";
 
 function Footer() {
   const { settings, companyName } = useSettings();
+  const router = useRouter();
+  const [redirectLoading, setRedirectLoading] = useState(false);
+
+  const handleRedirect = (path: string) => {
+    setRedirectLoading(true);
+    router.push(path);
+  };
+  const pathname = usePathname();
+  useEffect(() => {
+    setRedirectLoading(false);
+  }, [pathname]);
 
   return (
     <>
+      {redirectLoading && (
+        <div className="fixed inset-0 bg-white/70 backdrop-blur-sm z-[9999] flex items-center justify-center">
+          <Loader />
+        </div>
+      )}
       <section className="bg-[url(/assets/ready-bg2.png)] lg:bg-[url(/assets/ready-bg01.png)] 2xl:bg-[url(/assets/ready-bg.png)] bg-no-repeat w-full h-full mt-20 lg:mt-[110px] py-[60px] bg-position">
         <div className="grid grid-cols-12 container-custom mx-auto">
           <div className="col-span-12 sm:col-span-10 md:col-span-7 xl:col-span-5 2xl:col-span-4">
@@ -24,8 +43,8 @@ function Footer() {
               Join thousands of satisfied customers who trust {companyName}
               for industrial and agricultural machinery.
             </p>
-            <Link
-              href="/inventory"
+            <button
+              onClick={() => handleRedirect("/inventory")}
               className="group relative overflow-hidden text-green bg-white py-[14px] px-[22px] rounded-lg 
                       text-base leading-[16px] font-semibold mont-text border border-green transition-all duration-300"
             >
@@ -35,7 +54,7 @@ function Footer() {
                 className="absolute inset-0 bg-green/20 translate-x-[-100%] 
                         group-hover:translate-x-[100%] transition-all duration-500"
               ></span>
-            </Link>
+            </button>
           </div>
         </div>
       </section>
@@ -113,53 +132,53 @@ function Footer() {
 
                 <ul className="space-y-[15px]">
                   <li>
-                    <Link
-                      href="/"
-                      className="relative text-light-gray text-base leading-[16px] font-normal group"
+                    <button
+                      onClick={() => handleRedirect("/")}
+                      className="relative text-light-gray text-base leading-[16px] font-normal group cursor-pointer"
                     >
                       Home
                       <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-green transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
+                    </button>
                   </li>
 
                   <li>
-                    <Link
-                      href="/inventory"
-                      className="relative text-light-gray text-base leading-[16px] font-normal group"
+                    <button
+                      onClick={() => handleRedirect("/inventory")}
+                      className="relative text-light-gray text-base leading-[16px] font-normal group cursor-pointer"
                     >
                       Inventory
                       <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-green transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
+                    </button>
                   </li>
 
                   <li>
-                    <Link
-                      href="/about-us"
-                      className="relative text-light-gray text-base leading-[16px] font-normal group"
+                    <button
+                      onClick={() => handleRedirect("/about-us")}
+                      className="relative text-light-gray text-base leading-[16px] font-normal group cursor-pointer"
                     >
                       About
                       <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-green transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
+                    </button>
                   </li>
 
                   <li>
-                    <Link
-                      href="/faq"
-                      className="relative text-light-gray text-base leading-[16px] font-normal group"
+                    <button
+                      onClick={() => handleRedirect("/faq")}
+                      className="relative text-light-gray text-base leading-[16px] font-normal group cursor-pointer"
                     >
                       FAQ
                       <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-green transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
+                    </button>
                   </li>
 
                   <li>
-                    <Link
-                      href="/contact-us"
-                      className="relative text-light-gray text-base leading-[16px] font-normal group"
+                    <button
+                      onClick={() => handleRedirect("/contact-us")}
+                      className="relative text-light-gray text-base leading-[16px] font-normal group cursor-pointer"
                     >
                       Contact
                       <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-green transition-all duration-300 group-hover:w-full"></span>
-                    </Link>
+                    </button>
                   </li>
                 </ul>
               </div>
@@ -254,7 +273,7 @@ function Footer() {
               <Link href="/terms-condition" className="mr-1">
                 Terms & services
               </Link>
-                <span className="mx-3 text-light-gray">|</span>
+              <span className="mx-3 text-light-gray">|</span>
               <Link href="/privacy-policy">Privacy policy</Link>
             </p>
           </div>

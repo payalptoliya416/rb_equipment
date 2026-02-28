@@ -8,7 +8,7 @@ import UserDashboardNav from "./UserDashboardNav";
 import { usePathname, useRouter } from "next/navigation";
 import { clearToken } from "@/api/authToken";
 import { useEffect, useRef, useState } from "react";
-import { HiBars3BottomRight } from "react-icons/hi2";
+import { HiArrowPath, HiBars3BottomRight } from "react-icons/hi2";
 import { getSettingsByKeysFooter } from "@/api/categoryActions";
 import FullPageLoader from "./FullPageLoader";
 
@@ -33,13 +33,14 @@ function UserHeader({ onNavigateStart }: { onNavigateStart?: () => void }) {
     { name: "Contact Us", path: "/contact-us" },
   ];
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [menuLoading, setMenuLoading] = useState(false);
+  // const [menuLoading, setMenuLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const [settings, setSettings] = useState<any>(null);
   const [isHeaderReady, setIsHeaderReady] = useState(false);
   const [settingsLoading, setSettingsLoading] = useState(true);
   const [userLoading, setUserLoading] = useState(true);
+  const [menuLoading, setMenuLoading] = useState<string | null>(null);
 
   const getUserNameFromStorage = () => {
     if (typeof window === "undefined") return "User";
@@ -171,15 +172,29 @@ function UserHeader({ onNavigateStart }: { onNavigateStart?: () => void }) {
     setIsMenuOpen(false);
   }, [pathname]);
 
+  const normalize = (url: string) =>
+    url.endsWith("/") ? url.slice(0, -1) : url;
+
+  const handleMenuNavigate = (path: string, key: string) => {
+    const current = normalize(pathname);
+    const target = normalize(path);
+
+    if (current === target) {
+      setOpen(false);
+      return;
+    }
+
+    setMenuLoading(key);
+    onNavigateStart?.();
+
+    router.push(path);
+  };
+
   useEffect(() => {
     setOpen(false);
-    setMenuLoading(false);
+    setMenuLoading(null);
   }, [pathname]);
 
-  const handleMenuNavigate = (path: string) => {
-    setOpen(false);
-    router.replace(path);
-  };
   if (!isHeaderReady) {
     return <FullPageLoader />;
   }
@@ -293,23 +308,53 @@ function UserHeader({ onNavigateStart }: { onNavigateStart?: () => void }) {
                       className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 z-50 border border-gray-100"
                     >
                       <button
-                        disabled={menuLoading}
-                        onClick={() => handleMenuNavigate("/user/profile")}
-                        className="w-full text-left px-4 py-2 text-[14px] hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+                        disabled={menuLoading === "profile"}
+                        onClick={() =>
+                          handleMenuNavigate("/user/profile", "profile")
+                        }
+                        className="w-full text-left px-4 py-2 text-[14px] hover:bg-gray-100 flex items-center justify-between transition cursor-pointer"
                       >
-                        {menuLoading ? "Profile..." : "Profile"}
-                      </button>
+                        <span
+                          className={`${
+                            menuLoading === "profile" ? "text-gray-400" : ""
+                          }`}
+                        >
+                          Profile
+                        </span>
 
+                        {menuLoading === "profile" && (
+                          <HiArrowPath
+                            size={16}
+                            className="animate-spin text-gray-500"
+                          />
+                        )}
+                      </button>
                       <div className="border-t my-1" />
 
                       <button
+                        disabled={menuLoading === "logout"}
                         onClick={() => {
-                          setOpen(false);
-                          handleLogout();
+                          setMenuLoading("logout");
+                          clearToken();
+                          localStorage.removeItem("userdata");
+                          router.push("/user/signin");
                         }}
-                        className="w-full text-left px-4 py-2 text-[14px] text-red-600 hover:bg-red-50  cursor-pointer"
+                        className="w-full text-left px-4 py-2 text-[14px] text-red-600 hover:bg-red-50 flex items-center justify-between transition cursor-pointer"
                       >
-                        Logout
+                        <span
+                          className={`${
+                            menuLoading === "logout" ? "text-red-300" : ""
+                          }`}
+                        >
+                          Logout
+                        </span>
+
+                        {menuLoading === "logout" && (
+                          <HiArrowPath
+                            size={16}
+                            className="animate-spin text-red-400"
+                          />
+                        )}
                       </button>
                     </motion.div>
                   )}

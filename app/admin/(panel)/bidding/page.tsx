@@ -4,13 +4,13 @@ import AdminDataTable, { Column } from "@/components/tables/AdminDataTable";
 import { FiSearch } from "react-icons/fi";
 import { useEffect, useState } from "react";
 import { adminBiddingService } from "@/api/admin/bidding";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { BiEdit } from "react-icons/bi";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import BiddingMobileCard from "@/adminpanel/BiddingMobileCard";
 import Loader from "@/components/common/Loader";
-import { HiOutlineEye } from "react-icons/hi2";
+import { HiArrowPath, HiOutlineEye } from "react-icons/hi2";
 import { formatPrice } from "@/hooks/formate";
 import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
 
@@ -43,7 +43,12 @@ export default function BiddingManagement() {
 
   const [pagination, setPagination] = useState<any>(null);
   const [noDataMessage, setNoDataMessage] = useState<string | null>(null);
+  const [loadingViewId, setLoadingViewId] = useState<number | null>(null);
+  const pathname = usePathname();
 
+  useEffect(() => {
+    setLoadingViewId(null);
+  }, [pathname]);
   /* ================= FETCH ================= */
   const fetchBidding = async () => {
     try {
@@ -168,12 +173,21 @@ export default function BiddingManagement() {
         <div className="flex items-center">
           <TooltipWrapper content="View bidding details">
             <button
-              onClick={() =>
-                router.replace(`/admin/bidding/bidding-list?id=${r.id}`)
-              }
+              disabled={loadingViewId === r.id}
+              onClick={() => {
+                setLoadingViewId(r.id);
+                router.replace(`/admin/bidding/bidding-list?id=${r.id}`);
+              }}
               className="w-9 h-9 flex items-center justify-center rounded-full text-[#3C97FF] cursor-pointer"
             >
-              <HiOutlineEye size={18} />
+              {loadingViewId === r.id ? (
+                <HiArrowPath
+                  size={18}
+                  className="text-[#3C97FF] animate-spin"
+                />
+              ) : (
+                <HiOutlineEye size={18} />
+              )}
             </button>
           </TooltipWrapper>
         </div>
@@ -219,9 +233,11 @@ export default function BiddingManagement() {
             <BiddingMobileCard
               key={item.id}
               item={item}
-              onEdit={() =>
-                router.replace(`/admin/bidding/bidding-list?id=${item.id}`)
-              }
+                loadingViewId={loadingViewId}
+    onEdit={() => {
+      setLoadingViewId(item.id);
+      router.replace(`/admin/bidding/bidding-list?id=${item.id}`);
+    }}
             />
           ))}
         </div>

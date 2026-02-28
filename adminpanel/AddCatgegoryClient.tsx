@@ -372,7 +372,7 @@ const [cropImage, setCropImage] = useState<string | null>(null);
               `}
             >
               {isSubmitting ? (
-                <span className="flex items-center gap-2">
+                <span className="flex items-center gap-2 cursor-pointer">
                   <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   {isEdit ? "Updating..." : "Adding..."}
                 </span>

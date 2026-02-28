@@ -5,11 +5,21 @@ import { FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useSettings } from "@/contexts/SettingsContext";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import Loader from "../common/Loader";
 
 function AboutUs() {
   const { companyName } = useSettings();
-
+const router = useRouter();
+const [redirectLoading, setRedirectLoading] = useState(false);
   return (
+    <>
+    {redirectLoading && (
+  <div className="fixed inset-0 bg-white/70 backdrop-blur-sm z-50 flex items-center justify-center">
+    <Loader />
+  </div>
+)}
     <section className="container-custom mx-auto">
       <motion.div
         className="grid grid-cols-12 lg:gap-[30px] items-center hero-custom-mt">
@@ -46,7 +56,11 @@ function AboutUs() {
             existing equipment, we provide the expertise, tools, and exposure
             you need to make every transaction smooth and successful.
           </p>
-          <Link href='/about-us' className="group relative overflow-hidden inline-block text-base py-[14px] px-[22px] text-white rounded-lg bg-green transition-all duration-300 mont-text">
+         <button
+          onClick={() => {
+            setRedirectLoading(true);
+            router.push("/about-us");
+          }} className="group relative overflow-hidden inline-block text-base py-[14px] px-[22px] text-white rounded-lg bg-green transition-all duration-300 mont-text cursor-pointer">
             <span className="relative z-10 flex items-center cursor-pointer font-semibold">
               Read More
               <FaArrowRight
@@ -54,10 +68,11 @@ function AboutUs() {
               />
             </span>
             <span className="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-all duration-500"></span>
-          </Link>
+          </button>
         </div>
       </motion.div>
     </section>
+    </>
   );
 }
 

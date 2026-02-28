@@ -1,19 +1,22 @@
 "use client";
 
 import Image from "next/image";
-import { HiOutlineEye, HiOutlineTrash } from "react-icons/hi2";
+import {  HiOutlineTrash } from "react-icons/hi2";
 import { BiEdit } from "react-icons/bi";
+import { HiArrowPath } from "react-icons/hi2";
 
 type Props = {
   item: any;
   onEdit: () => void;
   onDelete: () => void;
+   loadingEditId?: number | null;
 };
 
 export default function CategoryMobileCard({
   item,
   onEdit,
   onDelete,
+  loadingEditId,
 }: Props) {
   return (
     <div className="bg-white border border-[#E9E9E9] rounded-xl p-4 space-y-4">
@@ -46,11 +49,20 @@ export default function CategoryMobileCard({
       {/* ACTIONS */}
       <div className="flex justify-end gap-4 pt-3 border-t border-[#E9E9E9]">
         {/* <HiOutlineEye className="text-blue-500 cursor-pointer" size={18} /> */}
-        <BiEdit
-          className="text-yellow-500 cursor-pointer"
-          size={18}
-          onClick={onEdit}
-        />
+        <button
+  disabled={loadingEditId === item.id}
+  onClick={onEdit}
+  className="flex items-center justify-center rounded-full"
+>
+  {loadingEditId === item.id ? (
+    <HiArrowPath
+      size={18}
+      className="text-[#EDB423] animate-spin"
+    />
+  ) : (
+    <BiEdit size={18} className="text-[#EDB423]" />
+  )}
+</button>
         <HiOutlineTrash
           className="text-red-500 cursor-pointer"
           size={18}

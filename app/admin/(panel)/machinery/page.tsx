@@ -2,7 +2,7 @@
 
 import AdminDataTable, { Column } from "@/components/tables/AdminDataTable";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
@@ -52,7 +52,12 @@ export default function Machinery() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [refreshId, setRefreshId] = useState<number | null>(null);
   const [refreshLoading, setRefreshLoading] = useState(false);
+  const [loadingEditId, setLoadingEditId] = useState<number | null>(null);
+  const pathname = usePathname();
 
+  useEffect(() => {
+    setLoadingEditId(null);
+  }, [pathname]);
   const fetchMachinery = async () => {
     try {
       setLoading(true);
@@ -201,13 +206,23 @@ export default function Machinery() {
       render: (row) => (
         <div className="flex items-center gap-3">
           <TooltipWrapper content="Edit machinery">
-            <BiEdit
-              className="text-[#EDB423] cursor-pointer"
-              size={18}
+            <button
+              disabled={loadingEditId === row.id}
               onClick={() => {
-               router.replace(`/admin/machinery/add?id=${row.id}`);
+                setLoadingEditId(row.id);
+                router.replace(`/admin/machinery/add?id=${row.id}`);
               }}
-            />
+              className="flex items-center justify-center"
+            >
+              {loadingEditId === row.id ? (
+                <HiArrowPath
+                  size={18}
+                  className="text-[#EDB423] animate-spin "
+                />
+              ) : (
+                <BiEdit size={18} className="text-[#EDB423] cursor-pointer" />
+              )}
+            </button>
           </TooltipWrapper>
           <TooltipWrapper content="Delete machinery">
             <HiOutlineTrash
@@ -225,7 +240,7 @@ export default function Machinery() {
                   onClick={() => setRefreshId(row.id)}
                 />
               </TooltipWrapper>
-          )}
+            )}
         </div>
       ),
       className: "w-[120px]",
@@ -339,7 +354,11 @@ export default function Machinery() {
             <MachineryMobileCard
               key={item.id}
               item={item}
-              onEdit={() => router.replace(`/admin/machinery/add?id=${item.id}`)}
+              loadingEditId={loadingEditId}
+              onEdit={() => {
+                setLoadingEditId(item.id);
+                router.replace(`/admin/machinery/add?id=${item.id}`);
+              }}
               onDelete={() => setDeleteId(item.id)}
             />
           ))}

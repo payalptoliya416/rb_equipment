@@ -3,6 +3,7 @@
 import { HiOutlineEye, HiOutlineTrash } from "react-icons/hi2";
 import UserStatusDropdown from "@/adminpanel/UserStatusDropdown";
 import { BiEdit } from "react-icons/bi";
+import { HiArrowPath } from "react-icons/hi2";
 
 type Props = {
   user: any;
@@ -10,6 +11,10 @@ type Props = {
   onView: () => void;
   onDelete: () => void;
   onUpdated: () => void;
+    loadingAction: {
+    id: number | null;
+    type: "view" | "edit" | null;
+  };
 };
 
 export default function UserMobileCard({
@@ -18,15 +23,16 @@ export default function UserMobileCard({
   onView,
   onDelete,
   onUpdated,
+  loadingAction,
 }: Props) {
   return (
     <div className="bg-white border border-[#E9E9E9] rounded-xl p-4 space-y-4">
       {/* Name + Status */}
-      <div className="flex justify-between items-start">
-        <div>
-          <p className="font-semibold">{user.name}</p>
-          <p className="text-xs text-gray-500">{user.email}</p>
-        </div>
+      <div className="flex justify-between items-start gap-1">
+          <div className="min-w-0">
+    <p className="font-semibold break-words">{user.name}</p>
+    <p className="text-xs text-gray-500 break-words">{user.email}</p>
+  </div>
 
         <UserStatusDropdown
           value={user.status_text}
@@ -42,13 +48,42 @@ export default function UserMobileCard({
       </div>
 
       {/* Actions */}
-        <div className="flex justify-end gap-4 pt-4 border-t border-[#E9E9E9]">
-        <button onClick={onView} className="text-blue-500"><HiOutlineEye /></button>
-        <button onClick={onEdit} className="text-yellow-500"><BiEdit /></button>
-        <button onClick={onDelete} className="text-red-500">
-          <HiOutlineTrash />
-        </button>
-      </div>
+       <div className="flex justify-end gap-4 pt-4 border-t border-[#E9E9E9]">
+
+  {/* VIEW */}
+  <button
+    disabled={loadingAction.id === user.id && loadingAction.type === "view"}
+    onClick={onView}
+    className="flex items-center justify-center rounded-full text-blue-500"
+  >
+    {loadingAction.id === user.id && loadingAction.type === "view" ? (
+      <HiArrowPath size={18} className="animate-spin" />
+    ) : (
+      <HiOutlineEye size={18} />
+    )}
+  </button>
+
+  {/* EDIT */}
+  <button
+    disabled={loadingAction.id === user.id && loadingAction.type === "edit"}
+    onClick={onEdit}
+    className="flex items-center justify-center rounded-full text-yellow-500"
+  >
+    {loadingAction.id === user.id && loadingAction.type === "edit" ? (
+      <HiArrowPath size={18} className="animate-spin" />
+    ) : (
+      <BiEdit size={18} />
+    )}
+  </button>
+
+  {/* DELETE */}
+  <button
+    onClick={onDelete}
+    className="flex items-center justify-center rounded-full text-red-500"
+  >
+    <HiOutlineTrash size={18} />
+  </button>
+</div>
     </div>
   );
 }

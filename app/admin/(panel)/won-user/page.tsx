@@ -2,10 +2,10 @@
 
 import AdminDataTable, { Column } from "@/components/tables/AdminDataTable";
 import { FiSearch } from "react-icons/fi";
-import { HiOutlineEye } from "react-icons/hi2";
+import { HiArrowPath, HiOutlineEye } from "react-icons/hi2";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { adminWonUsersService } from "@/api/admin/biddingWonUsers";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import WonUserMobileCard from "@/adminpanel/WonUserMobileCard";
@@ -48,7 +48,12 @@ export default function WonUser() {
   const [sortBy, setSortBy] = useState("id");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
   const [noDataMessage, setNoDataMessage] = useState<string | null>(null);
+  const [loadingViewId, setLoadingViewId] = useState<number | null>(null);
+  const pathname = usePathname();
 
+  useEffect(() => {
+    setLoadingViewId(null);
+  }, [pathname]);
   /* ================= FETCH ================= */
 
   const fetchWonUsers = async () => {
@@ -151,10 +156,18 @@ export default function WonUser() {
       render: (row) => (
         <TooltipWrapper content="View won user">
           <button
-            onClick={() =>router.replace(`/admin/won-user/won-user-details/?id=${row.id}`)}
-            className="w-9 h-9 flex items-center justify-center rounded-full 
-                   text-blue-500 cursor-pointer">
-            <HiOutlineEye size={18} />
+            disabled={loadingViewId === row.id}
+            onClick={() => {
+              setLoadingViewId(row.id);
+              router.replace(`/admin/won-user/won-user-details/?id=${row.id}`);
+            }}
+            className="w-9 h-9 flex items-center justify-center rounded-full text-blue-500 cursor-pointer"
+          >
+            {loadingViewId === row.id ? (
+              <HiArrowPath size={18} className="text-blue-500 animate-spin" />
+            ) : (
+              <HiOutlineEye size={18} />
+            )}
           </button>
         </TooltipWrapper>
       ),
@@ -196,9 +209,13 @@ export default function WonUser() {
             <WonUserMobileCard
               key={item.id}
               item={item}
-              onView={() =>
-                router.replace(`/admin/won-user/won-user-details/?id=${item.id}`)
-              }
+              loading={loadingViewId === item.id}
+    onView={() => {
+      setLoadingViewId(item.id);
+      router.replace(
+        `/admin/won-user/won-user-details/?id=${item.id}`,
+      );
+    }}
             />
           ))}
         </div>

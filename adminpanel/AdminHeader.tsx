@@ -5,7 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { HiOutlineBars3, HiOutlineBellAlert } from "react-icons/hi2";
+import {
+  HiArrowPath,
+  HiOutlineBars3,
+  HiOutlineBellAlert,
+} from "react-icons/hi2";
 import { IoChevronDown, IoClose } from "react-icons/io5";
 import { FiChevronRight, FiEye, FiEyeOff } from "react-icons/fi";
 import { useFormik } from "formik";
@@ -37,6 +41,7 @@ export default function AdminHeader({
   const [showCurrent, setShowCurrent] = useState(false);
   const [showNew, setShowNew] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+  const [menuLoading, setMenuLoading] = useState<string | null>(null);
   const formik = useFormik({
     initialValues: {
       currentPassword: "",
@@ -114,6 +119,29 @@ export default function AdminHeader({
     clearAdminToken();
     router.replace("/admin");
   };
+
+  const handleMenuNavigate = (path: string, key: string) => {
+    const normalize = (url: string) =>
+      url.endsWith("/") ? url.slice(0, -1) : url;
+
+    const current = normalize(pathname);
+    const target = normalize(path);
+
+    if (current === target) {
+      setOpen(false);
+      return;
+    }
+
+    setMenuLoading(key);
+    router.push(path);
+  };
+
+  useEffect(() => {
+    if (menuLoading) {
+      setMenuLoading(null);
+      setOpen(false);
+    }
+  }, [pathname]);
 
   return (
     <>
@@ -216,14 +244,26 @@ export default function AdminHeader({
         shadow-lg py-2 z-50 border border-gray-100"
                 >
                   <button
-                    onClick={() => {
-                      setOpen(false);
-                      router.replace("/admin/settings");
-                    }}
-                    className="w-full text-left px-4 py-2 text-sm
-          hover:bg-gray-100 cursor-pointer"
+                    disabled={menuLoading === "settings"}
+                    onClick={() =>
+                      handleMenuNavigate("/admin/settings", "settings")
+                    }
+                    className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex items-center justify-between cursor-pointer"
                   >
-                    Settings
+                    <span
+                      className={`${
+                        menuLoading === "settings" ? "text-gray-400" : ""
+                      }`}
+                    >
+                      Settings
+                    </span>
+
+                    {menuLoading === "settings" && (
+                      <HiArrowPath
+                        size={14}
+                        className="animate-spin text-gray-500"
+                      />
+                    )}
                   </button>
 
                   <button
@@ -359,7 +399,8 @@ export default function AdminHeader({
                     value={formik.values.confirmPassword}
                     className={`input
                   ${
-                    formik.touched.confirmPassword && formik.errors.confirmPassword
+                    formik.touched.confirmPassword &&
+                    formik.errors.confirmPassword
                       ? "border-red-500 focus:ring-red-200"
                       : ""
                   }`}

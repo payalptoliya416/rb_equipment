@@ -7,6 +7,7 @@ import { formatPrice } from "@/hooks/formate";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import Image from "next/image"
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaFilePdf } from "react-icons/fa6";
 
@@ -87,7 +88,8 @@ const [cards, setCards] = useState<DashboardCard[]>([]);
 const [recentBids, setRecentBids] = useState<RecentBid[]>([]);
 const [recentOrders, setRecentOrders] = useState<RecentBuyOrder[]>([]);
 const [loading, setLoading] = useState<boolean>(true);
-
+const [redirectLoading, setRedirectLoading] = useState(false);
+const router = useRouter();
 const fetchDashboard = async () => {
   try {
     setLoading(true);
@@ -172,6 +174,12 @@ if (loading) {
   }
 
   return (
+    <>
+    {redirectLoading && (
+  <div className="fixed inset-0 bg-white/70 backdrop-blur-sm z-50 flex items-center justify-center">
+    <Loader />
+  </div>
+)}
     <section className="py-[25px]">
       <div className="container-custom mx-auto">
         <h1 className="text-[#373737] text-[22px] sm:text-[26px] font-bold mb-[15px]">
@@ -180,10 +188,13 @@ if (loading) {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-5">
           {cards.map((item) => (
-            <Link
-            key={item.id}
-            href={item.link}
-              className="border rounded-[10px] border-[#E9E9E9] p-[20px] sm:p-[25px] flex flex-col gap-[15px] justify-center items-center lg:items-start lg:justify-start"
+            <div
+          key={item.id}
+          onClick={() => {
+            setRedirectLoading(true);
+            router.push(item.link);
+          }}
+              className="border rounded-[10px] border-[#E9E9E9] p-[20px] sm:p-[25px] flex flex-col gap-[15px] justify-center items-center lg:items-start lg:justify-start cursor-pointer"
             >
               <div
                 className="w-[60px] h-[60px] rounded-[18px] p-[15px] flex justify-center items-center"
@@ -204,7 +215,7 @@ if (loading) {
               <p className="text-[#909090] text-[18px] sm:text-[22px] leading-[22px]">
                 {item.label}
               </p>
-            </Link>
+            </div>
           ))}
         </div>
       <div className="grid  grid-cols-1 xl:grid-cols-2 gap-5">
@@ -396,6 +407,7 @@ if (loading) {
           </div>
       </div>
     </section>
+    </>
   )
 }
 

@@ -2,11 +2,11 @@
 
 import AdminDataTable, { Column } from "@/components/tables/AdminDataTable";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { BiEdit } from "react-icons/bi";
 import { FiSearch } from "react-icons/fi";
-import { HiOutlineTrash } from "react-icons/hi2";
+import { HiArrowPath, HiOutlineTrash } from "react-icons/hi2";
 import { adminCategoryService } from "@/api/admin/category";
 import toast from "react-hot-toast";
 import ConfirmModal from "@/components/tables/ConfirmDialog";
@@ -42,6 +42,12 @@ export default function AdminCategory() {
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [pagination, setPagination] = useState<any>(null);
+  const [loadingEditId, setLoadingEditId] = useState<number | null>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setLoadingEditId(null);
+  }, [pathname]);
   /* ================= FETCH ================= */
   const fetchCategories = async () => {
     try {
@@ -174,11 +180,23 @@ export default function AdminCategory() {
       render: (row) => (
         <div className="flex items-center gap-3">
           <TooltipWrapper content="Edit category">
-            <BiEdit
-              className="text-[#EDB423] cursor-pointer"
-              size={18}
-              onClick={() => router.replace(`/admin/category/add?id=${row.id}`)}
-            />
+            <button
+              disabled={loadingEditId === row.id}
+              onClick={() => {
+                setLoadingEditId(row.id);
+                router.replace(`/admin/category/add?id=${row.id}`);
+              }}
+              className="flex items-center justify-center"
+            >
+              {loadingEditId === row.id ? (
+                <HiArrowPath
+                  size={18}
+                  className="text-[#EDB423] animate-spin"
+                />
+              ) : (
+                <BiEdit size={18} className="text-[#EDB423] cursor-pointer" />
+              )}
+            </button>
           </TooltipWrapper>
           <TooltipWrapper content="Delete category">
             <HiOutlineTrash
@@ -239,7 +257,11 @@ export default function AdminCategory() {
             <CategoryMobileCard
               key={item.id}
               item={item}
-              onEdit={() => router.replace(`/admin/category/add?id=${item.id}`)}
+                loadingEditId={loadingEditId}
+    onEdit={() => {
+      setLoadingEditId(item.id);
+      router.replace(`/admin/category/add?id=${item.id}`);
+    }}
               onDelete={() => setDeleteId(item.id)}
             />
           ))}

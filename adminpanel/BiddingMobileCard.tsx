@@ -1,13 +1,19 @@
 "use client";
 
 import { HiOutlineEye } from "react-icons/hi2";
+import { HiArrowPath } from "react-icons/hi2";
 
 type Props = {
   item: any;
   onEdit: () => void;
+  loadingViewId?: number | null;
 };
 
-export default function BiddingMobileCard({ item, onEdit }: Props) {
+export default function BiddingMobileCard({
+  item,
+  onEdit,
+  loadingViewId,
+}: Props) {
   const statusMap: Record<string, string> = {
     active: "bg-green-500 text-white",
     pending: "bg-yellow-400 text-black",
@@ -45,12 +51,20 @@ export default function BiddingMobileCard({ item, onEdit }: Props) {
           {statusLabel[item.bid_status]}
         </span>
 
-        <button
-          onClick={onEdit}
-          className="w-9 h-9 flex items-center justify-center rounded-full text-[#3C97FF] cursor-pointer"
-        >
-          <HiOutlineEye size={18} />
-        </button>
+       <button
+  disabled={loadingViewId === item.id}
+  onClick={onEdit}
+  className="w-9 h-9 flex items-center justify-center rounded-full text-[#3C97FF]"
+>
+  {loadingViewId === item.id ? (
+    <HiArrowPath
+      size={18}
+      className="text-[#3C97FF] animate-spin"
+    />
+  ) : (
+    <HiOutlineEye size={18} />
+  )}
+</button>
       </div>
     </div>
   );

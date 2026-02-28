@@ -97,16 +97,7 @@ export default function Bids() {
   const router = useRouter();
   const isMobile = useIsMobile();
   const [loadingRowId, setLoadingRowId] = useState<string | null>(null);
-  const getTimeLeft = (endTime: string) => {
-    const diff = new Date(endTime).getTime() - Date.now();
-
-    if (diff <= 0) return "Expired";
-
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-
-    return `${hours}h ${minutes}m`;
-  };
+  
   const formatEndDate = (date: string) => {
   const d = new Date(date);
 
@@ -117,7 +108,7 @@ export default function Bids() {
     hour: "2-digit",
     minute: "2-digit",
     hour12: true,
-  }).replace(",", "") // optional cleanup
+  }).replace(",", "")
 };
 
  const fetchBids = async () => {

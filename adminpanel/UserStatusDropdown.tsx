@@ -73,7 +73,7 @@ export default function UserStatusDropdown({
       {/* BUTTON */}
       <button
         onClick={() => setOpen((p) => !p)}
-        className={`flex items-center justify-between gap-2 px-2 py-1.5 w-[100px] rounded-md text-sm font-medium cursor-pointer transition-all duration-150 ${current.btnClass}
+        className={`flex items-center justify-between gap-2 px-2 py-1.5 w-[90px] sm:w-[100px] rounded-md text-sm font-medium cursor-pointer transition-all duration-150 ${current.btnClass}
         `}
       >
         {current.label}

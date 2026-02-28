@@ -1,10 +1,12 @@
 "use client";
 
 import { HiOutlineEye } from "react-icons/hi2";
+import { HiArrowPath } from "react-icons/hi2";
 
 type Props = {
   item: any;
   onView: () => void;
+  loading?: boolean;
 };
 
 const statusClassMap: Record<string, string> = {
@@ -16,7 +18,7 @@ const statusClassMap: Record<string, string> = {
   Unknown: "bg-gray-400 text-white",
 };
 
-export default function WonUserMobileCard({ item, onView }: Props) {
+export default function WonUserMobileCard({ item, onView, loading }: Props) {
   return (
     <div className="bg-white border border-[#E9E9E9] rounded-xl p-4 space-y-4">
       {/* USER + MACHINE */}
@@ -45,10 +47,15 @@ export default function WonUserMobileCard({ item, onView }: Props) {
         </span>
 
         <button
+          disabled={loading}
           onClick={onView}
           className="w-9 h-9 flex items-center justify-center rounded-full text-blue-500 hover:bg-blue-50"
         >
-          <HiOutlineEye size={18} />
+          {loading ? (
+            <HiArrowPath size={18} className="animate-spin" />
+          ) : (
+            <HiOutlineEye size={18} />
+          )}
         </button>
       </div>
     </div>

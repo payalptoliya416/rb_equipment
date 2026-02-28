@@ -16,20 +16,22 @@ export default function UserDashboardNav({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+
   const menu: MenuItem[] = [
     { name: "Dashboard", href: "/user", icon: "/assets/nav1.svg" },
     { name: "My Bids", href: "/user/bids", icon: "/assets/nav2.svg" },
     { name: "Inventory", href: "/inventory", icon: "/assets/nav9.svg" },
     { name: "My Buy Orders", href: "/user/orders", icon: "/assets/nav3.svg" },
-    // { name: "My Won Bids", href: "#", icon: "/assets/nav6.svg" },
     { name: "My Won Bids", href: "/user/won-bids", icon: "/assets/nav6.svg" },
   ];
-const handleNavigate = (url: string) => {
-  if (pathname !== url) {
-    onNavigateStart?.();  
+
+  const handleNavigate = (url: string) => {
+    if (pathname === url) return; // same page click avoid
+
+    onNavigateStart?.(); // 🔥 start loader in parent
     router.push(url);
-  }
-};
+  };
+
   return (
     <nav className="bg-green w-full py-3">
       <div className="container-custom mx-auto">
@@ -39,6 +41,7 @@ const handleNavigate = (url: string) => {
               item.href === "/user"
                 ? pathname === "/user" || pathname === "/user/"
                 : pathname.startsWith(item.href);
+
             return (
               <button
                 key={item.name}
@@ -60,7 +63,6 @@ const handleNavigate = (url: string) => {
                     height={16}
                     className="block shrink-0"
                   />
-
                   <span className="ml-2 text-[15px] font-medium leading-none">
                     {item.name}
                   </span>
