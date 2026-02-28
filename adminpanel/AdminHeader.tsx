@@ -142,7 +142,18 @@ export default function AdminHeader({
       setOpen(false);
     }
   }, [pathname]);
+  const handleBreadcrumbNavigate = (path: string) => {
+    const normalize = (url: string) =>
+      url.endsWith("/") ? url.slice(0, -1) : url;
 
+    const current = normalize(pathname);
+    const target = normalize(path);
+
+    if (current === target) return;
+
+    setMenuLoading("breadcrumb");
+    router.push(path);
+  };
   return (
     <>
       <header className="bg-white flex items-center justify-between border rounded-[14px] border-[#D3D3D3] p-3 sm:p-5 mb-5">
@@ -177,10 +188,16 @@ export default function AdminHeader({
                     <span key={idx} className="inline-flex items-center">
                       {idx === 0 ? (
                         <span
-                          onClick={() => router.replace("/admin/" + seg)}
-                          className="cursor-pointer hover:text-[#0A7F71] font-medium"
+                          onClick={() =>
+                            handleBreadcrumbNavigate("/admin/" + seg)
+                          }
+                          className="cursor-pointer hover:text-[#0A7F71] font-medium flex items-center gap-1"
                         >
                           {label}
+
+                          {menuLoading === "breadcrumb" && (
+                            <HiArrowPath size={12} className="animate-spin" />
+                          )}
                         </span>
                       ) : (
                         <span>{label}</span>

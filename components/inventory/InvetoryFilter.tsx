@@ -20,7 +20,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import SimpleSteps from "./SimpleSteps";
 import { formatPrice } from "@/hooks/formate";
 
-export default function InventoryFilter({ }: {}) {
+export default function InventoryFilter({}: {}) {
   const searchParams = useSearchParams();
   const categoryParam = searchParams.get("category");
   const categorySlugsFromUrl = categoryParam ? categoryParam.split(",") : [];
@@ -31,7 +31,6 @@ export default function InventoryFilter({ }: {}) {
   const leftPercent = ((fromYear - min) / (max - min)) * 100;
   const rightPercent = ((toYear - min) / (max - min)) * 100;
   const [openSidebar, setOpenSidebar] = useState(false);
-  const [showMap, setShowMap] = useState<Record<number, boolean>>({});
 
   const sortOptions = [
     { label: "Sort By Default", value: "" },
@@ -67,11 +66,11 @@ export default function InventoryFilter({ }: {}) {
   const [hasFetched, setHasFetched] = useState(false);
   const [openMake, setOpenMake] = useState(false);
   const [openModel, setOpenModel] = useState(false);
-const [isNavigating, setIsNavigating] = useState(false);
-const pathname = usePathname();
-useEffect(() => {
-  setIsNavigating(false);
-}, [pathname]);
+  const [isNavigating, setIsNavigating] = useState(false);
+  const pathname = usePathname();
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [pathname]);
 
   const slugify = (text: string) =>
     text
@@ -332,9 +331,7 @@ useEffect(() => {
         }
       });
 
-      if (!clickedInside) {
-        setShowMap({});
-      }
+
     };
 
     document.addEventListener("mousedown", handleOutsideClick);
@@ -377,11 +374,11 @@ useEffect(() => {
 
   return (
     <>
-    {isNavigating && (
-  <div className="fixed inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-[9999]">
-    <Loader />
-  </div>
-)}
+      {isNavigating && (
+        <div className="fixed inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm z-[9999]">
+          <Loader />
+        </div>
+      )}
       <div className="w-full container-custom mx-auto my-[80px] lg:my-[110px]">
         <div className="w-full flex flex-col lg:flex-row gap-6">
           {/* ================= LEFT SIDEBAR ================= */}
@@ -398,10 +395,11 @@ useEffect(() => {
             z-[999]
             overflow-y-auto
             transition-transform duration-300
-            ${openSidebar
+            ${
+              openSidebar
                 ? "translate-x-0"
                 : "-translate-x-full lg:translate-x-0"
-              }
+            }
           `}
           >
             {/* Close button for mobile */}
@@ -423,8 +421,9 @@ useEffect(() => {
                       </h2>
 
                       <FaChevronDown
-                        className={`text-gray transition-transform duration-300 ${open ? "rotate-180" : "rotate-0"
-                          }`}
+                        className={`text-gray transition-transform duration-300 ${
+                          open ? "rotate-180" : "rotate-0"
+                        }`}
                       />
                     </Disclosure.Button>
 
@@ -480,7 +479,7 @@ useEffect(() => {
             <div>
               {/* HEADER */}
               <button
-                onClick={() => { }}
+                onClick={() => {}}
                 className="w-full flex items-center justify-between mb-4 cursor-default"
               >
                 <h2 className="font-semibold text-lg text-gray mont-text">
@@ -503,8 +502,9 @@ useEffect(() => {
                   >
                     {loadingMake ? "Loading..." : selectedMake}
                     <FaChevronDown
-                      className={`text-gray-500 text-xs transition-transform ${openMake ? "rotate-180" : ""
-                        }`}
+                      className={`text-gray-500 text-xs transition-transform ${
+                        openMake ? "rotate-180" : ""
+                      }`}
                     />
                   </button>
 
@@ -522,10 +522,11 @@ useEffect(() => {
                             setOpenMake(false);
                           }}
                           className={`w-full text-left px-4 py-2 text-sm transition
-                ${selectedMake === make
-                              ? "bg-green text-white"
-                              : "text-gray-700 hover:bg-gray-100"
-                            }`}
+                ${
+                  selectedMake === make
+                    ? "bg-green text-white"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
                         >
                           {make}
                         </button>
@@ -547,8 +548,9 @@ useEffect(() => {
                   >
                     {loadingModel ? "Loading..." : selectedModel}
                     <FaChevronDown
-                      className={`text-gray-500 text-xs transition-transform ${openModel ? "rotate-180" : ""
-                        }`}
+                      className={`text-gray-500 text-xs transition-transform ${
+                        openModel ? "rotate-180" : ""
+                      }`}
                     />
                   </button>
 
@@ -566,10 +568,11 @@ useEffect(() => {
                             setOpenModel(false);
                           }}
                           className={`w-full text-left px-4 py-2 text-sm transition
-                ${selectedModel === model
-                              ? "bg-green text-white"
-                              : "text-gray-700 hover:bg-gray-100"
-                            }`}
+                ${
+                  selectedModel === model
+                    ? "bg-green text-white"
+                    : "text-gray-700 hover:bg-gray-100"
+                }`}
                         >
                           {model}
                         </button>
@@ -590,8 +593,9 @@ useEffect(() => {
                       Filter by Year
                     </h2>
                     <FaChevronDown
-                      className={`text-gray transition-transform duration-300 ${open ? "rotate-180" : ""
-                        }`}
+                      className={`text-gray transition-transform duration-300 ${
+                        open ? "rotate-180" : ""
+                      }`}
                     />
                   </Disclosure.Button>
 
@@ -725,8 +729,9 @@ useEffect(() => {
                   >
                     {selectedSort.label}
                     <FaChevronDown
-                      className={`text-xs transition-transform ${sortOpen ? "rotate-180" : ""
-                        }`}
+                      className={`text-xs transition-transform ${
+                        sortOpen ? "rotate-180" : ""
+                      }`}
                     />
                   </button>
 
@@ -741,10 +746,11 @@ useEffect(() => {
                             setSortOpen(false);
                           }}
                           className={`w-full text-left px-3 py-2 text-sm hover:bg-green/10
-            ${selectedSort.value === option.value
-                              ? "text-green font-medium"
-                              : "text-text-gray"
-                            }`}
+            ${
+              selectedSort.value === option.value
+                ? "text-green font-medium"
+                : "text-text-gray"
+            }`}
                         >
                           {option.label}
                         </button>
@@ -880,10 +886,11 @@ useEffect(() => {
                   disabled={currentPage === 1}
                   className={`flex items-center gap-2 w-8 sm:w-auto sm:px-3 justify-center py-2 border border-light-gray cursor-pointer
         rounded-md sm:rounded-xl text-text-gray transition-all h-8 sm:h-11 text-xs sm:text-base
-        ${currentPage === 1
-                      ? "opacity-40 cursor-not-allowed"
-                      : "hover:bg-gray-100"
-                    }`}
+        ${
+          currentPage === 1
+            ? "opacity-40 cursor-not-allowed"
+            : "hover:bg-gray-100"
+        }`}
                 >
                   <FaChevronLeft className="text-xs sm:text-sm" />
                   <span className="hidden md:block"> Back </span>
@@ -926,10 +933,11 @@ useEffect(() => {
                         onClick={() => setCurrentPage(page as number)}
                         className={`w-8 h-8 sm:w-11 sm:h-11 flex items-center justify-center  cursor-pointer
              rounded-md sm:rounded-xl transition-all  text-xs sm:text-base
-              ${currentPage === page
-                            ? "bg-green text-white"
-                            : "border border-light-gray text-text-gray hover:bg-gray-100"
-                          }`}
+              ${
+                currentPage === page
+                  ? "bg-green text-white"
+                  : "border border-light-gray text-text-gray hover:bg-gray-100"
+              }`}
                       >
                         {page}
                       </button>
@@ -945,10 +953,11 @@ useEffect(() => {
                   disabled={currentPage === totalPages}
                   className={`flex items-center gap-2 justify-center py-2 border border-light-gray cursor-pointer
         rounded-md sm:rounded-xl text-text-gray transition-all h-8 sm:h-11 w-8 sm:w-auto sm:px-3  text-xs sm:text-base
-        ${currentPage === totalPages
-                      ? "opacity-40 cursor-not-allowed"
-                      : "hover:bg-gray-100"
-                    }`}
+        ${
+          currentPage === totalPages
+            ? "opacity-40 cursor-not-allowed"
+            : "hover:bg-gray-100"
+        }`}
                 >
                   <span className="hidden md:block"> Next </span>
                   <FaChevronRight className="text-xs sm:text-sm" />

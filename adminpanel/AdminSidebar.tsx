@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useRouter } from "next/navigation";
@@ -32,7 +31,7 @@ const menu = [
 export default function AdminSidebar({
   mobile = false,
   onItemClick,
-  onNavigateStart
+  onNavigateStart,
 }: {
   mobile?: boolean;
   onItemClick?: () => void;
@@ -40,12 +39,12 @@ export default function AdminSidebar({
 }) {
   const pathname = usePathname();
   const [settings, setSettings] = useState<any>(null);
-const router = useRouter();
-useEffect(() => {
-  menu.forEach((item) => {
-    router.prefetch(item.href);
-  });
-}, []);
+  const router = useRouter();
+  useEffect(() => {
+    menu.forEach((item) => {
+      router.prefetch(item.href);
+    });
+  }, []);
 
   useEffect(() => {
     getSettingsByKeysFooter().then((res) => {
@@ -67,19 +66,19 @@ useEffect(() => {
     >
       {/* LOGO (FIXED) */}
       <div className="flex items-center justify-center py-4 shrink-0">
-         <Link href='/'>
-        {settings?.dark_logo && (
-          <Image
-            src={`${settings.dark_logo}`}
-            alt="logo"
-            height={42}
-            width={120}
-            loading="eager"
-            priority
-            className="h-[42px] w-auto"
-          />
-        )}
-         </Link>
+        <Link href="/">
+          {settings?.dark_logo && (
+            <Image
+              src={`${settings.dark_logo}`}
+              alt="logo"
+              height={42}
+              width={120}
+              loading="eager"
+              priority
+              className="h-[42px] w-auto"
+            />
+          )}
+        </Link>
       </div>
 
       <div className="border-t border-[#E9E9E9] mx-[10px] shrink-0" />
@@ -89,33 +88,44 @@ useEffect(() => {
         <div className="flex flex-col gap-[6px]">
           {menu.map((item) => {
             const Icon = item.icon;
-            const isActive = pathname.startsWith(item.href);
+            const normalize = (url: string) =>
+              url.endsWith("/") ? url.slice(0, -1) : url;
+            const isActive = normalize(pathname) === normalize(item.href);
 
             return (
-             <div
-  key={item.label}
-  onClick={() => {
-       if (pathname !== item.href) {
-      onNavigateStart?.();   // 🔥 show loader
-      router.push(item.href); // 🔥 instant URL change
-    }
-    if (mobile && onItemClick) {
-      onItemClick();
-    }
-  }}
+              <div
+                onClick={() => {
+                  const normalize = (url: string) =>
+                    url.endsWith("/") ? url.slice(0, -1) : url;
+
+                  const current = normalize(pathname);
+                  const target = normalize(item.href);
+
+                  if (current === target) {
+                    return;
+                  }
+
+                  onNavigateStart?.();
+                  router.push(item.href);
+
+                  if (mobile && onItemClick) {
+                    onItemClick();
+                  }
+                }}
                 className={`
                   flex items-center gap-[10px]
                   px-4 py-[11px]
                   rounded-[10px]
                   text-base font-medium
                   transition-all group cursor-pointer
-                  ${isActive
-                    ? "gradient-btn text-white"
-                    : "text-[#7A7A7A] hover:bg-green hover:text-white"
+                  ${
+                    isActive
+                      ? "gradient-btn text-white"
+                      : "text-[#7A7A7A] hover:bg-green hover:text-white"
                   }
                 `}
                 // onClick={() => {
-                //    onNavigateStart?.(); 
+                //    onNavigateStart?.();
                 //   if (mobile && onItemClick) {
                 //     onItemClick();
                 //   }
@@ -135,4 +145,3 @@ useEffect(() => {
     </aside>
   );
 }
-

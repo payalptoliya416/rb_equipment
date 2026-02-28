@@ -1,6 +1,6 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import Image from "next/image";
 
 type MenuItem = {
@@ -10,12 +10,11 @@ type MenuItem = {
 };
 
 export default function UserDashboardNav({
-  onNavigateStart,
+  onNavigate,
 }: {
-  onNavigateStart?: () => void;
+  onNavigate?: (url: string) => void;
 }) {
   const pathname = usePathname();
-  const router = useRouter();
 
   const menu: MenuItem[] = [
     { name: "Dashboard", href: "/user", icon: "/assets/nav1.svg" },
@@ -26,10 +25,8 @@ export default function UserDashboardNav({
   ];
 
   const handleNavigate = (url: string) => {
-    if (pathname === url) return; // same page click avoid
-
-    onNavigateStart?.(); // 🔥 start loader in parent
-    router.push(url);
+    if (pathname === url) return; // ❌ same path → no loader
+    onNavigate?.(url);            // ✅ let Layout control navigation
   };
 
   return (
