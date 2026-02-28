@@ -342,10 +342,12 @@ const inventorySubmenu: NavItem[] = useMemo(() => {
   useEffect(() => {
     setLoggedIn(isLoggedIn());
   }, [pathname]);
+const segments = pathname.split("/").filter(Boolean);
 
 const isInventoryDetail =
-  pathname.startsWith("/inventory/") &&
-  pathname.split("/").filter(Boolean).length > 1;
+  segments[0] === "inventory" &&
+  segments.length >= 5;;
+
   const hasBgImage =
     isInventoryDetail ||
     pathname.startsWith("/signin") ||

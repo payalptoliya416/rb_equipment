@@ -172,7 +172,7 @@ useEffect(() => {
       if (selectedSlugs.length === 0) {
         router.replace("/inventory");
       } else {
-        setIsNavigating(true);
+        // setIsNavigating(true);
         router.replace(`/inventory?category=${selectedSlugs.join(",")}`);
       }
 
