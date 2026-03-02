@@ -89,7 +89,7 @@ function VerificationStatusContent() {
     useEffect(() => {
         if (!applicantId && mounted) {
             toast.error("No applicant ID found");
-            router.replace("/user/profile");
+            router.push("/user/profile");
             return;
         }
 
@@ -182,7 +182,7 @@ function VerificationStatusContent() {
             <div className="container-custom mx-auto max-w-2xl" suppressHydrationWarning>
                 <div className="flex items-center justify-between mb-8">
                     <button
-                        onClick={() => router.replace("/user/profile")}
+                        onClick={() => router.push("/user/profile")}
                         className="flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors"
                     >
                         <MdArrowBack size={20} />
@@ -247,7 +247,7 @@ function VerificationStatusContent() {
                                     {statusData?.review?.reviewResult?.rejectLabels?.join(", ") || statusData?.reviewResult?.rejectLabels?.join(", ") || "Information provided doesn't match our criteria. Please re-upload clear documents."}
                                 </p>
                                 <button
-                                    onClick={() => router.replace("/user/profile")}
+                                    onClick={() => router.push("/user/profile")}
                                     className="mt-3 text-sm font-bold text-red-700 underline"
                                 >
                                     Go back and try again
@@ -257,7 +257,7 @@ function VerificationStatusContent() {
 
                         {reviewStatus === "completed" && reviewAnswer === "GREEN" && (
                             <button
-                                onClick={() => router.replace("/")}
+                                onClick={() => router.push("/")}
                                 className="w-full py-4 bg-[#2DBE60] text-white rounded-xl font-bold hover:bg-[#259e50] transition-all transform hover:scale-[1.01] active:scale-[0.99] shadow-lg shadow-green-100"
                             >
                                 Continue to Dashboard

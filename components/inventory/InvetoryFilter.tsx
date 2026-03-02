@@ -169,10 +169,10 @@ export default function InventoryFilter({}: {}) {
         .map((c) => slugify(c.category_name));
 
       if (selectedSlugs.length === 0) {
-        router.replace("/inventory");
+        router.push("/inventory");
       } else {
         // setIsNavigating(true);
-        router.replace(`/inventory?category=${selectedSlugs.join(",")}`);
+        router.push(`/inventory?category=${selectedSlugs.join(",")}`);
       }
 
       return updated;

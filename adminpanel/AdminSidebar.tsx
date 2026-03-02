@@ -90,7 +90,12 @@ export default function AdminSidebar({
             const Icon = item.icon;
             const normalize = (url: string) =>
               url.endsWith("/") ? url.slice(0, -1) : url;
-            const isActive = normalize(pathname) === normalize(item.href);
+            const currentPath = pathname.replace(/\/$/, "");
+            const targetPath = item.href.replace(/\/$/, "");
+
+            const isActive =
+              currentPath === targetPath ||
+              currentPath.startsWith(targetPath + "/");
 
             return (
               <div

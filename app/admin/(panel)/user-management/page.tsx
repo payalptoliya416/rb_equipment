@@ -253,7 +253,7 @@ export default function UsersPage() {
               }
               onClick={() => {
                 setLoadingAction({ id: r.id, type: "view" });
-                router.replace(
+                router.push(
                   `/admin/user-management/user-license?id=${r.id}`,
                 );
               }}
@@ -274,7 +274,7 @@ export default function UsersPage() {
               }
               onClick={() => {
                 setLoadingAction({ id: r.id, type: "edit" });
-                router.replace(`/admin/user-management/add?id=${r.id}`);
+                router.push(`/admin/user-management/add?id=${r.id}`);
               }}
               className="w-9 h-9 flex items-center justify-center rounded-full text-yellow-500 transition cursor-pointer"
             >
@@ -343,11 +343,11 @@ export default function UsersPage() {
                   loadingAction={loadingAction}
                 onEdit={() => {
                   setLoadingAction({ id: user.id, type: "edit" });
-                  router.replace(`/admin/user-management/add?id=${user.id}`);
+                  router.push(`/admin/user-management/add?id=${user.id}`);
                 }}
                 onView={() => {
                   setLoadingAction({ id: user.id, type: "view" });
-                  router.replace(
+                  router.push(
                     `/admin/user-management/user-license?id=${user.id}`,
                   );
                 }}

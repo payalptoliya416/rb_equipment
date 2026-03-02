@@ -26,7 +26,7 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
       const currentUrl =
         window.location.pathname + window.location.search;
 
-      router.replace(
+      router.push(
         `/user/signin?returnUrl=${encodeURIComponent(currentUrl)}`
       );
     } else {

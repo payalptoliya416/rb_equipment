@@ -32,7 +32,7 @@ export default function AdminLoginPage() {
 useEffect(() => {
   const token = getAdminToken();
   if (token) {
-    router.replace("/admin/dashboard");
+    router.push("/admin/dashboard");
   }
 }, [router]);
   /* ================= SUBMIT HANDLER ================= */
@@ -51,7 +51,7 @@ useEffect(() => {
       toast.success(res.message || "Login successful");
 
       // ✅ Redirect to dashboard
-      router.replace("/admin/dashboard");
+      router.push("/admin/dashboard");
     } catch (error : any) {
        toast.error(error.message || "Login failed");
     } finally {

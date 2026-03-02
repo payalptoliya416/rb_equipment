@@ -176,7 +176,7 @@ export default function BiddingManagement() {
               disabled={loadingViewId === r.id}
               onClick={() => {
                 setLoadingViewId(r.id);
-                router.replace(`/admin/bidding/bidding-list?id=${r.id}`);
+                router.push(`/admin/bidding/bidding-list?id=${r.id}`);
               }}
               className="w-9 h-9 flex items-center justify-center rounded-full text-[#3C97FF] cursor-pointer"
             >
@@ -236,7 +236,7 @@ export default function BiddingManagement() {
                 loadingViewId={loadingViewId}
     onEdit={() => {
       setLoadingViewId(item.id);
-      router.replace(`/admin/bidding/bidding-list?id=${item.id}`);
+      router.push(`/admin/bidding/bidding-list?id=${item.id}`);
     }}
             />
           ))}

@@ -347,7 +347,7 @@ useEffect(() => {
 
     toast.success("Proceeding to sale agreement…");
 
-   router.replace(
+   router.push(
       `/sale-agreement/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`
     );
   } finally {

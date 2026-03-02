@@ -117,7 +117,7 @@ export default function AdminHeader({
 
   const handleLogout = () => {
     clearAdminToken();
-    router.replace("/admin");
+    router.push("/admin");
   };
 
   const handleMenuNavigate = (path: string, key: string) => {

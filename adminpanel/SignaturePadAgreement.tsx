@@ -216,7 +216,7 @@ import Loader from "@/components/common/Loader";
 
     if (!stored) {
       toast.error("Bid data not found");
-      router.replace("/inventory");
+      router.push("/inventory");
       return;
     }
 

@@ -107,7 +107,7 @@ export default function VerifyAccount() {
       setVerifying(true);
       await new Promise((resolve) => setTimeout(resolve, 30000));
       await getLicenseStatus();
-      router.replace(returnUrl);
+      router.push(returnUrl);
     } catch (err: any) {
       toast.error(err.message || "Upload failed");
       setUploading(false);

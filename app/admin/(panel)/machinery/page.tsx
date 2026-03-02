@@ -210,7 +210,7 @@ export default function Machinery() {
               disabled={loadingEditId === row.id}
               onClick={() => {
                 setLoadingEditId(row.id);
-                router.replace(`/admin/machinery/add?id=${row.id}`);
+                router.push(`/admin/machinery/add?id=${row.id}`);
               }}
               className="flex items-center justify-center"
             >
@@ -335,7 +335,7 @@ export default function Machinery() {
         </div>
 
         <button
-          onClick={() => router.replace("/admin/machinery/add")}
+          onClick={() => router.push("/admin/machinery/add")}
           className=" gradient-btn px-5 py-[12px] text-sm text-white rounded-lg cursor-pointer transition-all duration-200 ease-in-out
         hover:brightness-110 hover:shadow-md active:brightness-90 active:scale-95"
         >
@@ -357,7 +357,7 @@ export default function Machinery() {
               loadingEditId={loadingEditId}
               onEdit={() => {
                 setLoadingEditId(item.id);
-                router.replace(`/admin/machinery/add?id=${item.id}`);
+                router.push(`/admin/machinery/add?id=${item.id}`);
               }}
               onDelete={() => setDeleteId(item.id)}
             />

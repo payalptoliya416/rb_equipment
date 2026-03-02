@@ -99,7 +99,7 @@ const [cropImage, setCropImage] = useState<string | null>(null);
         setImages([]);
       } catch (e) {
         toast.error("Failed to load category");
-       router.replace("/admin/category");
+       router.push("/admin/category");
       } finally {
         setLoading(false);
       }
@@ -135,7 +135,7 @@ const [cropImage, setCropImage] = useState<string | null>(null);
             toast.success("Category added successfully");
           }
 
-         router.replace("/admin/category");
+         router.push("/admin/category");
         } finally {
           setSubmitting(false);
         }

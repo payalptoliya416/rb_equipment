@@ -184,7 +184,7 @@ export default function AdminCategory() {
               disabled={loadingEditId === row.id}
               onClick={() => {
                 setLoadingEditId(row.id);
-                router.replace(`/admin/category/add?id=${row.id}`);
+                router.push(`/admin/category/add?id=${row.id}`);
               }}
               className="flex items-center justify-center"
             >
@@ -235,7 +235,7 @@ export default function AdminCategory() {
         <button
           className="gradient-btn px-5 py-[12px] text-sm text-white rounded-lg cursor-pointer transition-all duration-200 ease-in-out
         hover:brightness-110 hover:shadow-md active:brightness-90 active:scale-95"
-          onClick={() => router.replace("/admin/category/add")}
+          onClick={() => router.push("/admin/category/add")}
         >
           + Add Category
         </button>
@@ -260,7 +260,7 @@ export default function AdminCategory() {
                 loadingEditId={loadingEditId}
     onEdit={() => {
       setLoadingEditId(item.id);
-      router.replace(`/admin/category/add?id=${item.id}`);
+      router.push(`/admin/category/add?id=${item.id}`);
     }}
               onDelete={() => setDeleteId(item.id)}
             />

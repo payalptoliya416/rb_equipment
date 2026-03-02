@@ -23,6 +23,7 @@ export interface UserApiItem {
 
   license_status?: number | null;
   status_text: string;
+  
   license_status_text: string;
   license?: {
     id: number;
@@ -30,6 +31,7 @@ export interface UserApiItem {
     file: string;
     status: number;
     file_url: string;
+    is_sumsub?: number; 
   };
 
   created_at?: string;

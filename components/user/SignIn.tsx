@@ -82,7 +82,7 @@ export default function SignInForm(): JSX.Element {
         }
 
         resetForm();
-        router.replace(returnUrl);
+        router.push(returnUrl);
       }
     } catch (error: any) {
       toast.error(error?.message || "Something went wrong");

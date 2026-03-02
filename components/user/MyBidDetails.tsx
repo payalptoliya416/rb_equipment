@@ -78,7 +78,7 @@ const isMobile = useIsMobile();
         {/* BREADCRUMB */}
         <p className="text-sm text-[#7A7A7A] mb-[15px]">
           <span
-            onClick={() => router.replace("/user/bids")}
+            onClick={() => router.push("/user/bids")}
             className="cursor-pointer"
           >
             My Bids

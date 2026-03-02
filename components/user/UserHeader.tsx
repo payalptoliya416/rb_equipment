@@ -78,7 +78,7 @@ function UserHeader({ onNavigate }: { onNavigate?: (url: string) => void }) {
     setOpen(false);
     clearToken();
     localStorage.removeItem("userdata");
-    router.replace("/user/signin");
+    router.push("/user/signin");
   };
 
   useEffect(() => {

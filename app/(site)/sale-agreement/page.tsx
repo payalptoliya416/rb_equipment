@@ -93,7 +93,7 @@ function SaleAgreement() {
   const redirectToSignin = (router: any) => {
     toast.error("Please login to continue");
 
-    router.replace(
+    router.push(
       `/user/signin?returnUrl=${encodeURIComponent(window.location.pathname)}`,
     );
   };
@@ -134,7 +134,7 @@ function SaleAgreement() {
           toast.error("Checkout data missing");
         }
 
-        router.replace("/inventory");
+        router.push("/inventory");
         return;
       }
 
@@ -222,7 +222,7 @@ function SaleAgreement() {
         toast.success(res.message);
         localStorage.removeItem("checkoutData");
 
-       router.replace(
+       router.push(
           `/confirmation/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`,
         );
       } else {

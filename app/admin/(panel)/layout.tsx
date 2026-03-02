@@ -22,7 +22,7 @@ export default function AdminLayout({
     const token = getAdminToken();
 
     if (!token) {
-      router.replace("/admin");
+      router.push("/admin");
     } else {
       setReady(true);
     }

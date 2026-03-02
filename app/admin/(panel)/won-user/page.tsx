@@ -159,7 +159,7 @@ export default function WonUser() {
             disabled={loadingViewId === row.id}
             onClick={() => {
               setLoadingViewId(row.id);
-              router.replace(`/admin/won-user/won-user-details/?id=${row.id}`);
+              router.push(`/admin/won-user/won-user-details/?id=${row.id}`);
             }}
             className="w-9 h-9 flex items-center justify-center rounded-full text-blue-500 cursor-pointer"
           >
@@ -212,7 +212,7 @@ export default function WonUser() {
               loading={loadingViewId === item.id}
     onView={() => {
       setLoadingViewId(item.id);
-      router.replace(
+      router.push(
         `/admin/won-user/won-user-details/?id=${item.id}`,
       );
     }}
