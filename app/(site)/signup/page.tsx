@@ -91,6 +91,16 @@ const handleRegister = async (values: any, { resetForm }: any) => {
       toast.success("Account Created Successfully!");
       resetForm();
 
+      if (typeof window !== "undefined") {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({
+          event: "signup_complete",
+          step: "signup",
+          is_new_signup: true,
+          user_id: res.data?.id || undefined
+        });
+      }
+
       setTimeout(() => {
         window.location.href = "/verify-account";
       }, 800);

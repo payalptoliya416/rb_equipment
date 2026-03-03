@@ -105,6 +105,16 @@ export default function VerifyAccount() {
       }
       setUploading(false);
       setVerifying(true);
+      
+      if (typeof window !== "undefined") {
+        (window as any).dataLayer = (window as any).dataLayer || [];
+        (window as any).dataLayer.push({
+          event: "verify_account_complete",
+          step: "verify_account",
+          user_id: profile?.id || undefined
+        });
+      }
+      
       await new Promise((resolve) => setTimeout(resolve, 30000));
       await getLicenseStatus();
       router.push(returnUrl);
