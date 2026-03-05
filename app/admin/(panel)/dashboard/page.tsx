@@ -123,13 +123,13 @@ const orderBadge = (status: string) => {
     case "Settle Payment":
       return "bg-yellow-400 text-black";
 
-    case "Confirmation":
+    case "Payment Confirmed":
       return "bg-teal-500 text-white";
 
     case "Processing":
       return "bg-blue-400 text-white";
 
-    case "Shipping":
+    case "Shipping Started":
       return "bg-indigo-500 text-white";
 
     case "In Transit":

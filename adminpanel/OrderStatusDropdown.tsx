@@ -11,9 +11,9 @@ type OrderStatus =
   | "Sales Agreement"
   | "Awaiting Invoice"
   | "Settle Payment"
-  | "Confirmation"
+  | "Payment Confirmed"
   | "Processing"
-  | "Shipping"
+  | "Shipping Started"
   | "In Transit"
   | "Delivered"
   | "Cancelled";
@@ -68,9 +68,9 @@ export default function OrderStatusDropdown({
       btnClass: "bg-orange-500 text-white",
       apiValue: 3,
     },
-    Confirmation: {
-      label: "Confirmation",
-      btnClass: "bg-yellow-400 text-black",
+    "Payment Confirmed": {
+      label: "Payment Confirmed",
+      btnClass: "bg-teal-500 text-white",
       apiValue: 4,
     },
     Processing: {
@@ -78,8 +78,8 @@ export default function OrderStatusDropdown({
       btnClass: "bg-blue-500 text-white",
       apiValue: 5,
     },
-    Shipping: {
-      label: "Shipping",
+    "Shipping Started": {
+      label: "Shipping Started",
       btnClass: "bg-indigo-500 text-white",
       apiValue: 6,
     },
@@ -173,9 +173,9 @@ export default function OrderStatusDropdown({
     "Sales Agreement",
     "Awaiting Invoice",
     "Settle Payment",
-    "Confirmation",
+    "Payment Confirmed",
     "Processing",
-    "Shipping",
+    "Shipping Started",
     "In Transit",
     "Delivered",
     "Cancelled",
@@ -254,7 +254,7 @@ export default function OrderStatusDropdown({
 
               const cancelBlocked =
                 isCancelled &&
-                currentValue >= statusConfig["Shipping"].apiValue;
+                currentValue >= statusConfig["Shipping Started"].apiValue;
 
               // const disabled =
               //   isCurrent || isBackward || isFinalStage || cancelBlocked;

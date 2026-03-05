@@ -29,9 +29,9 @@ export interface OrderApiItem {
   | "Sales Agreement"
   | "Awaiting Invoice"
   | "Settle Payment"
-  | "Confirmation"
+  | "Payment Confirmed"
   | "Processing"
-  | "Shipping"
+  | "Shipping Started"
   | "In Transit"
   | "Delivered"
   | "Cancelled";

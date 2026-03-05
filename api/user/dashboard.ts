@@ -19,14 +19,14 @@ export interface RecentBuyOrder {
   machinery_name: string;
   price: string;
   purchase_date: string;
-  status: "Process" | "Delivered" | "Cancelled";
+  status: "Processing" | "Delivered" | "Cancelled";
    invoice_url?: string; 
 }
 export interface RecentBuyOrderData {
   machinery_name: string;
   amount: string;
   purchase_date: string;
-  status: "Process" | "Delivered" | "Cancelled";
+  status: "Processing" | "Delivered" | "Cancelled";
    invoice_url?: string;
 }
 

@@ -41,16 +41,16 @@ type StepItem = {
   key: DeliveryStatus;
   title: string;
 };
-type UIStepStatus = DeliveryStatus | "Confirmation";
+type UIStepStatus = DeliveryStatus | "Payment Confirmed";
 /* ================= HELPERS ================= */
 const statusToStep: Record<string, number> = {
   "Order Submitted": 0,
   "Sales Agreement": 1,
   "Awaiting Invoice": 2,
   "Settle Payment": 3,
-  Confirmation: 4,
+  "Payment Confirmed": 4,
   Processing: 5,
-  Shipping: 6,
+  "Shipping Started": 6,
   "In Transit": 7,
   Delivered: 8,
   Cancelled: 9,
@@ -61,9 +61,9 @@ const STEPS: StepItem[] = [
   { key: "Sales Agreement", title: "Sales Agreement" },
   { key: "Awaiting Invoice", title: "Awaiting Invoice" },
   { key: "Settle Payment", title: "Settle Payment" },
-  { key: "Confirmation", title: "Confirmation" },
+  { key: "Payment Confirmed", title: "Payment Confirmed" },
   { key: "Processing", title: "Processing" },
-  { key: "Shipping", title: "Shipping" },
+  { key: "Shipping Started", title: "Shipping Started" },
   { key: "In Transit", title: "In Transit" },
   { key: "Delivered", title: "Delivered" },
 ];

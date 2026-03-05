@@ -35,8 +35,8 @@ function RecentBidCard({ row }: any) {
 
 function RecentOrderCard({ row }: any) {
   const statusClassMap: any = {
-    Process: "bg-[#FFCA42] text-black",
-    Shipped: "bg-[#3C97FF] text-white",
+    "Processing": "bg-[#FFCA42] text-black",
+    "Shipping Started": "bg-[#3C97FF] text-white",
     "In Transit": "bg-[#8B5CF6] text-white",
     Delivered: "bg-[#2DBE60] text-white",
     Cancelled: "bg-[#E53935] text-white",
@@ -357,9 +357,9 @@ if (loading) {
                                       {(() => {
                                         let statusClass = "bg-gray-400 text-white";
 
-                                        if (row.status === "Process") {
+                                        if (row.status === "Processing") {
                                           statusClass = "bg-[#FFCA42] text-black";
-                                        } else if (row.status === "Shipped") {
+                                        } else if (row.status === "Shipping Started") {
                                           statusClass = "bg-[#3C97FF] text-white";
                                         } else if (row.status === "In Transit") {
                                           statusClass = "bg-[#8B5CF6] text-white";
