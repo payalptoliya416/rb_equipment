@@ -10,6 +10,7 @@ import { clearToken } from "@/api/authToken";
 import { useEffect, useRef, useState } from "react";
 import { HiBars3BottomRight } from "react-icons/hi2";
 import { getSettingsByKeysFooter } from "@/api/categoryActions";
+import { getUserProfile } from "@/api/user/profile";
 import FullPageLoader from "./FullPageLoader";
 
 function UserHeader({ onNavigate }: { onNavigate?: (url: string) => void }) {
@@ -40,6 +41,7 @@ function UserHeader({ onNavigate }: { onNavigate?: (url: string) => void }) {
   const [isHeaderReady, setIsHeaderReady] = useState(false);
   const [settingsLoading, setSettingsLoading] = useState(true);
   const [userLoading, setUserLoading] = useState(true);
+  const [isLicense, setIsLicense] = useState<number | null>(null);
 
   const getUserNameFromStorage = () => {
     if (typeof window === "undefined") return "User";
@@ -87,13 +89,29 @@ function UserHeader({ onNavigate }: { onNavigate?: (url: string) => void }) {
       setUserLoading(false);
     };
 
+    const fetchProfile = async () => {
+      try {
+        if (!isSigninPage) {
+          const res = await getUserProfile();
+          if (res.status && res.data) {
+            setIsLicense(res.data.is_license);
+          }
+        }
+      } catch (error) {
+        console.error("Failed to fetch profile", error);
+      }
+    };
+
     updateUser();
+    fetchProfile();
     window.addEventListener("user-login", updateUser);
+    window.addEventListener("user-login", fetchProfile);
 
     return () => {
       window.removeEventListener("user-login", updateUser);
+      window.removeEventListener("user-login", fetchProfile);
     };
-  }, []);
+  }, [isSigninPage]);
 
   // useEffect(() => {
   //   const updateUser = () => {
@@ -203,6 +221,14 @@ const handleMenuNavigate = (path: string) => {
               />
             )}
           </Link>
+          {!isSigninPage && isLicense !== null && isLicense !== 1 && (
+          <div className="bg-[#FFF4F4] text-[#D83B3B] text-center py-2 px-4 text-xs md:text-sm font-medium hidden lg:block">
+            You need to verify your account in order to be able to place bids and buy it now . To complete account verification{" "}
+            <Link href="/user/profile" className="underline hover:text-red-700 transition-colors">
+              click here
+            </Link>
+          </div>
+          )}
           {/* Desktop & Tablet Navbar */}
           {isSigninPage && (
             <>
@@ -319,7 +345,6 @@ const handleMenuNavigate = (path: string) => {
               </div>
             </div>
           )}
-          {/* Hamburger Icon for Mobile */}
         </div>
         {/* Mobile Menu */}
         <div
@@ -391,6 +416,14 @@ const handleMenuNavigate = (path: string) => {
           </div>
         </div>
       </div>
+       {!isSigninPage && isLicense !== null && isLicense !== 1 && (
+          <div className="bg-[#FFF4F4] text-[#D83B3B] text-center py-2 px-4 text-xs md:text-sm font-medium block lg:hidden">
+            You need to verify your account in order to be able to place bids and buy it now . To complete account verification{" "}
+            <Link href="/user/profile" className="underline hover:text-red-700 transition-colors">
+              click here
+            </Link>
+          </div>
+        )}
       {!isSigninPage && <UserDashboardNav  onNavigate={onNavigate}  />}
     </>
   );

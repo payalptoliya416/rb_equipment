@@ -144,14 +144,14 @@ export default function VerifyAccount() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <UploadBox
-              label="Upload Front Side"
+              label="Upload the front of your Driver’s License"
               file={frontFile}
               onChange={setFrontFile}
             />
 
             {requiresBack && (
               <UploadBox
-                label="Upload Back Side"
+                label="Upload the back of your Driver’s License"
                 file={backFile}
                 onChange={setBackFile}
               />
