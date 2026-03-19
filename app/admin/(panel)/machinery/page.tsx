@@ -27,7 +27,6 @@ export type MachineryRow = {
   buyNowPrice: string;
   bidStartPrice: string;
   status: "Active" | "Sold" | "Closed";
-  is_sign: boolean;
 };
 
 const mapStatus = (s: number): "Active" | "Sold" | "Closed" =>
@@ -88,7 +87,6 @@ export default function Machinery() {
         buyNowPrice: `${formatPrice(item.buy_now_price)}`,
         bidStartPrice: `${formatPrice(item.bid_start_price)}`,
         status: mapStatus(item.status),
-        is_sign: Boolean(item.is_sign),
       }));
 
       setData(mapped);
@@ -231,8 +229,7 @@ export default function Machinery() {
               onClick={() => setDeleteId(row.id)}
             />
           </TooltipWrapper>
-          {row.is_sign &&
-            (row.status === "Active" || row.status === "Sold") && (
+          {(row.status === "Sold") && (
               <TooltipWrapper content="Regenerate Auction ID">
                 <HiArrowPath
                   className="text-[#2F80ED] cursor-pointer"

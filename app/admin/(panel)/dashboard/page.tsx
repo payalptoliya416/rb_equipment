@@ -325,7 +325,7 @@ const userBadge = (status: string) =>
                                     {row.machinery}
                                     </td>
                                     <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
-                                    {row.user}
+                                    {row.user === "N/A" ? "" : row.user}
                                     </td>
                                     <td className="px-[15px] py-[18px] text-sm text-[#373737] whitespace-nowrap">
                                     {row.price}

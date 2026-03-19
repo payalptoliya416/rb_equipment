@@ -24,7 +24,6 @@ export interface MachineryApiItem {
     id: number;
     category_name: string;
   };
-   is_sign: boolean;
 }
 
 export interface GetMachineryResponse {
