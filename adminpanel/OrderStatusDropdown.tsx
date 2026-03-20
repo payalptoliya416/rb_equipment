@@ -258,19 +258,19 @@ export default function OrderStatusDropdown({
 
               // const disabled =
               //   isCurrent || isBackward || isFinalStage || cancelBlocked;
-              const settleValue = statusConfig["Settle Payment"].apiValue;
+              // const settleValue = statusConfig["Settle Payment"].apiValue;
 
-              const slipNotUploaded =
-                !paymentSlipUrl || paymentSlipUrl.trim() === "";
-              const isAfterSettle = targetValue > settleValue;
-              const blockAfterSettle = slipNotUploaded && isAfterSettle;
+              // const slipNotUploaded =
+              //   !paymentSlipUrl || paymentSlipUrl.trim() === "";
+              // const isAfterSettle = targetValue > settleValue;
+              // const blockAfterSettle = slipNotUploaded && isAfterSettle;
 
               const disabled =
                 isCurrent ||
                 isBackward ||
                 isFinalStage ||
-                cancelBlocked ||
-                blockAfterSettle;
+                cancelBlocked ;
+                // blockAfterSettle;
               return (
                 <button
                   key={status}

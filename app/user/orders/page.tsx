@@ -110,7 +110,7 @@ export default function MyBuyOrders() {
     invoice_url: item.invoice_url,
     type_text: item.type_text as "Checkout" | "Bidding",
     payment_slip_url: item.payment_slip_url ?? null,
-    contract_url: item.contract_url
+    contract_url: item.contract_url,
   });
 
   const [page, setPage] = useState(1);
@@ -241,6 +241,18 @@ export default function MyBuyOrders() {
       </div>
     );
   }
+  const selectedOrder = orders.find((o) => o.id === selectedOrderId);
+
+  const selectedStep = selectedOrder
+    ? getCurrentStepFromTimeline(selectedOrder.delivery_timeline, STEPS)
+    : 0;
+
+  const selectedConfirmationIndex = STEPS.findIndex(
+    (s) => s.key === "Settle Payment",
+  );
+
+  const isAfterSettle = selectedStep > selectedConfirmationIndex;
+console.log("isAfterSettle",isAfterSettle);
 
   return (
     <section className="py-11 sm:py-[60px]">
@@ -275,7 +287,7 @@ export default function MyBuyOrders() {
             const confirmationIndex = filteredSteps.findIndex(
               (s) => s.key === "Settle Payment",
             );
-            
+
             const SalesAgreementIndex = filteredSteps.findIndex(
               (s) => s.key === "Sales Agreement",
             );
@@ -391,49 +403,53 @@ export default function MyBuyOrders() {
                     return (
                       <div className="relative">
                         <div className="hidden lg:block">
-                     {s.key === "Sales Agreement" &&
-                      data.contract_url &&
-                      step >= SalesAgreementIndex && (
-                        <div className="
+                          {s.key === "Sales Agreement" &&
+                            data.contract_url &&
+                            step >= SalesAgreementIndex && (
+                              <div
+                                className="
                           mb-2
                           lg:absolute lg:-top-20 lg:left-1/2 lg:-translate-x-1/2
                           text-center
-                        ">
-                          <a
-                            href={data.contract_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex flex-col items-center gap-1 text-xs text-[#373737]"
-                          >
-                            <span>View Agreement</span>
-                            <FaFilePdf className="text-[#FFCA42] text-lg" />
-                          </a>
-                        </div>
-                    )}
-                                          {s.key === "Settle Payment" &&
-                      data.invoice_url &&
-                      step >= confirmationIndex && (
-                        <div className="
+                        "
+                              >
+                                <a
+                                  href={data.contract_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex flex-col items-center gap-1 text-xs text-[#373737]"
+                                >
+                                  <span>View Agreement</span>
+                                  <FaFilePdf className="text-[#FFCA42] text-lg" />
+                                </a>
+                              </div>
+                            )}
+                          {s.key === "Settle Payment" &&
+                            data.invoice_url &&
+                            step >= confirmationIndex && (
+                              <div
+                                className="
                           mb-2
                           lg:absolute lg:-top-20 lg:left-1/2 lg:-translate-x-1/2
                           text-center
-                        ">
-                          <a
-                            href={data.invoice_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex flex-col items-center gap-1 text-xs text-[#373737]"
-                          >
-                            <span>View Invoice</span>
-                            <FaFilePdf className="text-green text-lg" />
-                          </a>
-                        </div>
-                    )}
+                        "
+                              >
+                                <a
+                                  href={data.invoice_url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex flex-col items-center gap-1 text-xs text-[#373737]"
+                                >
+                                  <span>View Invoice</span>
+                                  <FaFilePdf className="text-green text-lg" />
+                                </a>
+                              </div>
+                            )}
                         </div>
                         <div
                           key={s.key}
                           onClick={() => {
-                            if (s.key === "Settle Payment") {
+                              if (s.key === "Settle Payment" && step <= confirmationIndex) {
                               setSelectedOrderId(data.id!);
                               setSelectedOrderNumber(data.order_id);
                               setOpenConfirmationModal(true);
@@ -487,7 +503,9 @@ export default function MyBuyOrders() {
                               <>
                                 {!isConfirmed ? (
                                   <p className="text-xs text-green mt-1">
-                                    Click to upload payment Receipt
+                                    {isAfterSettle
+                                      ? "Payment step completed"
+                                      : "Click to upload payment Receipt"}
                                   </p>
                                 ) : (
                                   <p className="text-sm text-[#7A7A7A]">
@@ -503,46 +521,50 @@ export default function MyBuyOrders() {
                               </p>
                             )}
 
-                             <div className="block lg:hidden">
-                     {s.key === "Sales Agreement" &&
-                      data.contract_url &&
-                      step >= SalesAgreementIndex && (
-                        <div className="
+                            <div className="block lg:hidden">
+                              {s.key === "Sales Agreement" &&
+                                data.contract_url &&
+                                step >= SalesAgreementIndex && (
+                                  <div
+                                    className="
                           mb-2
                           lg:absolute lg:-top-20 lg:left-1/2 lg:-translate-x-1/2
                           text-center
-                        ">
-                          <a
-                            href={data.contract_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-3 text-xs text-[#373737] mt-1"
-                          >
-                            <span>View Agreement</span>
-                            <FaFilePdf className="text-[#FFCA42] text-lg" />
-                          </a>
-                        </div>
-                    )}
-                                          {s.key === "Settle Payment" &&
-                      data.invoice_url &&
-                      step >= confirmationIndex && (
-                        <div className="
+                        "
+                                  >
+                                    <a
+                                      href={data.contract_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="flex items-center gap-3 text-xs text-[#373737] mt-1"
+                                    >
+                                      <span>View Agreement</span>
+                                      <FaFilePdf className="text-[#FFCA42] text-lg" />
+                                    </a>
+                                  </div>
+                                )}
+                              {s.key === "Settle Payment" &&
+                                data.invoice_url &&
+                                step >= confirmationIndex && (
+                                  <div
+                                    className="
                           mb-2
                           lg:absolute lg:-top-20 lg:left-1/2 lg:-translate-x-1/2
                           text-center
-                        ">
-                          <a
-                            href={data.invoice_url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-3 text-xs text-[#373737] mt-1"
-                          >
-                            <span>View Invoice</span>
-                            <FaFilePdf className="text-green text-lg" />
-                          </a>
-                        </div>
-                    )}
-                        </div>
+                        "
+                                  >
+                                    <a
+                                      href={data.invoice_url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="flex items-center gap-3 text-xs text-[#373737] mt-1"
+                                    >
+                                      <span>View Invoice</span>
+                                      <FaFilePdf className="text-green text-lg" />
+                                    </a>
+                                  </div>
+                                )}
+                            </div>
                           </div>
                         </div>
                       </div>

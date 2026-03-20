@@ -60,9 +60,9 @@ if (!res.ok) {
     return data as T;
   } catch (err: any) {
     clearTimeout(timeoutId);
-    if (err.name === 'AbortError') {
-      throw new Error('Request timeout. Please try again.');
-    }
+    // if (err.name === 'AbortError') {
+    //   throw new Error('Request timeout. Please try again.');
+    // }
     throw err;
   }
 }
