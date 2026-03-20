@@ -3,7 +3,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import Link from "next/link";
-import { JSX } from "react";
+import { JSX, useState } from "react";
 import { motion } from "framer-motion";
 import toast from "react-hot-toast";
 import { forgotPassword } from "@/api/services";
@@ -13,6 +13,7 @@ const ForgotPasswordSchema = Yup.object().shape({
 });
 
 export default function ForgotPassword(): JSX.Element {
+  const [loading, setLoading] = useState(false);
   const cardVariant = {
     hidden: { opacity: 0, y: 60 },
     show: {
@@ -57,8 +58,8 @@ const handleForgot = async (
   { resetForm }: any
 ) => {
   try {
+    setLoading(true);
     const res = await forgotPassword(values);
-
     if (res?.status === true) {
       localStorage.setItem("reset_email", values.email);
 
@@ -73,8 +74,15 @@ const handleForgot = async (
 
     } 
 
-  } catch (error: any) {
-    // 🔥 Network / crash errors handled
+  }catch (error: any) {
+  const message =
+    error?.message ||
+    error?.response?.data?.message ||
+    "Something went wrong";
+
+  toast.error(message); // ✅ SHOW ERROR
+}finally {
+    setLoading(false); // ✅ STOP LOADING
   }
 };
 
@@ -142,12 +150,22 @@ const handleForgot = async (
                 </motion.div>
 
                 {/* Button */}
-                <button
-                  type="submit"
-                  className="w-full bg-green text-white py-[14px] rounded-lg text-lg hover:opacity-90 transition  mont-text font-semibold cursor-pointer"
-                >
-                  Reset it
-                </button>
+               <button
+  type="submit"
+  disabled={loading}
+  className={`w-full flex items-center justify-center gap-2 bg-green text-white py-[14px] rounded-lg text-lg transition mont-text font-semibold cursor-pointer
+    ${loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"}
+  `}
+>
+  {loading ? (
+    <>
+      <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+      Sending...
+    </>
+  ) : (
+    <>Reset it →</>
+  )}
+</button>
 
               </Form>
             </motion.div>

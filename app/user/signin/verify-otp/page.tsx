@@ -9,16 +9,17 @@ import { verifyOtp } from "@/api/services";
 export default function VerifyOtp(): JSX.Element {
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
   const [otpValues, setOtpValues] = useState(["", "", "", ""]);
-  const [email, setEmail] = useState(""); // you can pass this via query too
-    useEffect(() => {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
     const savedEmail = localStorage.getItem("reset_email");
     if (savedEmail) {
-        setEmail(savedEmail);
+      setEmail(savedEmail);
     } else {
-        toast.error("Email not found! Please try again.");
-        window.location.href = "/user/signin/forgot-password";
+      toast.error("Email not found! Please try again.");
+      window.location.href = "/user/signin/forgot-password";
     }
-    }, []);
+  }, []);
   const handleChange = (value: string, index: number) => {
     if (!/^[0-9]?$/.test(value)) return;
 
@@ -37,42 +38,42 @@ export default function VerifyOtp(): JSX.Element {
     }
   };
 
- const handleSubmit = async () => {
-  const otp = otpValues.join("").trim(); // convert array → "1234"
+  const handleSubmit = async () => {
+    const otp = otpValues.join("").trim();
 
-  // 1️⃣ Validate OTP length
-  if (otp.length !== 4) {
-    toast.error("Please enter a valid 4-digit OTP");
-    return;
-  }
-
-  // 2️⃣ Validate email
-  if (!email || email.trim() === "") {
-    toast.error("Email is missing!");
-    return;
-  }
-
-   try {
-    // 3️⃣ Call API
-    const res = await verifyOtp({ email, otp });
-
-    // 🔥 4️⃣ Check success before navigating
-    if (res?.status === true) {
-      toast.success(res?.message || "OTP verified!");
-
-      setTimeout(() => {
-        window.location.href = "/user/signin/reset-password";
-      }, 800);
-
-    } else {
-      // ❌ API returned failure
-      toast.error(res?.message || "Invalid OTP!");
+    if (otp.length !== 4) {
+      toast.error("Please enter a valid 4-digit OTP");
+      return;
     }
 
-  } catch (error) {
-    // api() wrapper shows error toast already
-  }
-};
+    if (!email || email.trim() === "") {
+      toast.error("Email is missing!");
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const res = await verifyOtp({ email, otp });
+      if (res?.status === true) {
+        toast.success(res?.message || "OTP verified!");
+
+        setTimeout(() => {
+          window.location.href = "/user/signin/reset-password";
+        }, 800);
+      } else {
+        toast.error(res?.message || "Invalid OTP!");
+      }
+    } catch (error: any) {
+      const message =
+        error?.message ||
+        error?.response?.data?.message ||
+        "Invalid OTP or email";
+
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="container-custom mx-auto bg-[#F9F9F9] rounded-[14px] p-[20px] grid grid-cols-12 gap-5 min-h-[80vh] my-[60px]">
@@ -126,16 +127,26 @@ export default function VerifyOtp(): JSX.Element {
           {/* VERIFY BUTTON */}
           <button
             onClick={handleSubmit}
-            className="
-              w-full bg-green text-white py-[14px] rounded-lg 
-              text-lg font-semibold hover:opacity-90 transition  cursor-pointer
-            "
+            disabled={loading}
+            className={`
+    w-full flex items-center justify-center gap-2
+    bg-green text-white py-[14px] rounded-lg 
+    text-lg font-semibold transition cursor-pointer
+    ${loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"}
+  `}
           >
-            Verify OTP →
+            {loading ? (
+              <>
+                <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Verifying...
+              </>
+            ) : (
+              <>Verify OTP →</>
+            )}
           </button>
 
           <p className="text-center mt-[25px] text-lg font-semibold mont-text">
-            <Link href="/user/forgot-password" className="text-green">
+            <Link href="/user/signin/forgot-password" className="text-green">
               ← Back to Forgot Password
             </Link>
           </p>
@@ -143,34 +154,31 @@ export default function VerifyOtp(): JSX.Element {
       </div>
 
       {/* RIGHT IMAGE */}
-      <div 
-            className="
+      <div
+        className="
               relative 
               col-span-12 lg:col-span-6 
               w-full h-[300px] lg:h-full 
               rounded-2xl overflow-hidden shadow-md
               bg-cover bg-center
             "
-            style={{ backgroundImage: "url('/assets/user-bg.png')" }}
-          >
+        style={{ backgroundImage: "url('/assets/user-bg.png')" }}
+      >
+        {/* DARK OVERLAY (Improves readability) */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
 
-            {/* DARK OVERLAY (Improves readability) */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+        {/* TEXT BLOCK */}
+        <div className="absolute bottom-4 left-4 right-4 lg:bottom-10 lg:left-10 lg:right-10 text-white">
+          <h2 className="text-2xl lg:text-[32px] font-bold leading-snug lg:leading-[48px] mb-[10px] mont-text">
+            Manage Your Equipment Deals with Confidence
+          </h2>
 
-            {/* TEXT BLOCK */}
-            <div className="absolute bottom-4 left-4 right-4 lg:bottom-10 lg:left-10 lg:right-10 text-white">
-
-              <h2 className="text-2xl lg:text-[32px] font-bold leading-snug lg:leading-[48px] mb-[10px] mont-text">
-                Manage Your Equipment Deals with Confidence
-              </h2>
-
-              <p className="text-base lg:text-lg leading-[22px] lg:leading-[26px]">
-                Track bids, purchases, and deliveries – all from one simple dashboard.
-              </p>
-
-            </div>
-
-          </div>
+          <p className="text-base lg:text-lg leading-[22px] lg:leading-[26px]">
+            Track bids, purchases, and deliveries – all from one simple
+            dashboard.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }

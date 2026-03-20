@@ -7,6 +7,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { resetPassword } from "@/api/services";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 const ResetPasswordSchema = Yup.object().shape({
   password: Yup.string()
@@ -20,6 +21,9 @@ const ResetPasswordSchema = Yup.object().shape({
 
 export default function ResetPassword(): JSX.Element {
   const [email, setEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const savedEmail = localStorage.getItem("reset_email");
@@ -35,6 +39,8 @@ export default function ResetPassword(): JSX.Element {
     if (!email) return;
 
     try {
+      setLoading(true);
+
       const payload = {
         email,
         password: values.password,
@@ -50,15 +56,20 @@ export default function ResetPassword(): JSX.Element {
       setTimeout(() => {
         window.location.href = "/user/signin";
       }, 600);
+    } catch (error: any) {
+      const message =
+        error?.message ||
+        error?.response?.data?.message ||
+        "Something went wrong";
 
-    } catch (error) {
-      // API wrapper handles errors
+      toast.error(message);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="container-custom mx-auto bg-[#F9F9F9] rounded-[14px] p-[20px] grid grid-cols-12 gap-5 min-h-[80vh] my-[60px]">
-      
       {/* LEFT FORM CARD */}
       <div className="flex justify-center items-center col-span-12 lg:col-span-6 w-full">
         <motion.div
@@ -93,12 +104,25 @@ export default function ResetPassword(): JSX.Element {
                     New Password
                   </label>
 
-                  <Field
-                    name="password"
-                    type="password"
-                    placeholder="Enter new password"
-                    className="w-full mt-2 px-5 py-[14px] border border-light-gray rounded-[10px] outline-none focus:ring-2 focus:ring-green"
-                  />
+                  <div className="relative">
+                    <Field
+                      name="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter new password"
+                      className="w-full px-5 py-[14px] border border-light-gray rounded-[10px] outline-none focus:ring-2 focus:ring-green"
+                    />
+
+                    <span
+                      className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+                      onClick={() => setShowPassword(!showPassword)}
+                    >
+                      {showPassword ? (
+                        <FiEyeOff size={20} />
+                      ) : (
+                        <FiEye size={20} />
+                      )}
+                    </span>
+                  </div>
 
                   <ErrorMessage
                     name="password"
@@ -113,12 +137,27 @@ export default function ResetPassword(): JSX.Element {
                     Confirm Password
                   </label>
 
-                  <Field
-                    name="password_confirmation"
-                    type="password"
-                    placeholder="Confirm new password"
-                    className="w-full mt-2 px-5 py-[14px] border border-light-gray rounded-[10px] outline-none focus:ring-2 focus:ring-green"
-                  />
+                  <div className="relative">
+                    <Field
+                      name="password_confirmation"
+                      type={showConfirmPassword ? "text" : "password"}
+                      placeholder="Confirm new password"
+                      className="w-full px-5 py-[14px] border border-light-gray rounded-[10px] outline-none focus:ring-2 focus:ring-green"
+                    />
+
+                    <span
+                      className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+                      onClick={() =>
+                        setShowConfirmPassword(!showConfirmPassword)
+                      }
+                    >
+                      {showConfirmPassword ? (
+                        <FiEyeOff size={20} />
+                      ) : (
+                        <FiEye size={20} />
+                      )}
+                    </span>
+                  </div>
 
                   <ErrorMessage
                     name="password_confirmation"
@@ -130,9 +169,21 @@ export default function ResetPassword(): JSX.Element {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="w-full bg-green text-white py-[14px] rounded-lg text-lg font-semibold hover:opacity-90 transition  cursor-pointer"
+                  disabled={loading}
+                  className={`
+    w-full flex items-center justify-center gap-2
+    bg-green text-white py-[14px] rounded-lg text-lg font-semibold transition cursor-pointer
+    ${loading ? "opacity-70 cursor-not-allowed" : "hover:opacity-90"}
+  `}
                 >
-                  Reset Password →
+                  {loading ? (
+                    <>
+                      <span className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      Resetting...
+                    </>
+                  ) : (
+                    <>Reset Password →</>
+                  )}
                 </button>
               </Form>
             )}
@@ -147,34 +198,31 @@ export default function ResetPassword(): JSX.Element {
       </div>
 
       {/* RIGHT PANEL IMAGE */}
-     <div 
-            className="
+      <div
+        className="
               relative 
               col-span-12 lg:col-span-6 
               w-full h-[300px] lg:h-full 
               rounded-2xl overflow-hidden shadow-md
               bg-cover bg-center
             "
-            style={{ backgroundImage: "url('/assets/user-bg.png')" }}
-          >
+        style={{ backgroundImage: "url('/assets/user-bg.png')" }}
+      >
+        {/* DARK OVERLAY (Improves readability) */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
 
-            {/* DARK OVERLAY (Improves readability) */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+        {/* TEXT BLOCK */}
+        <div className="absolute bottom-4 left-4 right-4 lg:bottom-10 lg:left-10 lg:right-10 text-white">
+          <h2 className="text-2xl lg:text-[32px] font-bold leading-snug lg:leading-[48px] mb-[10px] mont-text">
+            Manage Your Equipment Deals with Confidence
+          </h2>
 
-            {/* TEXT BLOCK */}
-            <div className="absolute bottom-4 left-4 right-4 lg:bottom-10 lg:left-10 lg:right-10 text-white">
-
-              <h2 className="text-2xl lg:text-[32px] font-bold leading-snug lg:leading-[48px] mb-[10px] mont-text">
-                Manage Your Equipment Deals with Confidence
-              </h2>
-
-              <p className="text-base lg:text-lg leading-[22px] lg:leading-[26px]">
-                Track bids, purchases, and deliveries – all from one simple dashboard.
-              </p>
-
-            </div>
-
-          </div>
+          <p className="text-base lg:text-lg leading-[22px] lg:leading-[26px]">
+            Track bids, purchases, and deliveries – all from one simple
+            dashboard.
+          </p>
+        </div>
+      </div>
     </div>
   );
 }
