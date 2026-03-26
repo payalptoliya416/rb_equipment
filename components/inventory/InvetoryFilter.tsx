@@ -50,6 +50,8 @@ export default function InventoryFilter({}: {}) {
     from: fromYear,
     to: toYear,
   });
+  const [fromInput, setFromInput] = useState(String(min));
+const [toInput, setToInput] = useState(String(max));
   const ITEMS_PER_PAGE = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -68,6 +70,15 @@ export default function InventoryFilter({}: {}) {
   const [openModel, setOpenModel] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+  setFromInput(String(fromYear));
+}, [fromYear]);
+
+useEffect(() => {
+  setToInput(String(toYear));
+}, [toYear]);
+
   useEffect(() => {
     setIsNavigating(false);
   }, [pathname]);
@@ -142,13 +153,10 @@ export default function InventoryFilter({}: {}) {
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedYear({ from: fromYear, to: toYear });
-    }, 400);
+ useEffect(() => {
+  setDebouncedYear({ from: fromYear, to: toYear });
+}, [fromYear, toYear]);
 
-    return () => clearTimeout(timer);
-  }, [fromYear, toYear]);
   const cardRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
   const handleCategoryChange = (categoryId: number) => {
@@ -198,40 +206,6 @@ export default function InventoryFilter({}: {}) {
       return;
     }
 
-    // const fetchMachinery = async () => {
-    //   setLoading(true);
-    //   setHasFetched(false);
-
-    //   try {
-    //     const res = await getMachineryByCategory(
-    //       categoryNames,
-    //       selectedSort.value,
-    //       debouncedYear.from,
-    //       debouncedYear.to,
-    //       selectedMake,
-    //       selectedModel,
-    //       currentPage,
-    //       ITEMS_PER_PAGE,
-    //     );
-
-    //     if (res?.success) {
-    //       const visible = res.data.filter((p: any) => Number(p.is_view) === 1);
-    //       setProducts(visible);
-    //       if (visible.length === 0) {
-    //         setTotalPages(1);
-    //       } else {
-    //         setTotalPages(res.pagination.last_page);
-    //       }
-    //     } else {
-    //       setProducts([]);
-    //     }
-    //   } catch (err) {
-    //     setProducts([]);
-    //   } finally {
-    //     setLoading(false);
-    //     setHasFetched(true);
-    //   }
-    // };
     const fetchMachinery = async () => {
       setLoading(true);
       setHasFetched(false);
@@ -257,9 +231,9 @@ export default function InventoryFilter({}: {}) {
 
           lastPageFromApi = res.pagination?.last_page || 1;
 
-          const filtered = res.data.filter((p: any) => Number(p.is_view) === 1);
+          // const filtered = res.data.filter((p: any) => Number(p.is_view) === 1);
 
-          visibleProducts = [...visibleProducts, ...filtered];
+          visibleProducts = res.data;
 
           if (pageToFetch >= lastPageFromApi) break;
 
@@ -344,9 +318,12 @@ export default function InventoryFilter({}: {}) {
     const map: Record<number, number> = {};
 
     products.forEach((product) => {
-      if (product.is_view === 1 && product.category_id) {
-        map[product.category_id] = (map[product.category_id] || 0) + 1;
-      }
+      // if (product.is_view === 1 && product.category_id) {
+      //   map[product.category_id] = (map[product.category_id] || 0) + 1;
+      // }
+       if (product.category_id) {
+    map[product.category_id] = (map[product.category_id] || 0) + 1;
+  }
     });
 
     categoryCountRef.current = map;
@@ -600,22 +577,18 @@ export default function InventoryFilter({}: {}) {
                   </Disclosure.Button>
 
                   <Disclosure.Panel>
-                    {/* LIMITS */}
                     <div className="flex items-center justify-between text-sm text-[#373737] mt-3 mb-1">
                       <span>{min}</span>
                       <span>{max}</span>
                     </div>
-
-                    {/* SLIDER */}
-                    {/* SLIDER */}
                     <div className="w-full mb-5">
-                      <div className="relative w-full h-1 bg-light-gray rounded-full mt-4">
+                      <div className="relative w-full h-1 bg-light-gray rounded-full mt-4 ">
                         {/* Active range */}
                         <div
                           className="absolute h-[6px] bg-green rounded-full top-1/2 -translate-y-1/2"
                           style={{
-                            left: `${leftPercent}%`,
-                            width: `${rightPercent - leftPercent}%`,
+                            left: `${Math.max(0, Math.min(100, leftPercent))}%`,
+                             width: `${Math.max(0, Math.min(100 - leftPercent, rightPercent - leftPercent))}%`,
                           }}
                         />
 
@@ -646,37 +619,61 @@ export default function InventoryFilter({}: {}) {
                         />
                       </div>
                     </div>
-
-                    {/* FROM / TO INPUTS */}
                     <div className="flex gap-3">
                       <div className="w-1/2">
                         <label className="text-base text-[#373737]">From</label>
                         <input
-                          type="number"
-                          min={min}
-                          max={toYear}
-                          value={fromYear}
-                          onChange={(e) => {
-                            const val = Number(e.target.value);
-                            setFromYear(val <= toYear ? val : toYear);
-                          }}
-                          className="w-full mt-1 border border-light-gray rounded-lg py-2 px-3"
-                        />
+  type="number"
+  value={fromInput}
+  onChange={(e) => {
+    let val = e.target.value.replace(/\D/g, "").slice(0, 4);
+    setFromInput(val);
+
+    const num = Number(val);
+    if (!isNaN(num)) {
+         if (num < min) return; 
+      if (num <= toYear) {
+        setFromYear(num);
+      }
+    }
+  }}
+  onBlur={() => {
+    let num = Number(fromInput);
+    if (!num || num < min) num = min;
+    if (num > toYear) num = toYear;
+    setFromYear(num);
+    setFromInput(String(num));
+  }}
+  className="w-full mt-1 border border-light-gray rounded-lg py-2 px-3"
+/>
                       </div>
 
                       <div className="w-1/2">
                         <label className="text-base text-[#373737]">To</label>
-                        <input
-                          type="number"
-                          min={fromYear}
-                          max={max}
-                          value={toYear}
-                          onChange={(e) => {
-                            const val = Number(e.target.value);
-                            setToYear(val >= fromYear ? val : fromYear);
-                          }}
-                          className="w-full mt-1 border border-light-gray rounded-lg py-2 px-3"
-                        />
+                      <input
+  type="number"
+  value={toInput}
+  onChange={(e) => {
+    let val = e.target.value.replace(/\D/g, "").slice(0, 4);
+    setToInput(val);
+
+    const num = Number(val);
+    if (!isNaN(num)) {
+         if (num > max) return;
+      if (num >= fromYear) {
+        setToYear(num);
+      }
+    }
+  }}
+  onBlur={() => {
+    let num = Number(toInput);
+    if (!num || num > max) num = max;
+    if (num < fromYear) num = fromYear;
+    setToYear(num);
+    setToInput(String(num));
+  }}
+  className="w-full mt-1 border border-light-gray rounded-lg py-2 px-3"
+/>
                       </div>
                     </div>
                   </Disclosure.Panel>
@@ -798,7 +795,7 @@ export default function InventoryFilter({}: {}) {
                           )}
                           <div
                             className=" absolute border border-red-300 rounded-md py-2 px-4 text-red-600 bg-red-50 font-semibold text-sm
-                          left-1/2 bottom-0 -translate-x-1/2 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:-translate-y-3"
+                          left-1/2 bottom-0 -translate-x-1/2 -translate-y-3"
                           >
                             SOLD
                           </div>

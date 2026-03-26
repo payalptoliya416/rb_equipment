@@ -23,7 +23,6 @@ function BiddingList() {
   const [loading, setLoading] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
-
   const formatBidDateTime = (date: string) => {
     return new Date(date)
       .toLocaleString("en-US", {

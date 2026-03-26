@@ -183,6 +183,11 @@ export default function Machinery() {
     {
       key: "status",
       header: "Status",
+       sortable: true,
+      onSort: () => {
+        setSortBy("status");
+        setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
+      },
       render: (row) => {
         const map: any = {
           Active: "bg-[#34C759] text-white",

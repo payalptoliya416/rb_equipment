@@ -580,6 +580,8 @@ if (isEdit && loading) {
   label="Auction Duration"
   placeholder="Select Days"
   options={[
+    { label: "1 Days", value: "1" },
+    { label: "2 Days", value: "2" },
     { label: "3 Days", value: "3" },
     { label: "5 Days", value: "5" },
     { label: "7 Days", value: "7" },
