@@ -20,6 +20,7 @@ import toast from "react-hot-toast";
 import { calculateDistanceApi } from "@/api/calculateDistance";
 import { Category } from "@/api/data";
 import { formatPrice } from "@/hooks/formate";
+import { useRouter } from "next/navigation";
 
 function getTimeLeft(endTime: string) {
   const end = new Date(endTime.replace(" ", "T")).getTime();
@@ -96,6 +97,8 @@ function InventoryDetail() {
   const modelName = matchedModel ?? "";
 
   const ref = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+  const [isRedirecting, setIsRedirecting] = useState(false);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -155,6 +158,11 @@ function InventoryDetail() {
       });
 
       if (res?.success) {
+        if (res.data?.is_purchase === true) {
+          setIsRedirecting(true);
+        router.push("/inventory");
+        return;
+      }
         setData(res.data);
       }
     } finally {
@@ -215,7 +223,7 @@ function InventoryDetail() {
     return offer;
   };
   const offerCount = getOfferCount(data?.offer);
-  if (loading) {
+if (loading || isRedirecting) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
         <Loader />

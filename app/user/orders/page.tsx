@@ -252,7 +252,6 @@ export default function MyBuyOrders() {
   );
 
   const isAfterSettle = selectedStep > selectedConfirmationIndex;
-console.log("isAfterSettle",isAfterSettle);
 
   return (
     <section className="py-11 sm:py-[60px]">

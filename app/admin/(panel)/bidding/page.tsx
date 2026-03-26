@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { adminBiddingService } from "@/api/admin/bidding";
 import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { BiEdit } from "react-icons/bi";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import BiddingMobileCard from "@/adminpanel/BiddingMobileCard";
 import Loader from "@/components/common/Loader";
@@ -255,6 +254,7 @@ export default function BiddingManagement() {
           noDataMessage={noDataMessage}
         />
       )}
+   
     </div>
   );
 }

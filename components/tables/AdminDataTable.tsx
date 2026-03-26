@@ -35,6 +35,7 @@ type Props<T> = {
   onPageSizeChange?: (size: number) => void;
   className?: string;
   noDataMessage? : string | null;
+  rowClassName?: (row: T, index: number) => string;
 };
 
 /* ================= COMPONENT ================= */
@@ -49,6 +50,7 @@ export default function AdminDataTable<
   onPageSizeChange,
   noDataMessage,
   className = "",
+  rowClassName
 }: Props<T>) {
   return (
     <div className={`w-full ${className}`}>
@@ -111,8 +113,8 @@ export default function AdminDataTable<
             {!loading &&
               data.map((row, idx) => (
                 <tr
-                  key={(row.id ?? idx).toString()}
-                  className={idx % 2 === 0 ? "bg-white" : "bg-[#F9F9F9]"}
+                key={(row.id ?? idx).toString()}
+                  className={rowClassName ? rowClassName(row, idx) : (idx % 2 === 0 ? "bg-white" : "bg-[#F9F9F9]")}
                 >
                   {columns.map((col) => (
                     <td

@@ -41,6 +41,11 @@ export const adminBiddingService = {
       method: "POST",
       body: JSON.stringify(params),
     }),
+     deleteBid: (bid_id: string | number) =>
+    adminApi("/bidding/delete-bid", {
+      method: "POST",
+      body: JSON.stringify({ bid_id }),
+    }),
 };
 
 export interface ChangePasswordPayload {
@@ -67,14 +72,17 @@ export const adminSettingsService = {
 
 /* ================= MACHINERY INFO ================= */
 export interface MachineryInfo {
+  id?: string | number;
   name: string;
   bid_start_price: string;
   highest_bid: string;
   bid_end_time: string;
   bid_status: "active" | "closed";
+  status: number;
 }
 
 export interface BiddingDetail {
+  id?:string;
   user_full_name: string;
   user_email: string;
   user_phone: string;
@@ -82,6 +90,7 @@ export interface BiddingDetail {
   bid_created_at: string;
   is_highest: boolean;
   is_won:boolean;
+  status: number;
 }
 
 export interface MachineryBiddingData {
