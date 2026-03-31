@@ -16,7 +16,7 @@ export interface BiddingApiItem {
   model: string;
   bid_end_time: string;
   bid_start_price: string;
-  bid_status: "active" | "pending" | "sold";
+  bid_status: "active" | "pending" | "sold" | "cancelled";
   bids_count: number;
   name: string;
 }
@@ -35,6 +35,13 @@ export interface GetBiddingResponse {
   };
 }
 
+type UpdateBidStatusResponse = {
+  success: boolean;
+  message: string | {
+    machinery_id?: string[];
+  };
+};
+
 export const adminBiddingService = {
   list: (params: GetBiddingParams) =>
     adminApi<GetBiddingResponse>(BIDDING_API.MACHINERY_BIDDING_INFO, {
@@ -46,6 +53,14 @@ export const adminBiddingService = {
       method: "POST",
       body: JSON.stringify({ bid_id }),
     }),
+    updateBidStatus: (machinery_id: number, bid_status: number) =>
+  adminApi<UpdateBidStatusResponse>("/bidding/update-bid-status", {
+    method: "POST",
+    body: JSON.stringify({
+      machinery_id,
+      bid_status,
+    }),
+  }),
 };
 
 export interface ChangePasswordPayload {

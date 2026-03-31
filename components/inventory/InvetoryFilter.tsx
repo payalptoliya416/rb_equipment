@@ -70,6 +70,7 @@ const [toInput, setToInput] = useState(String(max));
   const [openModel, setOpenModel] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   const pathname = usePathname();
+const latestRequestRef = useRef(0);
 
   useEffect(() => {
   setFromInput(String(fromYear));
@@ -190,7 +191,7 @@ useEffect(() => {
   useEffect(() => {
     if (loadingcategory) return;
     if (categories.length === 0) return;
-
+if (categoryParam && selectedCategories.length === 0) return;
     let categoryNames: string[] = [];
 
     if (selectedCategories.length > 0) {
@@ -207,6 +208,8 @@ useEffect(() => {
     }
 
     const fetchMachinery = async () => {
+        const requestId = ++latestRequestRef.current;
+
       setLoading(true);
       setHasFetched(false);
 
@@ -226,6 +229,7 @@ useEffect(() => {
             pageToFetch,
             ITEMS_PER_PAGE,
           );
+          if (requestId !== latestRequestRef.current) return;
 
           if (!res?.success || res.data.length === 0) break;
 
@@ -239,13 +243,14 @@ useEffect(() => {
 
           pageToFetch++;
         }
-
+        if (requestId !== latestRequestRef.current) return;
         setProducts(visibleProducts.slice(0, ITEMS_PER_PAGE));
         setTotalPages(lastPageFromApi);
       } catch (err) {
         setProducts([]);
         setTotalPages(1);
       } finally {
+        if (requestId !== latestRequestRef.current) return;
         setLoading(false);
         setHasFetched(true);
         setIsNavigating(false);

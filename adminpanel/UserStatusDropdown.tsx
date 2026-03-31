@@ -101,37 +101,6 @@ const handleToggle = () => {
         />
       </button>
 
-      {/* DROPDOWN */}
-      {/* {open && (
-        <div
-  className={`absolute left-0 w-[120px] rounded-lg bg-white border border-light-gray z-50 shadow-md
-    ${openUp ? "bottom-full mb-2" : "top-full mt-2"}
-  `}
->
-         {(Object.keys(statusConfig) as StatusType[]).map((status) => {
-  const isCurrent = status === currentStatus;
-
-  return (
-    <button
-      key={status}
-      disabled={isCurrent}
-      onClick={() => !isCurrent && handleChange(status)}
-      className={`w-full px-6 py-[10px] text-left text-sm transition-all duration-150 border-b border-light-gray last:border-b-0 rounded-t-lg last:rounded-t-0 last:rounded-b-lg
-        ${
-          isCurrent
-            ? "text-gray-400 cursor-not-allowed bg-gray-50"
-            : "cursor-pointer hover:bg-gray-50 active:bg-gray-100 active:scale-[0.97]"
-        }
-      `}
-    >
-      {status}
-      {isCurrent}
-    </button>
-  );
-})}
-
-        </div>
-      )} */}
       {open &&
   createPortal(
     <div

@@ -2,6 +2,7 @@
 
 import { HiOutlineEye } from "react-icons/hi2";
 import { HiArrowPath } from "react-icons/hi2";
+import BiddingStatusDropdown from "./BiddingStatusDropdown";
 
 type Props = {
   item: any;
@@ -43,28 +44,23 @@ export default function BiddingMobileCard({
 
       {/* STATUS + ACTION */}
       <div className="flex items-center justify-between pt-3 border-t border-[#E9E9E9]">
-        <span
-          className={`px-4 py-1 rounded-md text-sm ${
-            statusMap[item.bid_status]
-          }`}
-        >
-          {statusLabel[item.bid_status]}
-        </span>
+        <BiddingStatusDropdown
+          value={item.bid_status}
+          biddingId={item.id}
+          onUpdated={onEdit} // 🔥 or fetch function if available
+        />
 
-       <button
-  disabled={loadingViewId === item.id}
-  onClick={onEdit}
-  className="w-9 h-9 flex items-center justify-center rounded-full text-[#3C97FF]"
->
-  {loadingViewId === item.id ? (
-    <HiArrowPath
-      size={18}
-      className="text-[#3C97FF] animate-spin"
-    />
-  ) : (
-    <HiOutlineEye size={18} />
-  )}
-</button>
+        <button
+          disabled={loadingViewId === item.id}
+          onClick={onEdit}
+          className="w-9 h-9 flex items-center justify-center rounded-full text-[#3C97FF]"
+        >
+          {loadingViewId === item.id ? (
+            <HiArrowPath size={18} className="text-[#3C97FF] animate-spin" />
+          ) : (
+            <HiOutlineEye size={18} />
+          )}
+        </button>
       </div>
     </div>
   );

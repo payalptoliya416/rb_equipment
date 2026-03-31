@@ -12,6 +12,7 @@ import Loader from "@/components/common/Loader";
 import { HiArrowPath, HiOutlineEye } from "react-icons/hi2";
 import { formatPrice } from "@/hooks/formate";
 import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
+import BiddingStatusDropdown from "@/adminpanel/BiddingStatusDropdown";
 
 /* ================= TYPES ================= */
 export type BiddingRow = {
@@ -22,7 +23,7 @@ export type BiddingRow = {
   model: string;
   bid_end_time: string;
   bid_start_price: string;
-  bid_status: "active" | "pending" | "sold";
+  bid_status: "active" | "pending" | "sold" | "cancelled";
   bids_count: number;
 };
 
@@ -138,33 +139,45 @@ export default function BiddingManagement() {
         setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
       },
     },
+    // {
+    //   key: "bid_status",
+    //   header: "Status",
+    //   render: (row) => {
+    //     const statusMap: Record<string, string> = {
+    //       active: "bg-[#34C759] text-white", // Green
+    //       pending: "bg-[#FFCA42] text-black", // Yellow
+    //       sold: "bg-[#2196F3] text-white", // Red
+    //     };
+
+    //     const statusDisplay: Record<string, string> = {
+    //       active: "Active",
+    //       pending: "Pending",
+    //       sold: "Sold",
+    //     };
+
+    //     return (
+    //       <span
+    //         className={`px-4 py-2 rounded-md text-sm w-[90px] text-center inline-block ${
+    //           statusMap[row.bid_status] || "bg-gray-300 text-black"
+    //         }`}
+    //       >
+    //         {statusDisplay[row.bid_status] || "Unknown"}
+    //       </span>
+    //     );
+    //   },
+    // },
     {
-      key: "bid_status",
-      header: "Status",
-      render: (row) => {
-        const statusMap: Record<string, string> = {
-          active: "bg-[#34C759] text-white", // Green
-          pending: "bg-[#FFCA42] text-black", // Yellow
-          sold: "bg-[#2196F3] text-white", // Red
-        };
-
-        const statusDisplay: Record<string, string> = {
-          active: "Active",
-          pending: "Pending",
-          sold: "Sold",
-        };
-
-        return (
-          <span
-            className={`px-4 py-2 rounded-md text-sm w-[90px] text-center inline-block ${
-              statusMap[row.bid_status] || "bg-gray-300 text-black"
-            }`}
-          >
-            {statusDisplay[row.bid_status] || "Unknown"}
-          </span>
-        );
-      },
-    },
+    key: "bid_status",
+    header: "Status",
+     sortable: true,
+    render: (r) => (
+      <BiddingStatusDropdown
+        value={r.bid_status}
+        biddingId={r.id}
+        onUpdated={fetchBidding}
+      />
+    ),
+  },
     {
       key: "actions",
       header: "Actions",
