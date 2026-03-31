@@ -10,7 +10,7 @@ type Props = {
   confirmText?: string;
   cancelText?: string;
   loading?: boolean;
-    loadingText?: string;   // ✅ NEW
+    loadingText?: string;   
   confirmVariant?: "danger" | "primary";
   onConfirm: () => void;
   onClose: () => void;
@@ -23,7 +23,7 @@ export default function ConfirmModal({
   confirmText = "Delete",
   cancelText = "Cancel",
   loading = false,
-    loadingText = "Processing...",   // ✅ default
+    loadingText = "Processing...", 
   confirmVariant = "danger",  
   onConfirm,
   onClose,

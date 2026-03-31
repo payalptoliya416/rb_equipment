@@ -1,6 +1,4 @@
 "use client";
-
-import { useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 
 type Props = {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import MyBidDataTable, { MyBidRow } from "./MyBidDataTable";
+import MyBidDataTable from "./MyBidDataTable";
 import { bidDetailsService, MachineryDetails } from "@/api/user/bids";
 import { formatDateTime } from "@/api/admin/bidding";
 import Loader from "../common/Loader";

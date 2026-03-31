@@ -8,14 +8,12 @@ import { MdCloudUpload } from "react-icons/md";
 import { RxCross2 } from "react-icons/rx";
 import { useRouter, useSearchParams } from "next/navigation";
 import { adminUploadService } from "@/api/admin/upload";
-import { adminApi } from "@/api/admin/http";
 import AutoBidStartPrice from "@/adminpanel/AutoBidStartPrice";
 import { adminCategoryService } from "@/api/admin/category";
 import toast from "react-hot-toast";
 import { adminMachineryService } from "@/api/admin/machinery";
 import Loader from "@/components/common/Loader";
 import QuillEditor from "./QuillEditor";
-import { ImageCropGallry } from "./ImageCropGallry";
 
 export const dynamic = "force-dynamic";
 interface SectionProps {

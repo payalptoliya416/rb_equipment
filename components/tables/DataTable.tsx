@@ -17,7 +17,7 @@ type Props<T> = {
   columns: Column<T>[];
   data: T[];
   searchKey?: keyof T;
-  searchValue?: string;   // <-- Controlled search passed from parent
+  searchValue?: string;   
   className?: string;
   loading? : boolean;
 };

@@ -1,10 +1,6 @@
 "use client";
 
 import { isLoggedIn } from "@/api/authToken";
-import {
-  getAllCategories,
-  getSettingsByKeysFooter,
-} from "@/api/categoryActions";
 import { Category } from "@/api/data";
 import Image from "next/image";
 import Link from "next/link";

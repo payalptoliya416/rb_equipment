@@ -21,11 +21,11 @@ export default function BiddingMobileCard({
     sold: "bg-blue-500 text-white",
   };
 
-  const statusLabel: Record<string, string> = {
-    active: "Active",
-    pending: "Pending",
-    sold: "Sold",
-  };
+  // const statusLabel: Record<string, string> = {
+  //   active: "Active",
+  //   pending: "Pending",
+  //   sold: "Sold",
+  // };
 
   return (
     <div className="bg-white border border-[#E9E9E9] rounded-xl p-4 space-y-4">
@@ -47,7 +47,7 @@ export default function BiddingMobileCard({
         <BiddingStatusDropdown
           value={item.bid_status}
           biddingId={item.id}
-          onUpdated={onEdit} // 🔥 or fetch function if available
+          onUpdated={onEdit} 
         />
 
         <button

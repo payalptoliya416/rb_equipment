@@ -338,7 +338,7 @@ function SignaturePadDetail() {
     };
 
     localStorage.setItem("wonBidUserOut", JSON.stringify(payload));
-   router.push(`/user/won-bids/signaturepad/agreement/?id=${id}`);
+    router.push(`/user/won-bids/signaturepad/agreement/?id=${id}`);
   };
   const DeliveryCostBox = () => (
     <div className="mt-5 p-4 rounded-xl border bg-gray-50 border-light-gray">

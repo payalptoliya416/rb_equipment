@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import {
   getLicenseStatus,
   uploadLicense,
-  uploadLicenseData,
 } from "@/api/user/license";
 import { getUserProfile, UserProfile } from "@/api/user/profile";
 import { useEffect } from "react";

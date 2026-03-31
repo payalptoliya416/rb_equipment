@@ -3,13 +3,11 @@ import {
   licenseVerify,
   loginCheck,
   placeBid,
-  purchaseMachinery,
 } from "@/api/categoryActions";
 import { formatPrice } from "@/hooks/formate";
 import Image from "next/image";
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 interface BidInputProps {

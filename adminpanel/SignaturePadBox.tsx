@@ -43,9 +43,7 @@ export default function SignaturePadBox({
       return;
     }
 
-    const dataUrl = sigRef.current
-      .getTrimmedCanvas()
-      .toDataURL("image/png");
+    const dataUrl = sigRef.current.getTrimmedCanvas().toDataURL("image/png");
 
     onSignatureReady(dataUrl);
     toast.success("Signature saved");
@@ -59,9 +57,7 @@ export default function SignaturePadBox({
           <h2 className="text-[#373737] text-base font-semibold">
             Draw Signature
           </h2>
-          <p className="text-sm text-[#7A7A7A]">
-            Draw with mouse or touch
-          </p>
+          <p className="text-sm text-[#7A7A7A]">Draw with mouse or touch</p>
         </div>
 
         <div className="flex gap-3">
@@ -78,7 +74,7 @@ export default function SignaturePadBox({
             type="button"
             onClick={handleSave}
             className="h-9 px-5 rounded-lg bg-[#00796B] text-sm font-medium
-              text-white hover:bg-[#00695C] transition cursor-pointer" 
+              text-white hover:bg-[#00695C] transition cursor-pointer"
           >
             Save
           </button>

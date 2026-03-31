@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { FaArrowRight } from "react-icons/fa";
 import { motion } from "framer-motion";
-import Link from "next/link";
 import { useSettings } from "@/contexts/SettingsContext";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
