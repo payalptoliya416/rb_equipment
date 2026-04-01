@@ -16,7 +16,7 @@ export const getMachineryByCategory = async (
   make?: string,
   model?: string,
     page: number = 1,          // 👈 ADD
-  perPage: number = 9
+  perPage: number = 15
 ) => {
   return dataService.getMachineryByCategory(
     categoryName,

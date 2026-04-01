@@ -19,6 +19,7 @@ import Loader from "../common/Loader";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import SimpleSteps from "./SimpleSteps";
 import { formatPrice } from "@/hooks/formate";
+import Select from "react-select";
 
 export default function InventoryFilter({}: {}) {
   const searchParams = useSearchParams();
@@ -52,7 +53,7 @@ export default function InventoryFilter({}: {}) {
   });
   const [fromInput, setFromInput] = useState(String(min));
 const [toInput, setToInput] = useState(String(max));
-  const ITEMS_PER_PAGE = 9;
+  const ITEMS_PER_PAGE = 15;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [makes, setMakes] = useState<string[]>([]);
@@ -71,6 +72,16 @@ const [toInput, setToInput] = useState(String(max));
   const [isNavigating, setIsNavigating] = useState(false);
   const pathname = usePathname();
 const latestRequestRef = useRef(0);
+
+const makeOptions = makes.map((make) => ({
+  value: make,
+  label: make,
+}));
+
+const modelOptions = models.map((model) => ({
+  value: model,
+  label: model,
+}));
 
   useEffect(() => {
   setFromInput(String(fromYear));
@@ -346,6 +357,67 @@ if (categoryParam && selectedCategories.length === 0) return;
     return () => document.removeEventListener("mousedown", handleClick);
   }, []);
 
+  const customSelectStyles = {
+  control: (base: any) => ({
+    ...base,
+    width: "100%",
+    border: "1px solid #D1D5DB", 
+    borderRadius: "0.5rem", 
+    padding: "9px 10px",
+    fontSize: "14px",
+    color: "#374151",
+    backgroundColor: "#ffffff",
+    boxShadow: "none",
+    "&:hover": {
+      border: "1px solid #D1D5DB",
+    },
+  }),
+
+  valueContainer: (base: any) => ({
+    ...base,
+    padding: "0",
+  }),
+
+  input: (base: any) => ({
+    ...base,
+    margin: "0",
+    padding: "0",
+  }),
+
+  indicatorSeparator: () => ({
+    display: "none",
+  }),
+
+  dropdownIndicator: (base: any) => ({
+    ...base,
+    padding: "4px",
+  }),
+
+  menu: (base: any) => ({
+    ...base,
+    borderRadius: "0.5rem",
+    overflow: "hidden",
+    zIndex: 9999,
+    maxHeight: "240px",
+  }),
+
+  menuPortal: (base: any) => ({
+    ...base,
+    zIndex: 9999,
+  }),
+
+  option: (base: any, state: any) => ({
+    ...base,
+    backgroundColor: state.isSelected
+      ? "#00796b" 
+      : state.isFocused
+      ? "#f3f4f6"
+      : "#fff",
+    color: state.isSelected ? "#fff" : "#374151",
+    fontSize: "14px",
+  }),
+};
+
   if (pageLoading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-white z-[9999]">
@@ -471,97 +543,42 @@ if (categoryParam && selectedCategories.length === 0) return;
               </button>
 
               <div className="space-y-5">
+                <div>
+              <Select
+                options={makeOptions}
+                value={makeOptions.find((opt) => opt.value === selectedMake)}
+                onChange={(selected) => {
+                  setSelectedMake(selected?.value || "Any Make");
+                }}
+                isSearchable
+                placeholder="Select Make"
+                styles={customSelectStyles}
+                menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                menuPosition="fixed"
+                menuShouldBlockScroll={true}
+                menuPlacement="auto"
+              />
+            </div>
                 {/* ================= MAKE DROPDOWN ================= */}
-                <div className="relative">
-                  {/* BUTTON */}
-                  <button
-                    onClick={() => {
-                      setOpenMake((p) => !p);
-                      setOpenModel(false);
+
+                <div>
+                  <Select
+                    options={modelOptions}
+                    value={modelOptions.find((opt) => opt.value === selectedModel)}
+                    onChange={(selected) => {
+                      setSelectedModel(selected?.value || "Select Model");
                     }}
-                    className="w-full border border-gray-300 rounded-lg py-[13px] px-[15px]
-          text-sm text-gray-700 flex justify-between items-center bg-white"
-                  >
-                    {loadingMake ? "Loading..." : selectedMake}
-                    <FaChevronDown
-                      className={`text-gray-500 text-xs transition-transform ${
-                        openMake ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
-
-                  {/* DROPDOWN */}
-                  {openMake && (
-                    <div
-                      className="absolute left-0 right-0 mt-2 bg-white shadow-xl
-          border border-gray-200 rounded-lg max-h-52 overflow-auto z-[9999]"
-                    >
-                      {makes.map((make, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => {
-                            setSelectedMake(make);
-                            setOpenMake(false);
-                          }}
-                          className={`w-full text-left px-4 py-2 text-sm transition
-                ${
-                  selectedMake === make
-                    ? "bg-green text-white"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
-                        >
-                          {make}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                    isSearchable
+                    placeholder="Select Model"
+                    styles={customSelectStyles}
+                    menuPortalTarget={typeof document !== "undefined" ? document.body : null}
+                    menuPosition="fixed"
+                    menuShouldBlockScroll={true}
+                    menuPlacement="auto"
+                  />
                 </div>
-
                 {/* ================= MODEL DROPDOWN ================= */}
-                <div className="relative">
-                  {/* BUTTON */}
-                  <button
-                    onClick={() => {
-                      setOpenModel((p) => !p);
-                      setOpenMake(false);
-                    }}
-                    className="w-full border border-gray-300 rounded-lg py-[13px] px-[15px]
-          text-sm text-gray-700 flex justify-between items-center bg-white"
-                  >
-                    {loadingModel ? "Loading..." : selectedModel}
-                    <FaChevronDown
-                      className={`text-gray-500 text-xs transition-transform ${
-                        openModel ? "rotate-180" : ""
-                      }`}
-                    />
-                  </button>
 
-                  {/* DROPDOWN */}
-                  {openModel && (
-                    <div
-                      className="absolute left-0 right-0 mt-2 bg-white shadow-xl
-          border border-gray-200 rounded-lg max-h-52 overflow-auto z-[9999]"
-                    >
-                      {models.map((model, idx) => (
-                        <button
-                          key={idx}
-                          onClick={() => {
-                            setSelectedModel(model);
-                            setOpenModel(false);
-                          }}
-                          className={`w-full text-left px-4 py-2 text-sm transition
-                ${
-                  selectedModel === model
-                    ? "bg-green text-white"
-                    : "text-gray-700 hover:bg-gray-100"
-                }`}
-                        >
-                          {model}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
               </div>
             </div>
 

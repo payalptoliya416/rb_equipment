@@ -658,7 +658,7 @@ if (loading || isRedirecting) {
               dangerouslySetInnerHTML={{ __html: data?.description ?? "" }}
             />
           </div>
-          <div className="border-t border-light-gray my-[30px]"></div>
+          <div className="border-t border-light-gray my-[30px] block xl:hidden"></div>
             <div className="w-full space-y-5">
               <h2 className="text-lg font-semibold text-gray mb-[10px] mont-text">
                 Delivery cost calculator

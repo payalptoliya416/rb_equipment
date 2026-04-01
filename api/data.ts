@@ -117,7 +117,7 @@ export const dataService = {
     make?: string,
     model?: string,
     page: number = 1,       // 👈 ADD
-    perPage: number = 9
+    perPage: number = 15
   ): Promise<MachineryResponse> =>
     api<MachineryResponse>(API.MACHINERY_BY_CATEGORY, {
       method: "POST",
