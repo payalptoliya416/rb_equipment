@@ -61,7 +61,39 @@ export default function VerifyAccount() {
 
     loadProfileAndCountry();
   }, []);
-  
+
+  useEffect(() => {
+    const originalPath = window.location.pathname;
+
+    const blockAnchorNavigation = (event: MouseEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (!target) return;
+
+      const anchor = target.closest("a");
+      if (anchor) {
+        event.preventDefault();
+        event.stopPropagation();
+        toast("Complete verification first before navigating away.");
+      }
+    };
+
+    const onPopState = () => {
+      if (window.location.pathname !== originalPath) {
+        window.history.pushState(null, "", originalPath);
+      }
+    };
+
+    document.body.classList.add("verify-account-block-navigation");
+    document.addEventListener("click", blockAnchorNavigation, true);
+    window.addEventListener("popstate", onPopState);
+
+    return () => {
+      document.body.classList.remove("verify-account-block-navigation");
+      document.removeEventListener("click", blockAnchorNavigation, true);
+      window.removeEventListener("popstate", onPopState);
+    };
+  }, []);
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
@@ -130,6 +162,11 @@ export default function VerifyAccount() {
         <h3 className="text-3xl text-center mb-6 font-semibold">
           Verify your <span className="text-orange">account</span>
         </h3>
+        <div className="mb-6 rounded-lg p-1 text-orange">
+          <p className="text-sm font-medium">
+            This step is mandatory. You must complete identity verification before continuing.
+          </p>
+        </div>
           {verifying && (
             <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
               <div className="bg-white p-8 rounded-xl text-center shadow-xl">

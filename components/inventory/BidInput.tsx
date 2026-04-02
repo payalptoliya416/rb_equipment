@@ -1,3 +1,5 @@
+"use client";
+
 import { isAuthError } from "@/api/authToken";
 import {
   licenseVerify,
@@ -7,7 +9,7 @@ import {
 import { formatPrice } from "@/hooks/formate";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 interface BidInputProps {
@@ -50,8 +52,14 @@ export default function BidInput({
 }: BidInputProps) {
   const [bid, setBid] = useState<string>("");
   const [error, setError] = useState("");
-const [bidLoading, setBidLoading] = useState(false);
-const [buyLoading, setBuyLoading] = useState(false);
+  const [bidLoading, setBidLoading] = useState(false);
+  const [buyLoading, setBuyLoading] = useState(false);
+  const [isLicenseStatusLoading, setIsLicenseStatusLoading] = useState(true);
+  const [licenseStatus, setLicenseStatus] = useState<{
+    is_upload?: boolean;
+    is_verify?: boolean;
+    is_reject?: boolean;
+  }>({});
   const router = useRouter();
 
   const handleChange = (value: string) => {
@@ -91,59 +99,80 @@ const searchParams = useSearchParams();
 const query = searchParams.toString();
 const returnUrl = query ? `${pathname}?${query}` : pathname;
 
-const checkLoginAndLicense = async (): Promise<boolean> => {
-  let loginRes;
+const loadLicenseStatus = async () => {
+    try {
+      const licenseRes = await licenseVerify();
+      setLicenseStatus({
+        is_upload: licenseRes.is_upload,
+        is_verify: licenseRes.is_verify,
+        is_reject: licenseRes.is_reject,
+      });
+    } catch (err) {
+      // Keep as default; render block state
+      setLicenseStatus({});
+    } finally {
+      setIsLicenseStatusLoading(false);
+    }
+  };
 
-  try {
-    loginRes = await loginCheck();
-  } catch (err) {
-    toast.error(MESSAGES.LOGIN_REQUIRED);
-    router.push(`/user/signin?returnUrl=${encodeURIComponent(returnUrl)}`);
-    return false;
-  }
+  const checkLoginAndLicense = async (): Promise<boolean> => {
+    let loginRes;
 
-  if (
-    !loginRes ||
-    loginRes.status === "error" ||
-    !loginRes.success ||
-    !loginRes.is_logged_in
-  ) {
-    toast.error(MESSAGES.LOGIN_REQUIRED);
-    router.push(`/user/signin?returnUrl=${encodeURIComponent(returnUrl)}`);
-    return false;
-  }
+    try {
+      loginRes = await loginCheck();
+    } catch (err) {
+      toast.error(MESSAGES.LOGIN_REQUIRED);
+      router.push(`/user/signin?returnUrl=${encodeURIComponent(returnUrl)}`);
+      return false;
+    }
 
-  const licenseRes = await licenseVerify();
+    if (
+      !loginRes ||
+      loginRes.status === "error" ||
+      !loginRes.success ||
+      !loginRes.is_logged_in
+    ) {
+      toast.error(MESSAGES.LOGIN_REQUIRED);
+      router.push(`/user/signin?returnUrl=${encodeURIComponent(returnUrl)}`);
+      return false;
+    }
 
-  if (!licenseRes.is_upload) {
-    toast.error(MESSAGES.LICENSE_REQUIRED);
-    router.push(
-      `/verify-account?returnUrl=${encodeURIComponent(
-        returnUrl
-      )}`
-    );
-    return false;
-  }
+    const licenseRes = await licenseVerify();
 
-  if (licenseRes.is_reject) {
-    toast.error(MESSAGES.LICENSE_REJECTED);
-    setTimeout(() => {
+    if (!licenseRes.is_upload) {
+      toast.error(MESSAGES.LICENSE_REQUIRED);
       router.push(
         `/verify-account?returnUrl=${encodeURIComponent(
           returnUrl
         )}`
       );
-    }, 2000);
-    return false;
-  }
+      return false;
+    }
 
-  if (!licenseRes.is_verify) {
-    toast.error(MESSAGES.LICENSE_PENDING);
-    return false;
-  }
+    if (licenseRes.is_reject) {
+      toast.error(MESSAGES.LICENSE_REJECTED);
+      setTimeout(() => {
+        router.push(
+          `/verify-account?returnUrl=${encodeURIComponent(
+            returnUrl
+          )}`
+        );
+      }, 2000);
+      return false;
+    }
 
-  return true;
-};
+    if (!licenseRes.is_verify) {
+      toast.error(MESSAGES.LICENSE_PENDING);
+      return false;
+    }
+
+    return true;
+  };
+
+  useEffect(() => {
+    loadLicenseStatus();
+  }, []);
+
 
 const handlePlaceBid = async () => {
   const bidValue = Number(bid || 0);
@@ -192,6 +221,18 @@ const handlePlaceBid = async () => {
   const checkoutUrl =
     `/checkout/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`;
 
+  const licenseBlocked =
+    !isLicenseStatusLoading &&
+    (!licenseStatus.is_upload || licenseStatus.is_reject || !licenseStatus.is_verify);
+
+  const licenseBlockMessage = !licenseStatus.is_upload
+    ? "License not uploaded. Please verify your account before bidding or buying."
+    : licenseStatus.is_reject
+    ? "Your documents were rejected. Please re-upload valid documents."
+    : !licenseStatus.is_verify
+    ? "Verification pending. Please wait for approval before bidding or buying."
+    : "";
+
  const handleBuyNow = async () => {
     try {
       setBuyLoading(true);
@@ -218,6 +259,11 @@ const handlePlaceBid = async () => {
       <label className="block mb-2 text-sm font-medium text-[#373737]">
         Place your bid
       </label>
+      {licenseBlocked && (
+        <div className="rounded-lg mb-4 p-3 bg-orange/10 border border-orange text-orange text-sm">
+          {licenseBlockMessage}
+        </div>
+      )}
 
       <div className="flex items-stretch w-full rounded-xl overflow-hidden border border-[#CCE4E1] focus-within:ring-2 focus-within:ring-green">
 
@@ -251,10 +297,12 @@ const handlePlaceBid = async () => {
 
       <button
         onClick={handlePlaceBid}
-        disabled={bidLoading || !!error}
-        className=" w-full py-[15px] bg-green text-white rounded-lg text-base leading-[16px] font-medium
-    mb-[15px] flex justify-center items-center gap-[10px] mont-text   transition-all duration-300 hover:brightness-110 hover:bg-green/90  mt-4 cursor-pointer
-  "
+        disabled={bidLoading || !!error || licenseBlocked}
+        className={`w-full py-[15px] rounded-lg text-base leading-[16px] font-medium mb-[15px] flex justify-center items-center gap-[10px] mont-text transition-all duration-300 mt-4 ${
+          licenseBlocked
+            ? "bg-gray-300 text-gray-600 cursor-not-allowed"
+            : "bg-green text-white hover:brightness-110 hover:bg-green/90"
+        }`}
       >
         {bidLoading ? (
           <>
@@ -275,10 +323,12 @@ const handlePlaceBid = async () => {
       </div>
       <button
         onClick={handleBuyNow}
-         disabled={buyLoading}
-        className="w-full py-[15px] bg-white text-green rounded-lg text-base leading-[16px] font-medium 
-                                  flex justify-center items-center gap-[10px] border border-green mont-text 
-                                  transition-all duration-300 hover:bg-green hover:text-white cursor-pointer"
+        disabled={buyLoading || licenseBlocked}
+        className={`w-full py-[15px] rounded-lg text-base leading-[16px] font-medium flex justify-center items-center gap-[10px] border mont-text transition-all duration-300 ${
+          licenseBlocked
+            ? "bg-gray-100 text-gray-600 border-gray-300 cursor-not-allowed"
+            : "bg-white text-green border-green hover:bg-green hover:text-white"
+        }`}
       >
         {buyLoading ? (
     <>

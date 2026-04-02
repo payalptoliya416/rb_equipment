@@ -3,6 +3,13 @@ RewriteEngine On
 # ✅ Block Next internal txt files everywhere
 RedirectMatch 404 (^|/)(__next.*\.txt)$
 
+# ✅ Allow _next static assets (IMPORTANT)
+RewriteRule ^_next/ - [L]
+
+# ✅ Allow static files (images, js, css, fonts)
+RewriteCond %{REQUEST_URI} \.(js|css|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf)$ [NC]
+RewriteRule ^ - [L]
+
 # ✅ Allow real files/folders
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
@@ -19,7 +26,6 @@ RewriteRule ^confirmation(/.*)?$ /confirmation/index.html [L]
 
 RewriteRule ^sale-agreement(/.*)?$ /sale-agreement/index.html [L]
 
+
 # ✅ SPA fallback
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.html [L]

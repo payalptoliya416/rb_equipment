@@ -129,6 +129,18 @@ select option:checked {
   }
 }
 
+.verify-account-block-navigation header,
+.verify-account-block-navigation footer,
+.verify-account-block-navigation .header,
+.verify-account-block-navigation .footer {
+  pointer-events: none !important;
+  opacity:1;
+}
+
+.verify-account-block-navigation .verify-alert-message {
+  pointer-events: auto !important;
+}
+
 @media (min-width: 1024px) {
   .hero-custom-mt {
     margin-top: 80px;
