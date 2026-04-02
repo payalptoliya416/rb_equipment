@@ -29,16 +29,16 @@ export default function MachineryStatusDropdown({
   });
 
   /* ================= CLICK OUTSIDE ================= */
- useEffect(() => {
-  const handler = (e: MouseEvent) => {
-    if (!ref.current || !ref.current.contains(e.target as Node)) {
-      setOpen(false);
-    }
-  };
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (!ref.current || !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
 
-  document.addEventListener("click", handler); 
-  return () => document.removeEventListener("click", handler);
-}, []);
+    document.addEventListener("click", handler);
+    return () => document.removeEventListener("click", handler);
+  }, []);
   /* ================= STATUS CONFIG ================= */
   const statusConfig = {
     0: {
@@ -129,25 +129,28 @@ export default function MachineryStatusDropdown({
             }}
             className="rounded-lg bg-white border border-light-gray shadow-lg mt-1"
           >
-            {statusOrder.map((status) => (
-              <button
-                key={status}
-                disabled={loading !== null}
-                onClick={(e) => {
-                  e.stopPropagation(); 
-                  handleChange(status);
-                }}
-                className="w-full px-4 py-[10px] text-left text-sm border-b last:border-b-0 hover:bg-gray-50"
-              >
-                {loading === status ? (
-                  <span className="flex items-center gap-2">
-                    Updating...
-                  </span>
-                ) : (
-                  statusConfig[status].label
-                )}
-              </button>
-            ))}
+            {statusOrder.map((status) => {
+              const isCurrent = status === value;
+
+              return (
+                <button
+                  key={status}
+                  disabled={loading !== null || isCurrent} // ✅ disable current also
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (!isCurrent) handleChange(status); // extra safety
+                  }}
+                  className={`w-full px-4 py-[10px] text-left text-sm border-b last:border-b-0
+         ${isCurrent ? "bg-gray-100 text-gray-400 cursor-not-allowed" : "hover:bg-gray-50  cursor-pointer"}`}
+                >
+                  {loading === status ? (
+                    <span className="flex items-center gap-2">Updating...</span>
+                  ) : (
+                    statusConfig[status].label
+                  )}
+                </button>
+              );
+            })}
           </div>,
           document.body,
         )}

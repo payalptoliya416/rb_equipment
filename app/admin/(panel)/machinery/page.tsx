@@ -12,7 +12,6 @@ import toast from "react-hot-toast";
 import ConfirmModal from "@/components/tables/ConfirmDialog";
 import { useIsMobile } from "@/hooks/useIsMobile";
 import MachineryMobileCard from "@/adminpanel/MachineryMobileCard";
-import Loader from "@/components/common/Loader";
 import { formatPrice } from "@/hooks/formate";
 import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
 import MachineryStatusDropdown from "@/adminpanel/MachineryStatusDropdown";
