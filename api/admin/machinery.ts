@@ -126,4 +126,13 @@ export const adminMachineryService = {
       machinery_id: machineryId,
     }),
   }),
+
+updateStatus: (data: { id: number; status: number }) =>
+  adminApi<ApiResponse<any>>("/machinery/update-status", {
+    method: "POST",
+    body: JSON.stringify({
+      id: data.id,
+      status: data.status,
+    }),
+  }),
 };

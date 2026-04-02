@@ -106,10 +106,7 @@ description: Yup.string()
     .required("Description is required"),  
    image_urls: Yup.array()
     .min(1, "At least one image is required"),
-  //    video_urls: Yup.array()
-  // .of(Yup.string())
-  // .min(1, "At least one video is required"),
-
+    status: Yup.string().required("Status is required"),
 });
 
 
@@ -149,6 +146,7 @@ export default function AddMachineClient() {
     video_urls: [],
     specKey: "",
     specValue: "",
+    status: "1",
   };
   const [initialValues, setInitialValues] = useState(DEFAULT_VALUES);
   const [loading, setLoading] = useState(false);
@@ -186,6 +184,7 @@ export default function AddMachineClient() {
             : [],
           specKey: "",
           specValue: "",
+          status: String(m.status ?? 1),
         });
       } catch {
         toast.error("Failed to load machinery");
@@ -303,7 +302,7 @@ const handleVideoUpload = async (
 
     video_urls: values.video_urls,
 
-    status: 1,
+     status: Number(values.status),
   };
 };
 
@@ -358,6 +357,17 @@ if (isEdit && loading) {
                   e.preventDefault();
                 }
               }}  />
+              {!isEdit && (
+              <Select
+                name="status"
+                label="Status"
+                options={[
+                  { label: "Draft", value: "0" },
+                  { label: "Publish", value: "1" },
+                ]}
+                requiredMark
+              />
+            )}
             </Grid>
           </Section>
 

@@ -41,7 +41,6 @@ export interface SingleMachinery {
   category: MachineryCategory;
   serial_number: string;
   auction_id: string | number;
-  is_purchase: boolean;
 }
 
 export interface SingleMachineryResponse {

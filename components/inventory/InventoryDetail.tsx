@@ -158,7 +158,7 @@ function InventoryDetail() {
       });
 
       if (res?.success) {
-        if (res.data?.is_purchase === true) {
+       if (res.data?.status !== 1) {
           setIsRedirecting(true);
         router.push("/inventory");
         return;
@@ -476,8 +476,8 @@ if (loading || isRedirecting) {
                 ? "1 offer was received"
                 : `${offerCount} offers were received`}
             </div>
-            {/* BID Button */}
-            {data && (
+            
+            {data?.status === 1 && (
               <BidInput
                 currentBid={Number(data.current_bid)}
                 machineryId={data.id}

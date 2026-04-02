@@ -15,6 +15,7 @@ import MachineryMobileCard from "@/adminpanel/MachineryMobileCard";
 import Loader from "@/components/common/Loader";
 import { formatPrice } from "@/hooks/formate";
 import { TooltipWrapper } from "@/adminpanel/TooltipWrapper";
+import MachineryStatusDropdown from "@/adminpanel/MachineryStatusDropdown";
 /* ================= TYPES ================= */
 export type MachineryRow = {
   id: number;
@@ -26,11 +27,8 @@ export type MachineryRow = {
   workingHours: string;
   buyNowPrice: string;
   bidStartPrice: string;
-  status: "Active" | "Sold" | "Closed";
+  status: 0 | 1 | 2;
 };
-
-const mapStatus = (s: number): "Active" | "Sold" | "Closed" =>
-  s === 1 ? "Active" : s === 2 ? "Sold" : "Closed";
 
 export default function Machinery() {
   const router = useRouter();
@@ -86,7 +84,7 @@ export default function Machinery() {
         workingHours: `${item.working_hours} hrs`,
         buyNowPrice: `${formatPrice(item.buy_now_price)}`,
         bidStartPrice: `${formatPrice(item.bid_start_price)}`,
-        status: mapStatus(item.status),
+        status: item.status as 0 | 1 | 2,
       }));
 
       setData(mapped);
@@ -183,25 +181,18 @@ export default function Machinery() {
     {
       key: "status",
       header: "Status",
-       sortable: true,
+      sortable: true,
       onSort: () => {
         setSortBy("status");
         setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
       },
-      render: (row) => {
-        const map: any = {
-          Active: "bg-[#34C759] text-white",
-          Sold: "bg-[#FFCC33] text-black",
-          Closed: "bg-[#E63946] text-white",
-        };
-        return (
-          <span
-            className={`px-4 py-2 rounded-md text-sm w-[85px] text-center inline-block ${map[row.status]}`}
-          >
-            {row.status}
-          </span>
-        );
-      },
+      render: (row) => (
+        <MachineryStatusDropdown
+          value={row.status}
+          machineryId={row.id}
+          onUpdated={fetchMachinery}
+        />
+      ),
     },
     {
       key: "actions",
@@ -234,7 +225,7 @@ export default function Machinery() {
               onClick={() => setDeleteId(row.id)}
             />
           </TooltipWrapper>
-          {(row.status === "Sold") && (
+          {row.status === 2 && (
               <TooltipWrapper content="Regenerate Auction ID">
                 <HiArrowPath
                   className="text-[#2F80ED] cursor-pointer"

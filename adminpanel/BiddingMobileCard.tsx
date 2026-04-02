@@ -33,6 +33,7 @@ export default function BiddingMobileCard({
       <div>
         <p className="text-xs text-gray-500">Machinery</p>
         <p className="font-semibold text-sm">{item.name}</p>
+        <p className="text-xs text-gray-500 mt-2">Auction ID: <span className="font-medium text-black">{item.auction_id}</span></p>
       </div>
 
       {/* GRID INFO */}
@@ -44,12 +45,36 @@ export default function BiddingMobileCard({
 
       {/* STATUS + ACTION */}
       <div className="flex items-center justify-between pt-3 border-t border-[#E9E9E9]">
-        <BiddingStatusDropdown
+        {/* <BiddingStatusDropdown
           value={item.bid_status}
           biddingId={item.id}
           onUpdated={onEdit} 
-        />
+        /> */}
+        {(() => {
+          const statusMap: Record<string, string> = {
+            active: "bg-[#34C759] text-white",
+            pending: "bg-[#FFCA42] text-black",
+            completed: "bg-[#2196F3] text-white",
+            cancelled: "bg-red-500 text-white",
+          };
 
+          const statusDisplay: Record<string, string> = {
+            active: "Active",
+            pending: "Pending",
+            completed: "Completed",
+            cancelled: "Cancelled",
+          };
+
+          return (
+            <span
+              className={`px-4 py-2 rounded-md text-sm w-[100px] text-center inline-block ${
+                statusMap[item.bid_status] || "bg-gray-300 text-black"
+              }`}
+            >
+              {statusDisplay[item.bid_status] || "Unknown"}
+            </span>
+          );
+        })()}
         <button
           disabled={loadingViewId === item.id}
           onClick={onEdit}

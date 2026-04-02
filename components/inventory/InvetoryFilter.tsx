@@ -52,7 +52,7 @@ export default function InventoryFilter({}: {}) {
     to: toYear,
   });
   const [fromInput, setFromInput] = useState(String(min));
-const [toInput, setToInput] = useState(String(max));
+  const [toInput, setToInput] = useState(String(max));
   const ITEMS_PER_PAGE = 15;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -60,36 +60,32 @@ const [toInput, setToInput] = useState(String(max));
   const [models, setModels] = useState<string[]>([]);
   const [selectedMake, setSelectedMake] = useState("Any Make");
   const [selectedModel, setSelectedModel] = useState("Select Model");
-  const [loadingMake, setLoadingMake] = useState(false);
-  const [loadingModel, setLoadingModel] = useState(false);
   const router = useRouter();
   const [sortOpen, setSortOpen] = useState(false);
   const categoryCountRef = useRef<Record<number, number>>({});
   const [pageLoading, setPageLoading] = useState(true);
   const [hasFetched, setHasFetched] = useState(false);
-  const [openMake, setOpenMake] = useState(false);
-  const [openModel, setOpenModel] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
   const pathname = usePathname();
-const latestRequestRef = useRef(0);
+  const latestRequestRef = useRef(0);
 
-const makeOptions = makes.map((make) => ({
-  value: make,
-  label: make,
-}));
+  const makeOptions = makes.map((make) => ({
+    value: make,
+    label: make,
+  }));
 
-const modelOptions = models.map((model) => ({
-  value: model,
-  label: model,
-}));
+  const modelOptions = models.map((model) => ({
+    value: model,
+    label: model,
+  }));
 
   useEffect(() => {
-  setFromInput(String(fromYear));
-}, [fromYear]);
+    setFromInput(String(fromYear));
+  }, [fromYear]);
 
-useEffect(() => {
-  setToInput(String(toYear));
-}, [toYear]);
+  useEffect(() => {
+    setToInput(String(toYear));
+  }, [toYear]);
 
   useEffect(() => {
     setIsNavigating(false);
@@ -104,7 +100,7 @@ useEffect(() => {
 
   useEffect(() => {
     products.forEach((product) => {
-      if (!product.is_purchase) {
+    if (product.status === 1) {
         const categorySlug = slugify(product.category?.category_name ?? "");
         const makeSlug = slugify(product.make ?? "");
         const modelSlug = slugify(product.model ?? "");
@@ -165,9 +161,9 @@ useEffect(() => {
     fetchCategories();
   }, []);
 
- useEffect(() => {
-  setDebouncedYear({ from: fromYear, to: toYear });
-}, [fromYear, toYear]);
+  useEffect(() => {
+    setDebouncedYear({ from: fromYear, to: toYear });
+  }, [fromYear, toYear]);
 
   const cardRefs = useRef<Record<number, HTMLDivElement | null>>({});
 
@@ -202,7 +198,7 @@ useEffect(() => {
   useEffect(() => {
     if (loadingcategory) return;
     if (categories.length === 0) return;
-if (categoryParam && selectedCategories.length === 0) return;
+    if (categoryParam && selectedCategories.length === 0) return;
     let categoryNames: string[] = [];
 
     if (selectedCategories.length > 0) {
@@ -219,7 +215,7 @@ if (categoryParam && selectedCategories.length === 0) return;
     }
 
     const fetchMachinery = async () => {
-        const requestId = ++latestRequestRef.current;
+      const requestId = ++latestRequestRef.current;
 
       setLoading(true);
       setHasFetched(false);
@@ -245,10 +241,7 @@ if (categoryParam && selectedCategories.length === 0) return;
           if (!res?.success || res.data.length === 0) break;
 
           lastPageFromApi = res.pagination?.last_page || 1;
-
-          // const filtered = res.data.filter((p: any) => Number(p.is_view) === 1);
-
-          visibleProducts = res.data;
+          visibleProducts = res.data.filter((p: any) => p.status !== 0);
 
           if (pageToFetch >= lastPageFromApi) break;
 
@@ -280,14 +273,12 @@ if (categoryParam && selectedCategories.length === 0) return;
 
   useEffect(() => {
     const fetchMakes = async () => {
-      setLoadingMake(true);
       try {
         const res = await getMakes();
         if (res?.success) {
           setMakes(["Any Make", ...res.data]);
         }
       } finally {
-        setLoadingMake(false);
       }
     };
 
@@ -296,7 +287,6 @@ if (categoryParam && selectedCategories.length === 0) return;
 
   useEffect(() => {
     const fetchModels = async () => {
-      setLoadingModel(true);
       try {
         const res = await getModels();
         if (res?.success) {
@@ -304,7 +294,6 @@ if (categoryParam && selectedCategories.length === 0) return;
           setSelectedModel("Select Model");
         }
       } finally {
-        setLoadingModel(false);
       }
     };
 
@@ -320,8 +309,6 @@ if (categoryParam && selectedCategories.length === 0) return;
           clickedInside = true;
         }
       });
-
-
     };
 
     document.addEventListener("mousedown", handleOutsideClick);
@@ -337,9 +324,9 @@ if (categoryParam && selectedCategories.length === 0) return;
       // if (product.is_view === 1 && product.category_id) {
       //   map[product.category_id] = (map[product.category_id] || 0) + 1;
       // }
-       if (product.category_id) {
-    map[product.category_id] = (map[product.category_id] || 0) + 1;
-  }
+      if (product.category_id) {
+        map[product.category_id] = (map[product.category_id] || 0) + 1;
+      }
     });
 
     categoryCountRef.current = map;
@@ -358,65 +345,65 @@ if (categoryParam && selectedCategories.length === 0) return;
   }, []);
 
   const customSelectStyles = {
-  control: (base: any) => ({
-    ...base,
-    width: "100%",
-    border: "1px solid #D1D5DB", 
-    borderRadius: "0.5rem", 
-    padding: "9px 10px",
-    fontSize: "14px",
-    color: "#374151",
-    backgroundColor: "#ffffff",
-    boxShadow: "none",
-    "&:hover": {
+    control: (base: any) => ({
+      ...base,
+      width: "100%",
       border: "1px solid #D1D5DB",
-    },
-  }),
+      borderRadius: "0.5rem",
+      padding: "9px 10px",
+      fontSize: "14px",
+      color: "#374151",
+      backgroundColor: "#ffffff",
+      boxShadow: "none",
+      "&:hover": {
+        border: "1px solid #D1D5DB",
+      },
+    }),
 
-  valueContainer: (base: any) => ({
-    ...base,
-    padding: "0",
-  }),
+    valueContainer: (base: any) => ({
+      ...base,
+      padding: "0",
+    }),
 
-  input: (base: any) => ({
-    ...base,
-    margin: "0",
-    padding: "0",
-  }),
+    input: (base: any) => ({
+      ...base,
+      margin: "0",
+      padding: "0",
+    }),
 
-  indicatorSeparator: () => ({
-    display: "none",
-  }),
+    indicatorSeparator: () => ({
+      display: "none",
+    }),
 
-  dropdownIndicator: (base: any) => ({
-    ...base,
-    padding: "4px",
-  }),
+    dropdownIndicator: (base: any) => ({
+      ...base,
+      padding: "4px",
+    }),
 
-  menu: (base: any) => ({
-    ...base,
-    borderRadius: "0.5rem",
-    overflow: "hidden",
-    zIndex: 9999,
-    maxHeight: "240px",
-  }),
+    menu: (base: any) => ({
+      ...base,
+      borderRadius: "0.5rem",
+      overflow: "hidden",
+      zIndex: 9999,
+      maxHeight: "240px",
+    }),
 
-  menuPortal: (base: any) => ({
-    ...base,
-    zIndex: 9999,
-  }),
+    menuPortal: (base: any) => ({
+      ...base,
+      zIndex: 9999,
+    }),
 
-  option: (base: any, state: any) => ({
-    ...base,
-    backgroundColor: state.isSelected
-      ? "#00796b" 
-      : state.isFocused
-      ? "#f3f4f6"
-      : "#fff",
-    color: state.isSelected ? "#fff" : "#374151",
-    fontSize: "14px",
-  }),
-};
+    option: (base: any, state: any) => ({
+      ...base,
+      backgroundColor: state.isSelected
+        ? "#00796b"
+        : state.isFocused
+          ? "#f3f4f6"
+          : "#fff",
+      color: state.isSelected ? "#fff" : "#374151",
+      fontSize: "14px",
+    }),
+  };
 
   if (pageLoading) {
     return (
@@ -433,13 +420,16 @@ if (categoryParam && selectedCategories.length === 0) return;
           <Loader />
         </div>
       )}
-      <div className="w-full container-custom mx-auto my-[80px] lg:my-[110px]">
-        <div className="w-full flex flex-col lg:flex-row gap-6">
+      <div className="w-full container-custom mx-auto pt-[80px] lg:pt-[110px]">
+        <div className="w-full grid lg:grid-cols-[280px_1fr] gap-6">
           {/* ================= LEFT SIDEBAR ================= */}
           <aside
+            // [calc(100vh-10px)]
             className={`
-            fixed lg:static
-            top-0 left-0
+            custom-scroll
+            fixed lg:sticky
+            top-0 lg:top-[10px]
+            left-0
             h-full lg:h-fit
             w-[280px] lg:w-72
             bg-white
@@ -530,58 +520,70 @@ if (categoryParam && selectedCategories.length === 0) return;
             <div className="border-t border-light-gray my-[30px]" />
 
             {/* MAKE & MODEL */}
-            <div>
-              {/* HEADER */}
-              <button
-                onClick={() => {}}
-                className="w-full flex items-center justify-between mb-4 cursor-default"
-              >
-                <h2 className="font-semibold text-lg text-gray mont-text">
-                  Filter by Make and Model
-                </h2>
-                <FaChevronDown className="text-gray rotate-180" />
-              </button>
 
-              <div className="space-y-5">
+            <Disclosure defaultOpen>
+              {({ open }) => (
                 <div>
-              <Select
-                options={makeOptions}
-                value={makeOptions.find((opt) => opt.value === selectedMake)}
-                onChange={(selected) => {
-                  setSelectedMake(selected?.value || "Any Make");
-                }}
-                isSearchable
-                placeholder="Select Make"
-                styles={customSelectStyles}
-                menuPortalTarget={typeof document !== "undefined" ? document.body : null}
-                menuPosition="fixed"
-                menuShouldBlockScroll={true}
-                menuPlacement="auto"
-              />
-            </div>
-                {/* ================= MAKE DROPDOWN ================= */}
+                  <Disclosure.Button className="w-full flex items-center justify-between mb-4">
+                    <h2 className="font-semibold text-lg text-gray mont-text">
+                      Filter by Make and Model
+                    </h2>
+                    <FaChevronDown
+                      className={`text-gray transition-transform duration-300 ${
+                        open ? "rotate-180" : ""
+                      }`}
+                    />
+                  </Disclosure.Button>
 
-                <div>
-                  <Select
-                    options={modelOptions}
-                    value={modelOptions.find((opt) => opt.value === selectedModel)}
-                    onChange={(selected) => {
-                      setSelectedModel(selected?.value || "Select Model");
-                    }}
-                    isSearchable
-                    placeholder="Select Model"
-                    styles={customSelectStyles}
-                    menuPortalTarget={typeof document !== "undefined" ? document.body : null}
-                    menuPosition="fixed"
-                    menuShouldBlockScroll={true}
-                    menuPlacement="auto"
-                  />
+                  <Disclosure.Panel>
+                    <div className="space-y-5">
+                      {/* MAKE */}
+                      <div>
+                        <Select
+                          options={makeOptions}
+                          value={makeOptions.find(
+                            (opt) => opt.value === selectedMake,
+                          )}
+                          onChange={(selected) => {
+                            setSelectedMake(selected?.value || "Any Make");
+                          }}
+                          isSearchable
+                          placeholder="Select Make"
+                          styles={customSelectStyles}
+                          menuPortalTarget={
+                            typeof document !== "undefined"
+                              ? document.body
+                              : null
+                          }
+                          menuPosition="fixed"
+                        />
+                      </div>
+
+                      <div>
+                        <Select
+                          options={modelOptions}
+                          value={modelOptions.find(
+                            (opt) => opt.value === selectedModel,
+                          )}
+                          onChange={(selected) => {
+                            setSelectedModel(selected?.value || "Select Model");
+                          }}
+                          isSearchable
+                          placeholder="Select Model"
+                          styles={customSelectStyles}
+                          menuPortalTarget={
+                            typeof document !== "undefined"
+                              ? document.body
+                              : null
+                          }
+                          menuPosition="fixed"
+                        />
+                      </div>
+                    </div>
+                  </Disclosure.Panel>
                 </div>
-                {/* ================= MODEL DROPDOWN ================= */}
-
-              </div>
-            </div>
-
+              )}
+            </Disclosure>
             <div className="border-t border-light-gray my-[30px]" />
 
             <Disclosure defaultOpen>
@@ -605,12 +607,11 @@ if (categoryParam && selectedCategories.length === 0) return;
                     </div>
                     <div className="w-full mb-5">
                       <div className="relative w-full h-1 bg-light-gray rounded-full mt-4 ">
-                        {/* Active range */}
                         <div
                           className="absolute h-[6px] bg-green rounded-full top-1/2 -translate-y-1/2"
                           style={{
                             left: `${Math.max(0, Math.min(100, leftPercent))}%`,
-                             width: `${Math.max(0, Math.min(100 - leftPercent, rightPercent - leftPercent))}%`,
+                            width: `${Math.max(0, Math.min(100 - leftPercent, rightPercent - leftPercent))}%`,
                           }}
                         />
 
@@ -645,57 +646,61 @@ if (categoryParam && selectedCategories.length === 0) return;
                       <div className="w-1/2">
                         <label className="text-base text-[#373737]">From</label>
                         <input
-  type="number"
-  value={fromInput}
-  onChange={(e) => {
-    let val = e.target.value.replace(/\D/g, "").slice(0, 4);
-    setFromInput(val);
+                          type="number"
+                          value={fromInput}
+                          onChange={(e) => {
+                            let val = e.target.value
+                              .replace(/\D/g, "")
+                              .slice(0, 4);
+                            setFromInput(val);
 
-    const num = Number(val);
-    if (!isNaN(num)) {
-         if (num < min) return; 
-      if (num <= toYear) {
-        setFromYear(num);
-      }
-    }
-  }}
-  onBlur={() => {
-    let num = Number(fromInput);
-    if (!num || num < min) num = min;
-    if (num > toYear) num = toYear;
-    setFromYear(num);
-    setFromInput(String(num));
-  }}
-  className="w-full mt-1 border border-light-gray rounded-lg py-2 px-3"
-/>
+                            const num = Number(val);
+                            if (!isNaN(num)) {
+                              if (num < min) return;
+                              if (num <= toYear) {
+                                setFromYear(num);
+                              }
+                            }
+                          }}
+                          onBlur={() => {
+                            let num = Number(fromInput);
+                            if (!num || num < min) num = min;
+                            if (num > toYear) num = toYear;
+                            setFromYear(num);
+                            setFromInput(String(num));
+                          }}
+                          className="w-full mt-1 border border-light-gray rounded-lg py-2 px-3"
+                        />
                       </div>
 
                       <div className="w-1/2">
                         <label className="text-base text-[#373737]">To</label>
-                      <input
-  type="number"
-  value={toInput}
-  onChange={(e) => {
-    let val = e.target.value.replace(/\D/g, "").slice(0, 4);
-    setToInput(val);
+                        <input
+                          type="number"
+                          value={toInput}
+                          onChange={(e) => {
+                            let val = e.target.value
+                              .replace(/\D/g, "")
+                              .slice(0, 4);
+                            setToInput(val);
 
-    const num = Number(val);
-    if (!isNaN(num)) {
-         if (num > max) return;
-      if (num >= fromYear) {
-        setToYear(num);
-      }
-    }
-  }}
-  onBlur={() => {
-    let num = Number(toInput);
-    if (!num || num > max) num = max;
-    if (num < fromYear) num = fromYear;
-    setToYear(num);
-    setToInput(String(num));
-  }}
-  className="w-full mt-1 border border-light-gray rounded-lg py-2 px-3"
-/>
+                            const num = Number(val);
+                            if (!isNaN(num)) {
+                              if (num > max) return;
+                              if (num >= fromYear) {
+                                setToYear(num);
+                              }
+                            }
+                          }}
+                          onBlur={() => {
+                            let num = Number(toInput);
+                            if (!num || num > max) num = max;
+                            if (num < fromYear) num = fromYear;
+                            setToYear(num);
+                            setToInput(String(num));
+                          }}
+                          className="w-full mt-1 border border-light-gray rounded-lg py-2 px-3"
+                        />
                       </div>
                     </div>
                   </Disclosure.Panel>
@@ -799,102 +804,85 @@ if (categoryParam && selectedCategories.length === 0) return;
                   const auction_id = product.auction_id;
                   const friendlyUrl = `/inventory/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`;
 
-                  return product.is_purchase ? (
-                    <div key={product.id} className="h-full">
-                      <div className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white cursor-not-allowed flex flex-col">
-                        <div className="w-full flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
-                          {product.first_image_url ? (
-                            <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
-                              <Image
-                                src={product.first_image_url}
-                                alt={product.name}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                          ) : (
-                            <div className="w-[216px] h-[123px]" />
-                          )}
-                          <div
-                            className=" absolute border border-red-300 rounded-md py-2 px-4 text-red-600 bg-red-50 font-semibold text-sm
-                          left-1/2 bottom-0 -translate-x-1/2 -translate-y-3"
-                          >
-                            SOLD
-                          </div>
-                        </div>
+                  return product.status === 2 ? (
+  // 🔴 SOLD (NOT CLICKABLE)
+  <div key={product.id} className="h-full">
+    <div className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white cursor-not-allowed flex flex-col">
+      <div className="w-full flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
+        {product.first_image_url ? (
+          <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
+            <Image
+              src={product.first_image_url}
+              alt={product.name}
+              fill
+              className="object-cover"
+            />
+          </div>
+        ) : (
+          <div className="w-[216px] h-[123px]" />
+        )}
 
-                        {/* DETAILS */}
-                        <div className="px-2 mt-[15px]">
-                          <h3 className="text-lg mb-2">{product.name}</h3>
-                          <p className="text-sm text-text-gray mb-4">
-                            {product.year} • {product.working_hours} hrs
-                          </p>
-                          <p className="text-green font-semibold">
-                            Bid Price: {formatPrice(product.bid_start_price)}
-                          </p>
-                          <p className="text-green font-bold">
-                            Buy Price: {formatPrice(product.buy_now_price)}
-                          </p>
+        <div className="absolute border border-red-300 rounded-md py-2 px-4 text-red-600 bg-red-50 font-semibold text-sm left-1/2 bottom-0 -translate-x-1/2 -translate-y-3">
+          SOLD
+        </div>
+      </div>
+
+      <div className="px-2 mt-[15px]">
+        <h3 className="text-lg mb-2">{product.name}</h3>
+        <p className="text-sm text-text-gray mb-4">
+          {product.year} • {product.working_hours} hrs
+        </p>
+        <p className="text-green font-semibold">
+          Bid Price: {formatPrice(product.bid_start_price)}
+        </p>
+        <p className="text-green font-bold">
+          Buy Price: {formatPrice(product.buy_now_price)}
+        </p>
+      </div>
+    </div>
+  </div>
+                ) : (
+                  // ✅ AVAILABLE (CLICKABLE)
+                  <Link
+                    key={product.id}
+                    href={friendlyUrl}
+                    prefetch={true}
+                    className="block h-full"
+                    onClick={() => setIsNavigating(true)}
+                  >
+                    <div className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white cursor-pointer hover:shadow-md transition flex flex-col">
+                      <div className="w-full flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
+                        {product.first_image_url && (
+                          <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
+                            <Image
+                              src={product.first_image_url}
+                              alt={product.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        )}
+
+                        <div className="absolute border border-light-gray rounded-md py-2 px-4 text-green bg-white text-sm left-1/2 bottom-0 -translate-x-1/2 opacity-0 translate-y-3 group-hover:opacity-100 group-hover:-translate-y-3 transition">
+                          BID OR BUY
                         </div>
+                      </div>
+
+                      <div className="px-2 mt-[15px]">
+                        <h3 className="text-lg mb-2">{product.name}</h3>
+                        <p className="text-sm text-text-gray mb-4">
+                          {product.year} • {product.working_hours} hrs
+                        </p>
+                        <p className="text-green font-semibold">
+                          Bid Price: {formatPrice(product.bid_start_price)}
+                        </p>
+                        <p className="text-green font-bold">
+                          Buy Price: {formatPrice(product.buy_now_price)}
+                        </p>
                       </div>
                     </div>
-                  ) : (
-                    // ✅ AVAILABLE → CLICKABLE
-                    <Link
-                      key={product.id}
-                      href={friendlyUrl}
-                      prefetch={true}
-                      className="block h-full"
-                      onClick={() => setIsNavigating(true)}
-                    >
-                      <div
-                        className="h-full border border-light-gray rounded-[10px] p-[15px] bg-white
-      cursor-pointer hover:shadow-md transition flex flex-col"
-                      >
-                        {/* IMAGE */}
-                        <div className="w-full flex items-center justify-center border border-light-gray bg-[#E9E9E926] relative group rounded-[12px]">
-                          {product.first_image_url && (
-                            <div className="relative w-full aspect-[240/165] rounded-[12px] overflow-hidden">
-                              <Image
-                                src={product.first_image_url}
-                                alt={product.name}
-                                fill
-                                className="object-cover"
-                              />
-                            </div>
-                          )}
-
-                          {/* BID OR BUY */}
-                          <div
-                            className="
-                            absolute border border-light-gray rounded-md py-2 px-4
-                            text-green bg-white text-sm
-                            left-1/2 bottom-0 -translate-x-1/2
-                            opacity-0 translate-y-3
-                            group-hover:opacity-100 group-hover:-translate-y-3
-                            transition
-                          "
-                          >
-                            BID OR BUY
-                          </div>
-                        </div>
-
-                        {/* DETAILS */}
-                        <div className="px-2 mt-[15px]">
-                          <h3 className="text-lg mb-2">{product.name}</h3>
-                          <p className="text-sm text-text-gray mb-4">
-                            {product.year} • {product.working_hours} hrs
-                          </p>
-                          <p className="text-green font-semibold">
-                            Bid Price: {formatPrice(product.bid_start_price)}
-                          </p>
-                          <p className="text-green font-bold">
-                            Buy Price: {formatPrice(product.buy_now_price)}
-                          </p>
-                        </div>
-                      </div>
-                    </Link>
-                  );
+                  </Link>
+                );
                 })
               )}
             </div>

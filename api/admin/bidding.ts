@@ -19,6 +19,7 @@ export interface BiddingApiItem {
   bid_status: "active" | "pending" | "sold" | "cancelled";
   bids_count: number;
   name: string;
+  auction_id: string | number;
 }
 
 export interface GetBiddingResponse {
