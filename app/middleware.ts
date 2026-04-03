@@ -5,15 +5,23 @@ export function middleware(req: NextRequest) {
   const token = req.cookies.get("authtoken")?.value;
   const adminToken = req.cookies.get("admin_token")?.value;
 
-  const { pathname } = req.nextUrl;
+  const { pathname, search } = req.nextUrl;
+
+  // Normalize path by stripping /staging prefix (server rewrite artifact)
+  const normalizedPath = pathname.replace(/^\/staging/, "");
 
   // User protected
-  if (pathname.startsWith("/user") && !token) {
-    return NextResponse.redirect(new URL("/user/signin", req.url));
+  if (normalizedPath.startsWith("/user") && !token) {
+    const returnUrl = normalizedPath + search;
+
+    const loginUrl = new URL("/user/signin", req.url);
+    loginUrl.searchParams.set("returnUrl", returnUrl);
+
+    return NextResponse.redirect(loginUrl);
   }
 
   // Admin protected
-  if (pathname.startsWith("/admin") && pathname !== "/admin" && !adminToken) {
+  if (normalizedPath.startsWith("/admin") && normalizedPath !== "/admin" && !adminToken) {
     return NextResponse.redirect(new URL("/admin", req.url));
   }
 
@@ -21,5 +29,6 @@ export function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/user/:path*", "/admin/:path*"],
+  matcher: ["/user/:path*", "/admin/:path*" ,   "/staging/user/:path*",
+    "/staging/admin/:path*",],
 };

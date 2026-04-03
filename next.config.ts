@@ -1,4 +1,9 @@
 /** @type {import('next').NextConfig} */
+
+
+const isStaging = process.env.NEXT_PUBLIC_BASE_PATH === "staging";
+
+
 const nextConfig = {
   output: "export",
   async rewrites() {
@@ -34,6 +39,10 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+
+    basePath: isStaging ? "/staging" : "",
+
+  assetPrefix: isStaging ? "/staging/" : "",
 };
 
 export default nextConfig;

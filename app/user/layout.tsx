@@ -3,7 +3,6 @@
 import { isLoggedIn } from "@/api/authToken";
 import UserFooter from "@/components/user/UserFooter";
 import UserHeader from "@/components/user/UserHeader";
-import UserDashboardNav from "@/components/user/UserDashboardNav";
 import Loader from "@/components/common/Loader";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
@@ -15,9 +14,15 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
   const [checkingAuth, setCheckingAuth] = useState(true);
   const [isNavigating, setIsNavigating] = useState(false);
 
-  // 🔐 Auth Check
+  // 🔐 Auth Check (FIXED)
   useEffect(() => {
-    if (window.location.pathname.startsWith("/user/signin")) {
+    const fullPath = window.location.pathname;
+    
+    // ✅ remove staging if present
+    const cleanPath = fullPath.replace("/staging", "");
+
+    // 🚫 IMPORTANT: if already on signin → DO NOTHING
+    if (cleanPath.startsWith("/user/signin")) {
       setCheckingAuth(false);
       return;
     }
@@ -38,21 +43,21 @@ export default function UserLayout({ children }: { children: React.ReactNode }) 
     setIsNavigating(false);
   }, [pathname]);
 
-const normalize = (url: string) =>
-  url.replace(/\/+$/, "");
+  const normalize = (url: string) =>
+    url.replace(/\/+$/, "");
 
-const handleNavigate = useCallback(
-  (url: string) => {
-    const current = normalize(pathname);
-    const target = normalize(url);
+  const handleNavigate = useCallback(
+    (url: string) => {
+      const current = normalize(pathname);
+      const target = normalize(url);
 
-    if (current === target) return; 
+      if (current === target) return;
 
-    setIsNavigating(true);
-    router.push(url);
-  },
-  [pathname, router]
-);
+      setIsNavigating(true);
+      router.push(url);
+    },
+    [pathname, router]
+  );
 
   if (checkingAuth) return null;
 

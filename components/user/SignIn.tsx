@@ -28,9 +28,21 @@ export default function SignInForm(): JSX.Element {
   const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
 
-  const rawReturnUrl = searchParams.get("returnUrl");
-  const returnUrl = rawReturnUrl ? decodeURIComponent(rawReturnUrl) : "/user";
-  // Variants
+const rawReturnUrl = searchParams.get("returnUrl");
+
+let decoded = rawReturnUrl ? decodeURIComponent(rawReturnUrl) : "/user";
+
+// 🚫 prevent loop (MOST IMPORTANT)
+if (
+  decoded.includes("/user/signin") ||
+  decoded === "/user/signin" ||
+  decoded === "/staging/user/signin"
+) {
+  decoded = "/user";
+}
+
+// remove staging
+const returnUrl = decoded.replace(/^\/staging/, "") || "/user";
   const cardVariant = {
     hidden: { opacity: 0, y: 60 },
     show: {
