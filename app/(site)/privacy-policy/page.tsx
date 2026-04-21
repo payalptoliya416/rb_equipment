@@ -1,10 +1,16 @@
-import AboutUsHero from "@/components/about-us/AboutUsHero";
+'use client';
 
-const privacyData = [
+import AboutUsHero from "@/components/about-us/AboutUsHero";
+import { useSettings } from "@/contexts/SettingsContext";
+
+function PrivacyPolicy() {
+  const { companyName } = useSettings();
+
+  const privacyData = [
   {
     title: "1. Introduction",
     desc: [
-      `This Privacy Policy explains how STIOPA EQUIPMENT, LLC (Reg nº: 201702410607), having its registered address at 529 BROOKSIDE AVENUE, REDLANDS, CA 92373 (“Company”, “we”, “our”, or “us”) collects, uses, discloses, and safeguards your information when you use our website.`,
+      `This Privacy Policy explains how ${companyName}, LLC (Reg nº: 201702410607), having its registered address at 529 BROOKSIDE AVENUE, REDLANDS, CA 92373 (“Company”, “we”, “our”, or “us”) collects, uses, discloses, and safeguards your information when you use our website.`,
       "By accessing or using our website, you agree to the terms of this Privacy Policy.",
     ],
   },
@@ -92,16 +98,15 @@ const privacyData = [
     title: "11. Contact Information",
     desc: [
       "If you have any questions about this Privacy Policy, you may contact:",
-      "STIOPA EQUIPMENT, LLC",
+      `${companyName}, LLC`,
       "Reg nº: 201702410607",
       "529 BROOKSIDE AVENUE",
       "REDLANDS, CA 92373",
       "You may also contact us through the Contact Us page on this website.",
     ],
   },
-];
+  ];
 
-function PrivacyPolicy() {
   return (
     <>
       <AboutUsHero />

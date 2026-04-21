@@ -284,7 +284,7 @@ function SignaturePadAgreement() {
                               ${
                                 submitting || isAlreadySigned
                                   ? "bg-[#9E9E9E] cursor-not-allowed"
-                                  : "bg-[#00796B] hover:bg-[#00695C] cursor-pointer"
+                                  : "bg-green hover:bg-[#00695C] cursor-pointer"
                               }`}
             >
               {isAlreadySigned || isSubmitted ? (

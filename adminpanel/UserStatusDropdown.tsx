@@ -25,16 +25,20 @@ const [position, setPosition] = useState({
   width: 0,
 });
   /* ================= CLICK OUTSIDE ================= */
+  const dropdownRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (!ref.current || !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handler);
-    return () => document.removeEventListener("mousedown", handler);
-  }, []);
+  const handler = (e: MouseEvent) => {
+    if (
+      !ref.current?.contains(e.target as Node) &&
+      !dropdownRef.current?.contains(e.target as Node)
+    ) {
+      setOpen(false);
+    }
+  };
 
+  document.addEventListener("mousedown", handler);
+  return () => document.removeEventListener("mousedown", handler);
+}, []);
   /* ================= STATUS CONFIG ================= */
   const statusConfig: Record<
     StatusType,
@@ -104,6 +108,7 @@ const handleToggle = () => {
       {open &&
   createPortal(
     <div
+     ref={dropdownRef}
       style={{
         position: "absolute",
         top: position.top,

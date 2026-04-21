@@ -142,7 +142,7 @@ export default function MyWonBids() {
       if (res.success) {
         const mapped: WonBidRow[] = res.data.map((item) => ({
           id: String(item.id),
-          image: item.first_image || "/assets/table-img.png",
+          image: item.first_image || "",
           machinery: item.machinery_name,
           category: item.category, 
           wonBidAmount: formatPrice(item.won_bid_amount),

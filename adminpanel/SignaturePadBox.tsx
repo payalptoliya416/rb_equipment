@@ -73,7 +73,7 @@ export default function SignaturePadBox({
           <button
             type="button"
             onClick={handleSave}
-            className="h-9 px-5 rounded-lg bg-[#00796B] text-sm font-medium
+            className="h-9 px-5 rounded-lg bg-green text-sm font-medium
               text-white hover:bg-[#00695C] transition cursor-pointer"
           >
             Save
@@ -88,7 +88,7 @@ export default function SignaturePadBox({
       >
         <SignatureCanvas
           ref={sigRef}
-          penColor="#000"
+          {...({ penColor: "#000" } as any)}
           canvasProps={{
             width: canvasWidth,
             height: 220,

@@ -396,7 +396,7 @@ export default function InventoryFilter({}: {}) {
     option: (base: any, state: any) => ({
       ...base,
       backgroundColor: state.isSelected
-        ? "#00796b"
+        ? "var(--color-green)"
         : state.isFocused
           ? "#f3f4f6"
           : "#fff",

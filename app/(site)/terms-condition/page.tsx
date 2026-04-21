@@ -1,10 +1,17 @@
-import AboutUsHero from "@/components/about-us/AboutUsHero";
+'use client'
 
-const termsData = [
+import AboutUsHero from "@/components/about-us/AboutUsHero";
+import { useSettings } from "@/contexts/SettingsContext";
+
+
+
+function TermsCondition() {
+    const { companyName } = useSettings();
+    const termsData = [
   {
     title: "15. Contact Information",
     desc: [
-      `If you have any questions regarding these Terms & Conditions, you may contact STIOPA EQUIPMENT, LLC at:`,
+      `If you have any questions regarding these Terms & Conditions, you may contact ${companyName}, LLC at:`,
       `Registered Address: 529 BROOKSIDE AVENUE, REDLANDS, CA 92373.`,
       `Reg nº: 201702410607.`,
       `You may also contact us through the Contact Us page on this website.`,
@@ -114,8 +121,6 @@ const termsData = [
     ],
   },
 ];
-
-function TermsCondition() {
   return (
     <>
       <AboutUsHero />
@@ -132,7 +137,7 @@ function TermsCondition() {
             <p className="text-gray-700 text-sm sm:text-base leading-relaxed mb-6">
               Please read these Terms & Conditions carefully before using this
               website. This website is owned and operated by{" "}
-              <strong>STIOPA EQUIPMENT, LLC</strong>, Reg nº: (201702410607),
+              <strong> {companyName}, LLC</strong>, Reg nº: (201702410607),
               Reg Address: 529 BROOKSIDE AVENUE, REDLANDS, CA 92373.
             </p>
 

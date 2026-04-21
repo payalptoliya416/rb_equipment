@@ -20,6 +20,7 @@ body {
   --color-light-gray: #d3d3d3;
   --color-header: #f2f8f7;
 }
+
 @layer components {
   .input {
     @apply w-full px-5 py-3 rounded-[10px] border border-[#E9E9E9] focus:outline-none;
@@ -33,18 +34,13 @@ body {
   margin-bottom: 30px;
 }
 .gradient {
-  background: linear-gradient(
-    180deg,
-    #ff6f6100 0%,
-    #ff6f6119 50%,
-    #ff6f61 100%
-  );
+  background: linear-gradient(180deg, #ff6f6100 0%, #ff6f6119 50%, var(--color-orange) 100%);
 }
 .bg-gradient {
   background: linear-gradient(180deg, #ff6f6100 0%, #37373714 8%);
 }
 .gradient-btn {
-  background: linear-gradient(-90deg, #049281 0%, #00796b 100%);
+  background: linear-gradient(-90deg, #049281 0%, var(--color-green) 100%);
 }
 
 

@@ -281,7 +281,7 @@ function SaleAgreement() {
                 <button
                   type="button"
                   onClick={handleSave}
-                  className="h-9 px-5 rounded-lg bg-[#00796B] text-sm font-medium
+                  className="h-9 px-5 rounded-lg bg-green text-sm font-medium
               text-white hover:bg-[#00695C] transition cursor-pointer"
                 >
                   Save
@@ -294,7 +294,7 @@ function SaleAgreement() {
             >
               <SignatureCanvas
                 ref={sigRef}
-                penColor="#000"
+                {...({ penColor: "#000" } as any)}
                 canvasProps={{
                   width: canvasWidth,
                   height: 220,
@@ -309,7 +309,7 @@ function SaleAgreement() {
               type="button"
               onClick={handleFinalSubmit}
               className="h-[42px] px-5 rounded-lg text-sm font-medium text-white transition 
-            bg-[#00796B] hover:bg-[#00695C] cursor-pointer"
+            bg-green hover:bg-[#00695C] cursor-pointer"
             >
               Agree & Submit
             </button>

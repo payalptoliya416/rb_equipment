@@ -76,7 +76,7 @@ export default function Machinery() {
       const mapped: MachineryRow[] = res.data.map((item) => ({
         id: item.id,
         auction_id: item.auction_id,
-        image_urls: item.image_urls?.[0] || "/assets/table-img.png",
+        image_urls: item.image_urls?.[0] || "",
         title: `${item.make} ${item.model}`,
         category: item.category?.category_name ?? "-",
         year: item.year,

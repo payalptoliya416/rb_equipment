@@ -119,7 +119,7 @@ export default function Bids() {
     if (res.success) {
       const mapped: Bid[] = res.data.map((item) => ({
         id: String(item.id),
-        image: item.first_image || "/assets/table-img.png",
+        image: item.first_image || "",
         machinery: item.name,
         currentBid: `${formatPrice(item.bid_start_price)}`,
         lastBid: `${formatPrice(item.last_bid)}`,

@@ -13,7 +13,7 @@ interface SettingsContextType {
 
 const SettingsContext = createContext<SettingsContextType>({
   settings: null,
-  companyName: "Stiopa Equipment",
+  companyName: "",
   phoneNumber: "",
   isLoading: true,
 });
@@ -48,7 +48,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({
 
     fetchSettings();
   }, []);
-  const companyName = settings?.company_name || "Stiopa Equipment";
+  const companyName = settings?.company_name || "";
   const phoneNumber = settings?.phone_no || "";
 
   return (
