@@ -251,21 +251,21 @@ function SaleAgreement() {
       <section className="pt-16">
         <div className="container-custom mx-auto">
           {contractHtml && (
-            <div className="bg-white border border-[#E9E9E9] rounded-[10px]  my-6">
+            <div className="bg-white border border-border rounded-[10px]  my-6">
               <iframe
                 srcDoc={makeContractResponsive(contractHtml)}
-                className="w-full h-[700px] border border-[#E9E9E9] rounded"
+                className="w-full h-[700px] border border-border rounded"
               />
             </div>
           )}
 
-          <div className="border border-[#E9E9E9] rounded-xl p-6 bg-white">
+          <div className="border border-border rounded-xl p-6 bg-white">
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
               <div>
-                <h2 className="text-[#373737] text-base font-semibold">
+                <h2 className="text-secgray text-base font-semibold">
                   Draw Signature
                 </h2>
-                <p className="text-sm text-[#7A7A7A]">
+                <p className="text-sm text-seclightgray">
                   Draw with mouse or touch
                 </p>
               </div>
@@ -273,7 +273,7 @@ function SaleAgreement() {
                 <button
                   type="button"
                   onClick={handleClear}
-                  className="h-9 px-5 rounded-lg border border-[#E9E9E9] text-sm font-medium
+                  className="h-9 px-5 rounded-lg border border-border text-sm font-medium
               bg-white hover:bg-[#F6F6F6] transition  cursor-pointer"
                 >
                   Clear
@@ -290,7 +290,7 @@ function SaleAgreement() {
             </div>
             <div
               ref={wrapperRef}
-              className="border border-[#E9E9E9] rounded-lg bg-[#F9F9F9] overflow-hidden"
+              className="border border-border rounded-lg bg-[#F9F9F9] overflow-hidden"
             >
               <SignatureCanvas
                 ref={sigRef}

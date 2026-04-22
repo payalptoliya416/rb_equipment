@@ -19,7 +19,7 @@ export default function MachineryMobileCard({
   loadingEditId,
 }: Props) {
   return (
-    <div className="bg-white border border-[#E9E9E9] rounded-xl p-4 space-y-3">
+    <div className="bg-white border border-border rounded-xl p-4 space-y-3">
       {/* HEADER */}
       <div className="flex gap-3">
         <div className="relative w-14 h-14 rounded-lg overflow-hidden shrink-0">
@@ -59,7 +59,7 @@ export default function MachineryMobileCard({
       </div>
 
       {/* ACTIONS */}
-      <div className="flex justify-end gap-4 pt-2 border-t border-[#E9E9E9] ">
+      <div className="flex justify-end gap-4 pt-2 border-t border-border ">
         {/* <HiOutlineEye className="text-blue-500" size={18} /> */}
         <button
           disabled={loadingEditId === item.id}

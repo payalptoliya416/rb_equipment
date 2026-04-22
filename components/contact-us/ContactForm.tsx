@@ -154,7 +154,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   {/* Row 1 */}
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     <motion.div variants={inputVariant}>
-      <label className="text-[#333333] font-medium text-lg mb-3 mont-text">
+      <label className="text-lightblack font-medium text-lg mb-3 mont-text">
         First Name
       </label>
       <input
@@ -169,7 +169,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     </motion.div>
 
     <motion.div variants={inputVariant}>
-      <label className="text-[#333333] font-medium text-lg mb-3 mont-text">
+      <label className="text-lightblack font-medium text-lg mb-3 mont-text">
         Last Name
       </label>
       <input
@@ -187,7 +187,7 @@ const handleSubmit = async (e: React.FormEvent) => {
   {/* Row 2 */}
   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
     <motion.div variants={inputVariant}>
-      <label className="text-[#333333] font-medium text-lg mb-3 mont-text">
+      <label className="text-lightblack font-medium text-lg mb-3 mont-text">
         Email Address
       </label>
       <input
@@ -202,7 +202,7 @@ const handleSubmit = async (e: React.FormEvent) => {
     </motion.div>
 
     <motion.div variants={inputVariant}>
-      <label className="text-[#333333] font-medium text-lg mb-3 mont-text">
+      <label className="text-lightblack font-medium text-lg mb-3 mont-text">
         Phone Number
       </label>
       <input
@@ -219,7 +219,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   {/* Message */}
   <motion.div variants={inputVariant}>
-    <label className="text-[#333333] font-medium text-lg mb-3 mont-text">
+    <label className="text-lightblack font-medium text-lg mb-3 mont-text">
       Message
     </label>
     <textarea

@@ -26,7 +26,7 @@ export function CountryPhoneInput({ value, onChange }: PhoneFieldProps) {
         !pr-5
         !rounded-[10px]
         !border
-        !border-[#E9E9E9]
+        !border-border
         !text-sm
         focus:!outline-none
       "
@@ -34,7 +34,7 @@ export function CountryPhoneInput({ value, onChange }: PhoneFieldProps) {
       /* FLAG BUTTON */
       buttonClass="
         !border
-        !border-[#E9E9E9]
+        !border-border
         !rounded-l-[10px]
         !h-[56px]
         !w-[52px]

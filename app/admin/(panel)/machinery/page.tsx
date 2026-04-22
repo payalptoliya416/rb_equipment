@@ -306,13 +306,13 @@ export default function Machinery() {
   //   );
   // }
   return (
-    <div className="space-y-5 bg-white border border-[#E9E9E9] rounded-[14px] p-3 sm:p-5">
+    <div className="space-y-5 bg-white border border-border rounded-[14px] p-3 sm:p-5">
       {/* TOP BAR */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div className="relative w-[220px]">
           <FiSearch
             size={18}
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7A7A7A]"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-seclightgray"
           />
           <input
             type="text"
@@ -322,7 +322,7 @@ export default function Machinery() {
               setPage(1);
               setSearch(e.target.value);
             }}
-            className="w-full py-[12px] pl-[44px] pr-4 text-sm border rounded-lg border-[#E9E9E9]"
+            className="w-full py-[12px] pl-[44px] pr-4 text-sm border rounded-lg border-border"
           />
         </div>
 

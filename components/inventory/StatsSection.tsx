@@ -71,7 +71,7 @@ export default function StatsSection(): JSX.Element {
             <p className="text-4xl md:leading-[50px] md:text-[40px] font-bold text-gray mb-[15px] mont-text">
               {counts[index]}{stat.id === 1 ? "+" : ""}
             </p>
-            <p className="text-[#4D4D4D] text-sm md:text-lg">
+            <p className="text-para text-sm md:text-lg">
               {stat.label}
             </p>
           </div>

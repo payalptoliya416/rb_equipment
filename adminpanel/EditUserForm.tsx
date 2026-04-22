@@ -30,7 +30,7 @@ function PhoneField() {
 
   return (
     <div>
-      <label className="block mb-3 text-sm font-medium text-[#333333]">
+      <label className="block mb-3 text-sm font-medium text-lightblack">
         Phone Number
       </label>
 
@@ -38,7 +38,7 @@ function PhoneField() {
         className={`rounded-[10px] border ${
           errors.phone && touched.phone
             ? "border-red-500"
-            : "border-[#E9E9E9]"
+            : "border-border"
         }`}
       >
         <CountryPhoneInput
@@ -207,8 +207,8 @@ if (loading) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* First Name */}
               <div>
-                <label className="block mb-3 text-sm font-medium text-[#333333]">
-                  First Name <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-sm font-medium text-lightblack">
+                  First Name <span className="text-redmark">*</span>
                 </label>
                  <Field
               name="first_name"
@@ -219,7 +219,7 @@ if (loading) {
                 ${
                   errors.first_name && touched.first_name
                     ? "border-red-500"
-                    : "border-[#E9E9E9]"
+                    : "border-border"
                 }
               `}
             />
@@ -232,14 +232,14 @@ if (loading) {
 
               {/* Last Name */}
               <div>
-                <label className="block mb-3 text-sm font-medium text-[#333333]">
-                  Last Name <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-sm font-medium text-lightblack">
+                  Last Name <span className="text-redmark">*</span>
                 </label>
                 <Field
                 name="last_name"
                   placeholder="Enter last name"
                   className={`w-full px-5 py-4 rounded-[10px] border focus:outline-none
-                    ${errors.last_name && touched.last_name ? "border-red-500" : "border-[#E9E9E9]"}
+                    ${errors.last_name && touched.last_name ? "border-red-500" : "border-border"}
                   `}
                 />
                 {errors.last_name && touched.last_name && (
@@ -249,8 +249,8 @@ if (loading) {
 
               {/* Email */}
               <div>
-                <label className="block mb-3 text-sm font-medium text-[#333333]">
-                  Email Address <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-sm font-medium text-lightblack">
+                  Email Address <span className="text-redmark">*</span>
                 </label>
                <Field
                 name="email"
@@ -258,7 +258,7 @@ if (loading) {
                 placeholder="Enter email"
                 className={`
                   w-full px-5 py-4 rounded-[10px] border focus:outline-none
-                  ${errors.email && touched.email ? "border-red-500" : "border-[#E9E9E9]"}
+                  ${errors.email && touched.email ? "border-red-500" : "border-border"}
                 `}
               />
 
@@ -274,15 +274,15 @@ if (loading) {
 
               {/* Password */}
               <div>
-                <label className="block mb-3 text-sm font-medium text-[#333333]">
-                  Password <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-sm font-medium text-lightblack">
+                  Password <span className="text-redmark">*</span>
                 </label>
                               <Field
                   name="password"
                   type="password"
                   placeholder="Enter password"
                   className={`w-full px-5 py-4 rounded-[10px] border focus:outline-none
-                    ${errors.password && touched.password ? "border-red-500" : "border-[#E9E9E9]"}
+                    ${errors.password && touched.password ? "border-red-500" : "border-border"}
                   `}
                 />
                 {errors.password && touched.password && (
@@ -292,15 +292,15 @@ if (loading) {
 
               {/* Confirm Password */}
               <div>
-                <label className="block mb-3 text-sm font-medium text-[#333333]">
-                  Confirm Password <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-sm font-medium text-lightblack">
+                  Confirm Password <span className="text-redmark">*</span>
                 </label>
             <Field
   name="confirm_password"
   type="password"
   placeholder="Confirm password"
   className={`w-full px-5 py-4 rounded-[10px] border focus:outline-none
-    ${errors.confirm_password && touched.confirm_password ? "border-red-500" : "border-[#E9E9E9]"}
+    ${errors.confirm_password && touched.confirm_password ? "border-red-500" : "border-border"}
   `}
 />
 {errors.confirm_password && touched.confirm_password && (
@@ -314,14 +314,14 @@ if (loading) {
           <div className="rounded-2xl md:border border-[#ECECEC] bg-white p-5 space-y-5">
             {/* Address */}
             <div>
-              <label className="block mb-3 text-sm font-medium text-[#333333]">
-                Address <span className="text-[#ef4343]">*</span>
+              <label className="block mb-3 text-sm font-medium text-lightblack">
+                Address <span className="text-redmark">*</span>
               </label>
              <Field
           name="address"
           placeholder="Enter address"
           className={`w-full px-5 py-4 rounded-[10px] border focus:outline-none
-            ${errors.address && touched.address ? "border-red-500" : "border-[#E9E9E9]"}
+            ${errors.address && touched.address ? "border-red-500" : "border-border"}
           `}
         />
         {errors.address && touched.address && (
@@ -332,14 +332,14 @@ if (loading) {
             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
               {/* Company */}
               <div>
-                <label className="block mb-3 text-sm font-medium text-[#333333]">
-                  Company Name <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-sm font-medium text-lightblack">
+                  Company Name <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="company_name"
                   placeholder="Company name"
                   className={`w-full px-5 py-4 rounded-[10px] border focus:outline-none
-                    ${errors.company_name && touched.company_name ? "border-red-500" : "border-[#E9E9E9]"}
+                    ${errors.company_name && touched.company_name ? "border-red-500" : "border-border"}
                   `}
                 />
                 {errors.company_name && touched.company_name && (
@@ -350,14 +350,14 @@ if (loading) {
 
               {/* City */}
               <div>
-                <label className="block mb-3 text-sm font-medium text-[#333333]">
-                  City <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-sm font-medium text-lightblack">
+                  City <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="city"
                   placeholder="City"
                   className={`w-full px-5 py-4 rounded-[10px] border focus:outline-none
-                    ${errors.city && touched.city ? "border-red-500" : "border-[#E9E9E9]"}
+                    ${errors.city && touched.city ? "border-red-500" : "border-border"}
                   `}
                 />
                 {errors.city && touched.city && (
@@ -367,14 +367,14 @@ if (loading) {
 
               {/* State */}
               <div>
-                <label className="block mb-3 text-sm font-medium text-[#333333]">
-                  State <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-sm font-medium text-lightblack">
+                  State <span className="text-redmark">*</span>
                 </label>
                  <Field
               name="state"
               placeholder="State"
               className={`w-full px-5 py-4 rounded-[10px] border focus:outline-none
-                ${errors.state && touched.state ? "border-red-500" : "border-[#E9E9E9]"}
+                ${errors.state && touched.state ? "border-red-500" : "border-border"}
               `}
             />
             {errors.state && touched.state && (
@@ -384,14 +384,14 @@ if (loading) {
 
               {/* Zip */}
               <div>
-                <label className="block mb-3 text-sm font-medium text-[#333333]">
-                  Zip Code <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-sm font-medium text-lightblack">
+                  Zip Code <span className="text-redmark">*</span>
                 </label>
                 <Field
                 name="zip_code"
                 placeholder="Zip code"
                 className={`w-full px-5 py-4 rounded-[10px] border focus:outline-none
-                  ${errors.zip_code && touched.zip_code ? "border-red-500" : "border-[#E9E9E9]"}
+                  ${errors.zip_code && touched.zip_code ? "border-red-500" : "border-border"}
                 `}
               />
               {errors.zip_code && touched.zip_code && (

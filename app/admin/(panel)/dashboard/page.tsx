@@ -148,7 +148,7 @@ const orderBadge = (status: string) => {
    const licenseBadge = (status: string) => {
   switch (status) {
     case "Pending":
-      return "bg-[#EDB423] text-[#212121]";
+      return "bg-[#EDB423] text-gray";
     case "Declined":
       return "bg-[#DD3623] text-white";
     case "Approved":
@@ -172,13 +172,13 @@ const userBadge = (status: string) =>
     }
 
   return (
-      <div className="space-y-5 bg-white border border-[#E9E9E9] rounded-[14px] p-3 sm:p-5">
+      <div className="space-y-5 bg-white border border-border rounded-[14px] p-3 sm:p-5">
           {/* Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
             {stats.map((item, index) => (
               <div
                 key={index}
-                className="p-[15px] border border-[#E9E9E9] rounded-[10px]"
+                className="p-[15px] border border-border rounded-[10px]"
               >
                 <div
                   className="w-10 h-10 rounded-[14px] mb-[15px] flex justify-center items-center"
@@ -191,14 +191,14 @@ const userBadge = (status: string) =>
                   {item.value}
                 </h3>
     
-                <p className="text-[#909090] text-sm font-normal">
+                <p className="text-lightgray text-sm font-normal">
                   {item.label}
                 </p>
               </div>
             ))}
           </div>
           <div className="grid  grid-cols-1 2xl:grid-cols-2 gap-5">
-            <div className="p-[15px] border border-[#E9E9E9] rounded-[10px]">
+            <div className="p-[15px] border border-border rounded-[10px]">
               <div className="flex sm:items-center justify-between mb-5 flex-col sm:flex-row gap-2">
                 <h2 className="text-base font-semibold">Recent Bidding</h2>
                 {/* <Link href="/admin/bidding/" className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md
@@ -223,17 +223,17 @@ const userBadge = (status: string) =>
                  <div className="grid grid-cols-12"> 
                      <div className="col-span-12">
                       {!isMobile && (
-                         <div className="w-full overflow-x-auto border border-[#E9E9E9] rounded-[10px]">
+                         <div className="w-full overflow-x-auto border border-border rounded-[10px]">
                             <table className="border-collapse min-w-full">
                             <thead>
                                 <tr className="bg-[#F2F8F7] text-left">
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r border-border whitespace-nowrap">
                                     Machinery Name
                                 </th>
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r border-border whitespace-nowrap">
                                     Total Bid
                                 </th>
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray whitespace-nowrap">
                                     Bid End Date
                                 </th>
                                 </tr>
@@ -243,16 +243,16 @@ const userBadge = (status: string) =>
                                 {rows.map((row, index) => (
                                 <tr
                                     key={index}
-                                    className="border-t border-[#E9E9E9] even:bg-[#F9F9F9]"
+                                    className="border-t border-border even:bg-[#F9F9F9]"
                                 >
-                                    <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                    <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
                                     {row.name}
                                     </td>
-                                    <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                    <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
                                     {row.totalBid}
                                     </td>
-                                    <td className="px-[15px] py-[18px] text-sm text-[#373737] whitespace-nowrap">
-                                    <span className="bg-[#E9E9E9] px-3 py-1 rounded-[4px] text-[13px]">
+                                    <td className="px-[15px] py-[18px] text-sm text-secgray whitespace-nowrap">
+                                    <span className="bg-border px-3 py-1 rounded-[4px] text-[13px]">
                                         {row.date}
                                     </span>
                                     </td>
@@ -274,7 +274,7 @@ const userBadge = (status: string) =>
                  </div>
             </div>
     
-            <div className="p-[15px] border border-[#E9E9E9] rounded-[10px]">
+            <div className="p-[15px] border border-border rounded-[10px]">
               <div className="flex sm:items-center justify-between mb-5 flex-col sm:flex-row gap-2">
                 <h2 className="text-base font-semibold">Recent Won User</h2>
                 {/* <Link href="/admin/won-user/" className="relative overflow-hidden gradient-btn px-[14px] py-2 text-sm text-white rounded-md transition-all duration-200 ease-in-out hover:brightness-110 hover:shadow-md
@@ -299,17 +299,17 @@ const userBadge = (status: string) =>
             <div className="grid grid-cols-12"> 
                   <div className="col-span-12">
                     {!isMobile && (
-                     <div className="w-full overflow-x-auto border border-[#E9E9E9] rounded-[10px]">
+                     <div className="w-full overflow-x-auto border border-border rounded-[10px]">
                             <table className="w-full border-collapse">
                             <thead>
                                 <tr className="bg-[#F2F8F7] text-left">
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r border-border whitespace-nowrap">
                                     Machinery Name
                                 </th>
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r border-border whitespace-nowrap">
                                     Won User Name
                                 </th>
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray whitespace-nowrap">
                                     Won Bid Price
                                 </th>
                                 </tr>
@@ -319,15 +319,15 @@ const userBadge = (status: string) =>
                                 {rowsData.map((row, index) => (
                                 <tr
                                     key={index}
-                                    className="border-t border-[#E9E9E9] even:bg-[#F9F9F9]"
+                                    className="border-t border-border even:bg-[#F9F9F9]"
                                 >
-                                    <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                    <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
                                     {row.machinery}
                                     </td>
-                                    <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                    <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
                                     {row.user === "N/A" ? "" : row.user}
                                     </td>
-                                    <td className="px-[15px] py-[18px] text-sm text-[#373737] whitespace-nowrap">
+                                    <td className="px-[15px] py-[18px] text-sm text-secgray whitespace-nowrap">
                                     {row.price}
                                     </td>
                                 </tr>
@@ -348,7 +348,7 @@ const userBadge = (status: string) =>
             </div>
           </div>
      {/* ================= RECENT ORDERS ================= */}
-<div className="p-[15px] border border-[#E9E9E9] rounded-[10px] bg-white">
+<div className="p-[15px] border border-border rounded-[10px] bg-white">
   <div className="flex sm:items-center justify-between mb-5 flex-col sm:flex-row gap-2">
     <h2 className="text-base font-semibold text-[#1A1A1A]">
       Recent Orders
@@ -379,7 +379,7 @@ const userBadge = (status: string) =>
 
   {/* DESKTOP TABLE */}
   {!isMobile && (
-    <div className="w-full overflow-x-auto border border-[#E9E9E9] rounded-[10px]">
+    <div className="w-full overflow-x-auto border border-border rounded-[10px]">
       <table className="w-full border-collapse">
         <thead>
           <tr className="bg-[#F2F8F7] text-left">
@@ -394,7 +394,7 @@ const userBadge = (status: string) =>
             ].map((head) => (
               <th
                 key={head}
-                className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r last:border-r-0 border-[#E9E9E9] whitespace-nowrap"
+                className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r last:border-r-0 border-border whitespace-nowrap"
               >
                 {head}
               </th>
@@ -406,33 +406,33 @@ const userBadge = (status: string) =>
           {recentOrders.map((row, index) => (
             <tr
               key={index}
-              className="border-t border-[#E9E9E9] even:bg-[#F9F9F9]"
+              className="border-t border-border even:bg-[#F9F9F9]"
             >
-              <td className="px-[15px] py-[18px] text-sm border-r border-[#E9E9E9] whitespace-nowrap">
+              <td className="px-[15px] py-[18px] text-sm border-r border-border whitespace-nowrap">
                 {row.orderId}
               </td>
-                <td className="px-[15px] py-[18px] text-sm border-r border-[#E9E9E9] whitespace-nowrap">
+                <td className="px-[15px] py-[18px] text-sm border-r border-border whitespace-nowrap">
                   <span
                     className={`px-3 py-1 rounded text-xs font-medium`}
                   >
                     {row.type}
                   </span>
                 </td>
-              <td className="px-[15px] py-[18px] text-sm border-r border-[#E9E9E9] whitespace-nowrap">
+              <td className="px-[15px] py-[18px] text-sm border-r border-border whitespace-nowrap">
                 {row.userName}
               </td>
 
-              <td className="px-[15px] py-[18px] text-sm border-r border-[#E9E9E9] whitespace-nowrap">
+              <td className="px-[15px] py-[18px] text-sm border-r border-border whitespace-nowrap">
                 {row.phone}
               </td>
 
-              <td className="px-[15px] py-[18px] text-sm border-r border-[#E9E9E9] whitespace-nowrap">
-                <span className="bg-[#E9E9E9] px-3 py-1 rounded-[4px] text-[13px]">
+              <td className="px-[15px] py-[18px] text-sm border-r border-border whitespace-nowrap">
+                <span className="bg-border px-3 py-1 rounded-[4px] text-[13px]">
                   {row.date}
                 </span>
               </td>
 
-              <td className="px-[15px] py-[18px] text-sm border-r border-[#E9E9E9] whitespace-nowrap">
+              <td className="px-[15px] py-[18px] text-sm border-r border-border whitespace-nowrap">
                 {row.amount}
               </td>
 
@@ -466,7 +466,7 @@ const userBadge = (status: string) =>
   )}
 </div>
 
-          <div className="p-[15px] border border-[#E9E9E9] rounded-[10px] bg-white">
+          <div className="p-[15px] border border-border rounded-[10px] bg-white">
             <div className="flex sm:items-center justify-between mb-5 flex-col sm:flex-row gap-2">
                 <h2 className="text-base font-semibold text-[#1A1A1A]">
                 Recent User Management
@@ -493,7 +493,7 @@ const userBadge = (status: string) =>
              <div className="grid grid-cols-12"> 
                 <div className="col-span-12">
                   {!isMobile && (
-                      <div className="w-full overflow-x-auto border border-[#E9E9E9] rounded-[10px]">
+                      <div className="w-full overflow-x-auto border border-border rounded-[10px]">
                         <table className="w-full border-collapse">
                         <thead>
                             <tr className="bg-[#F2F8F7] text-left">
@@ -507,7 +507,7 @@ const userBadge = (status: string) =>
                             ].map((head) => (
                                 <th
                                 key={head}
-                                className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r last:border-r-0 border-[#E9E9E9] whitespace-nowrap"
+                                className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r last:border-r-0 border-border whitespace-nowrap"
                                 >
                                 {head}
                                 </th>
@@ -519,23 +519,23 @@ const userBadge = (status: string) =>
                             {recentManagement.map((row, index) => (
                             <tr
                                 key={index}
-                                className="border-t border-[#E9E9E9] even:bg-[#F9F9F9]"
+                                className="border-t border-border even:bg-[#F9F9F9]"
                             >
-                                <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
                                 {row.name}
                                 </td>
-                                <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
                                 {row.email}
                                 </td>
-                                <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
                                 {row.phone}
                                 </td>
-                                <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
-                                <span className="bg-[#E9E9E9] px-3 py-1 rounded-[4px] text-[13px]">
+                                <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
+                                <span className="bg-border px-3 py-1 rounded-[4px] text-[13px]">
                                     {row.date}
                                 </span>
                                 </td>
-                                <td className="px-[15px] py-[18px] text-sm border-r border-[#E9E9E9] whitespace-nowrap">
+                                <td className="px-[15px] py-[18px] text-sm border-r border-border whitespace-nowrap">
                                 <span
                                     className={`px-4 py-2 rounded-[6px] text-sm font-medium inline-block w-[100px] text-center ${licenseBadge(
                                     row.licenseStatus

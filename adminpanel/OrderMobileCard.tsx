@@ -60,7 +60,7 @@ export default function OrderMobileCard({
     order.paymentSlipStatus === "Pending" && !order.paymentSlipUrl;
     const isContractDisabled = !order.contractUrl || order.contractUrl.trim() === "";
   return (
-    <div className="border border-[#E9E9E9] rounded-xl p-4 bg-white space-y-4">
+    <div className="border border-border rounded-xl p-4 bg-white space-y-4">
       {/* Order ID */}
       <div className="flex justify-between items-start">
         <div>
@@ -73,7 +73,7 @@ export default function OrderMobileCard({
         <span className="font-medium">{order.machineryName}</span>
       </div>
 
-      <div className="border-t border-[#E9E9E9]" />
+      <div className="border-t border-border" />
 
       {/* Fields */}
       <Field label="User Name" value={order.userName} />
@@ -151,7 +151,7 @@ export default function OrderMobileCard({
         </button>
       </div>
       {/* Actions */}
-      {/* <div className="flex justify-end gap-4 pt-4 border-t border-[#E9E9E9]">
+      {/* <div className="flex justify-end gap-4 pt-4 border-t border-border">
         <button onClick={onEdit}><BiEdit /></button>
         <button onClick={onView}><BiEdit /></button>
         <button onClick={onDelete} className="text-red-500">

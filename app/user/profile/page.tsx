@@ -140,7 +140,7 @@ export default function UserProfileForm() {
 
     Pending: {
       label: "Pending",
-      bg: "bg-[#F6C343] text-[#212121]",
+      bg: "bg-[#F6C343] text-gray",
       icon: "/assets/p4.svg",
     },
 
@@ -313,10 +313,10 @@ const res = await uploadLicense(formData);
     <section className="py-10">
       <div className="container-custom mx-auto space-y-5">
         {/* ================= PAGE TITLE ================= */}
-        <h1 className="text-xl font-semibold text-[#373737]">Profile</h1>
+        <h1 className="text-xl font-semibold text-secgray">Profile</h1>
 
         {/* ================= PROFILE CARD ================= */}
-        <div className="border border-[#E9E9E9] rounded-xl overflow-hidden bg-white">
+        <div className="border border-border rounded-xl overflow-hidden bg-white">
           {/* TOP GRADIENT */}
           <div className="h-[120px] bg-gradient-to-r from-[#9FF5D2] via-[#CFF7E5] to-[#F4F9CC]" />
 
@@ -347,11 +347,11 @@ const res = await uploadLicense(formData);
               </div>
 
               <div>
-                <p className="font-medium text-[#373737]">
+                <p className="font-medium text-secgray">
                   {" "}
                   {profile.first_name} {profile.last_name}
                 </p>
-                <p className="text-sm text-[#7A7A7A]"> {profile.email}</p>
+                <p className="text-sm text-seclightgray"> {profile.email}</p>
               </div>
             </div>
 
@@ -423,14 +423,14 @@ const res = await uploadLicense(formData);
                             !pr-5
                             !rounded-[10px]
                             !border
-                            !border-[#E9E9E9]
+                            !border-border
                             !text-sm
                             focus:!outline-none
                           "
                         /* FLAG BUTTON */
                         buttonClass="
                             !border
-                            !border-[#E9E9E9]
+                            !border-border
                             !rounded-l-[10px]
                             !h-[51px]
                             !w-[52px]
@@ -494,14 +494,14 @@ const res = await uploadLicense(formData);
 
                   {/* ZIP */}
                   {/* ================= LICENSE VERIFY ================= */}
-                  <div className="border border-[#E9E9E9] rounded-xl p-5">
-                    <h3 className="text-sm font-medium text-[#373737] mb-4">
+                  <div className="border border-border rounded-xl p-5">
+                    <h3 className="text-sm font-medium text-secgray mb-4">
                       License Verify
                     </h3>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
                       {/* LEFT SIDE */}
-                      <div className="border border-[#E9E9E9] rounded-xl p-4">
+                      <div className="border border-border rounded-xl p-4">
                         {canUploadLicense ? (
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <UploadBox

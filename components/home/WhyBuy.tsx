@@ -33,15 +33,15 @@ function WhyBuy() {
           </div>
           <div className="lg:col-span-6">
             <div className="h-full bg-[#E9E9E940] rounded-2xl p-6 flex flex-col">
-              <div className="w-[70px] h-[70px] flex items-center justify-center border border-[#D3D3D3] rounded-xl mb-6 bg-white">
+              <div className="w-[70px] h-[70px] flex items-center justify-center border border-light-gray rounded-xl mb-6 bg-white">
                 <Image src="/assets/w2.svg" alt="" width={40} height={40} />
               </div>
 
-              <h3 className="text-lg font-bold mb-3 text-[#212121]">
+              <h3 className="text-lg font-bold mb-3 text-gray">
                 Secure & Transparent Payments
               </h3>
 
-              <p className="text-[#646464] text-base leading-[26px] mb-6 flex-grow">
+              <p className="text-text-gray text-base leading-[26px] mb-6 flex-grow">
                 Bid or Buy Now with complete confidence. All payments are securely
                 processed with full transparency, clear pricing, and absolutely no
                 hidden fees, ensuring a safe and reliable transaction every time.
@@ -49,7 +49,7 @@ function WhyBuy() {
 
               <Link
                 href="/about-us"
-                className="text-base font-bold text-[#212121] flex items-center gap-2 hover:text-primary group"
+                className="text-base font-bold text-gray flex items-center gap-2 hover:text-primary group"
               >
                 Learn More
                 <span className="text-lg transition-transform group-hover:translate-x-1">
@@ -60,22 +60,22 @@ function WhyBuy() {
           </div>
           <div className="lg:col-span-6">
             <div className="h-full bg-[#E9E9E940] rounded-2xl p-6 flex flex-col">
-              <div className="w-[70px] h-[70px] flex items-center justify-center border border-[#D3D3D3] rounded-xl mb-6 bg-white">
+              <div className="w-[70px] h-[70px] flex items-center justify-center border border-light-gray rounded-xl mb-6 bg-white">
                 <Image src="/assets/w1.svg" alt="" width={40} height={40} />
               </div>
 
-              <h3 className="text-lg font-bold mb-3 text-[#212121]">
+              <h3 className="text-lg font-bold mb-3 text-gray">
                 Fully Inspected Equipment
               </h3>
 
-              <p className="text-[#646464] text-base leading-[26px] mb-6 flex-grow">
+              <p className="text-text-gray text-base leading-[26px] mb-6 flex-grow">
                 We provide clear images, accurate details, and honest condition
                 information so you can buy with confidence.
               </p>
 
               <Link
                 href="/about-us"
-                className="text-base font-bold text-[#212121] flex items-center gap-2 hover:text-primary group"
+                className="text-base font-bold text-gray flex items-center gap-2 hover:text-primary group"
               >
                 Learn More
                 <span className="text-lg transition-transform group-hover:translate-x-1">
@@ -86,22 +86,22 @@ function WhyBuy() {
           </div>
           <div className="lg:col-span-6">
             <div className="h-full bg-[#E9E9E940] rounded-2xl p-6 flex flex-col">
-              <div className="w-[70px] h-[70px] flex items-center justify-center border border-[#D3D3D3] rounded-xl mb-6 bg-white">
+              <div className="w-[70px] h-[70px] flex items-center justify-center border border-light-gray rounded-xl mb-6 bg-white">
                 <Image src="/assets/w3.svg" alt="" width={40} height={40} />
               </div>
 
-              <h3 className="text-lg font-bold mb-3 text-[#212121]">
+              <h3 className="text-lg font-bold mb-3 text-gray">
                 Delivered to Your Location
               </h3>
 
-              <p className="text-[#646464] text-base leading-[26px] mb-6 flex-grow">
+              <p className="text-text-gray text-base leading-[26px] mb-6 flex-grow">
                 We handle logistics and transportation to ensure your equipment reaches
                 your jobsite safely.
               </p>
 
               <Link
                 href="/about-us"
-                className="text-base font-bold text-[#212121] flex items-center gap-2 hover:text-primary group"
+                className="text-base font-bold text-gray flex items-center gap-2 hover:text-primary group"
               >
                 Learn More
                 <span className="text-lg transition-transform group-hover:translate-x-1">

@@ -142,11 +142,11 @@ const [cropImage, setCropImage] = useState<string | null>(null);
       }}
     >
       {({ errors, touched, setFieldValue, values, isSubmitting }) => (
-        <Form className="space-y-5 bg-white border border-[#E9E9E9] rounded-[14px] p-3 sm:p-5">
+        <Form className="space-y-5 bg-white border border-border rounded-[14px] p-3 sm:p-5">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block mb-3 text-sm font-medium text-[#333333]">
-                Category Name <span className="text-[#ef4343]">*</span>
+              <label className="block mb-3 text-sm font-medium text-lightblack">
+                Category Name <span className="text-redmark">*</span>
               </label>
               <Field
                 name="categoryName"
@@ -156,7 +156,7 @@ const [cropImage, setCropImage] = useState<string | null>(null);
                       ${
                         errors.categoryName && touched.categoryName
                           ? "border-red-500"
-                          : "border-[#E9E9E9]"
+                          : "border-border"
                       }
                     `}
               />
@@ -178,12 +178,12 @@ const [cropImage, setCropImage] = useState<string | null>(null);
                   ${
                     errors.image_urls && touched.image_urls
                       ? "border-red-500"
-                      : "border-[#E9E9E9]"
+                      : "border-border"
                   }
                 `}
             >
               <div
-                className="relative border-2 border-dashed border-[#D3D3D3] rounded-[14px] p-8
+                className="relative border-2 border-dashed border-light-gray rounded-[14px] p-8
                 flex flex-col items-center justify-center  text-center cursor-pointer
                 bg-[#F9F9F9] hover:border-[#0E8A74] transition   min-h-[150px] py-[24px] "
                 onClick={() => !uploading && fileInputRef.current?.click()}
@@ -358,7 +358,7 @@ const [cropImage, setCropImage] = useState<string | null>(null);
             <button
               type="button"
               onClick={() => router.back()}
-              className="px-[18px] py-3 border rounded-[10px] text-[#7A7A7A] text-sm border-[#E9E9E9] cursor-pointer"
+              className="px-[18px] py-3 border rounded-[10px] text-seclightgray text-sm border-border cursor-pointer"
             >
               Cancel
             </button>

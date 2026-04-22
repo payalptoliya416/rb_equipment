@@ -193,8 +193,8 @@ const handleRegister = async (values: any, { resetForm }: any) => {
                   >
                     {/* First Name */}
                     <div>
-                      <label className="text-[#333333] font-medium text-lg mb-3  mont-text">
-                        First Name <sup className="text-[#ef4343]">*</sup>
+                      <label className="text-lightblack font-medium text-lg mb-3  mont-text">
+                        First Name <sup className="text-redmark">*</sup>
                       </label>
                       <Field
                         name="first_name"
@@ -210,8 +210,8 @@ const handleRegister = async (values: any, { resetForm }: any) => {
 
                     {/* Last Name */}
                     <div>
-                      <label className="text-[#333333] font-medium text-lg mb-3  mont-text">
-                        Last Name <sup className="text-[#ef4343]">*</sup>
+                      <label className="text-lightblack font-medium text-lg mb-3  mont-text">
+                        Last Name <sup className="text-redmark">*</sup>
                       </label>
                       <Field
                         name="last_name"
@@ -233,8 +233,8 @@ const handleRegister = async (values: any, { resetForm }: any) => {
                   >
                     {/* Email */}
                     <div>
-                      <label className="text-[#333333] font-medium text-lg mb-3  mont-text">
-                        Email Address <sup className="text-[#ef4343]">*</sup>
+                      <label className="text-lightblack font-medium text-lg mb-3  mont-text">
+                        Email Address <sup className="text-redmark">*</sup>
                       </label>
                       <Field
                         name="email"
@@ -251,8 +251,8 @@ const handleRegister = async (values: any, { resetForm }: any) => {
 
                     {/* Phone */}
                     <div>
-                      <label className="text-[#333333] font-medium text-lg mb-3  mont-text">
-                        Phone Number <sup className="text-[#ef4343]">*</sup>
+                      <label className="text-lightblack font-medium text-lg mb-3  mont-text">
+                        Phone Number <sup className="text-redmark">*</sup>
                       </label>
                       <Field
                         name="phone_no"
@@ -269,8 +269,8 @@ const handleRegister = async (values: any, { resetForm }: any) => {
 
                   {/* Address */}
                   <motion.div variants={itemVariant}>
-                    <label className="text-[#333333] font-medium text-lg mb-3  mont-text">
-                      Address <sup className="text-[#ef4343]">*</sup>
+                    <label className="text-lightblack font-medium text-lg mb-3  mont-text">
+                      Address <sup className="text-redmark">*</sup>
                     </label>
                     <Field
                       name="address"
@@ -290,7 +290,7 @@ const handleRegister = async (values: any, { resetForm }: any) => {
                     className="grid grid-cols-1 md:grid-cols-2 gap-6"
                   >
                     <div>
-                      <label className="text-[#333333] font-medium text-lg mb-3  mont-text">
+                      <label className="text-lightblack font-medium text-lg mb-3  mont-text">
                         Company Name
                       </label>
                       <Field
@@ -306,8 +306,8 @@ const handleRegister = async (values: any, { resetForm }: any) => {
                     </div>
 
                     <div>
-                      <label className="text-[#333333] font-medium text-lg mb-3  mont-text">
-                        City <sup className="text-[#ef4343]">*</sup>
+                      <label className="text-lightblack font-medium text-lg mb-3  mont-text">
+                        City <sup className="text-redmark">*</sup>
                       </label>
                       <Field
                         name="city"
@@ -329,8 +329,8 @@ const handleRegister = async (values: any, { resetForm }: any) => {
                   >
                     {/* State */}
                     <div>
-                      <label className="text-[#333333] font-medium text-lg mb-3 mont-text">
-                        State <sup className="text-[#ef4343]">*</sup>
+                      <label className="text-lightblack font-medium text-lg mb-3 mont-text">
+                        State <sup className="text-redmark">*</sup>
                       </label>
 
                       <Field
@@ -348,8 +348,8 @@ const handleRegister = async (values: any, { resetForm }: any) => {
 
                     {/* Zip */}
                     <div>
-                      <label className="text-[#333333] font-medium text-lg mb-3 mont-text">
-                        Zip Code <sup className="text-[#ef4343]">*</sup>
+                      <label className="text-lightblack font-medium text-lg mb-3 mont-text">
+                        Zip Code <sup className="text-redmark">*</sup>
                       </label>
                       <Field
                         name="zip_code"
@@ -372,8 +372,8 @@ const handleRegister = async (values: any, { resetForm }: any) => {
                   >
                     {/* Password */}
                     <div className="">
-                      <label className="text-[#333333] font-medium text-lg mb-2 mont-text">
-                        Password <sup className="text-[#ef4343]">*</sup>
+                      <label className="text-lightblack font-medium text-lg mb-2 mont-text">
+                        Password <sup className="text-redmark">*</sup>
                       </label>
                       <div className="relative mt-3">
                         <Field
@@ -407,8 +407,8 @@ const handleRegister = async (values: any, { resetForm }: any) => {
 
                     {/* Confirm Password */}
                     <div className="">
-                      <label className="text-[#333333] font-medium text-lg mb-2 mont-text">
-                        Confirm Password <sup className="text-[#ef4343]">*</sup>
+                      <label className="text-lightblack font-medium text-lg mb-2 mont-text">
+                        Confirm Password <sup className="text-redmark">*</sup>
                       </label>
                       <div className="relative mt-3">
                         <Field
@@ -444,7 +444,7 @@ const handleRegister = async (values: any, { resetForm }: any) => {
                   {/* Checkboxes */}
                   <motion.div variants={itemVariant} className="space-y-[22px]">
                     {/* TERMS CHECKBOX */}
-                    <label className="flex items-start gap-3 text-[#4D4D4D] cursor-pointer select-none mb-1">
+                    <label className="flex items-start gap-3 text-para cursor-pointer select-none mb-1">
                       {/* Custom Checkbox Wrapper */}
                       <div className="relative">
                         <Field
@@ -487,7 +487,7 @@ const handleRegister = async (values: any, { resetForm }: any) => {
                     />
 
                     {/* MARKETING CHECKBOX */}
-                    <label className="flex items-start gap-3 text-[#4D4D4D] cursor-pointer select-none mb-1">
+                    <label className="flex items-start gap-3 text-para cursor-pointer select-none mb-1">
                       {/* Custom Checkbox Wrapper */}
                       <div className="relative">
                         <Field
@@ -551,7 +551,7 @@ const handleRegister = async (values: any, { resetForm }: any) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.6 }}
-            className="text-center text-[#333333] mt-[30px]  mont-text font-semibold"
+            className="text-center text-lightblack mt-[30px]  mont-text font-semibold"
           >
             Already have an account?{" "}
             <Link href="/user/signin" className="text-green">

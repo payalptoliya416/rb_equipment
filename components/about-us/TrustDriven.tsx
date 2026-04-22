@@ -73,12 +73,12 @@ function TrustDriven() {
             Built on <span className="text-orange">trust, driven </span> by
             experience
           </h2>
-          <p className="text-[#646464] text-base leading-[26px] mb-[15px]">
+          <p className="text-text-gray text-base leading-[26px] mb-[15px]">
             We help buyers make confident equipment decisions through
             transparency, industry knowledge, and a customer-first approach
             ensuring every transaction is clear, secure.
           </p>
-          <p className="text-[#646464] text-base leading-[26px] mb-[15px]">
+          <p className="text-text-gray text-base leading-[26px] mb-[15px]">
             Our platform connects buyers with high-quality equipment through a
             secure and transparent process. With expert checks and clear
             communication, we ensure every purchase is smooth and dependable.

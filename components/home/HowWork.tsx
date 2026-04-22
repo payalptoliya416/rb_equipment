@@ -109,10 +109,10 @@ function HowWork() {
               )}
 
               <div>
-                <h3 className="text-lg md:text-xl font-semibold text-[#212121] mb-[10px]">
+                <h3 className="text-lg md:text-xl font-semibold text-gray mb-[10px]">
                   {step.title}
                 </h3>
-                <p className="text-[#646464] text-base leading-[26px]">
+                <p className="text-text-gray text-base leading-[26px]">
                   {step.desc}
                 </p>
               </div>
@@ -187,10 +187,10 @@ function HowWork() {
 
                     {/* CONTENT */}
                     <div className="lg:mt-4 px-2 lg:max-w-[240px]">
-                      <h3 className="text-lg md:text-xl font-semibold text-[#212121] mb-2">
+                      <h3 className="text-lg md:text-xl font-semibold text-gray mb-2">
                         {step.title}
                       </h3>
-                      <p className="text-[#646464] text-sm leading-6">
+                      <p className="text-text-gray text-sm leading-6">
                         {step.desc}
                       </p>
                     </div>
@@ -232,10 +232,10 @@ function HowWork() {
 
                   {/* Content */}
                   <div>
-                    <h3 className="text-lg md:text-xl font-semibold text-[#212121] mb-[10px]">
+                    <h3 className="text-lg md:text-xl font-semibold text-gray mb-[10px]">
                       {step.title}
                     </h3>
-                    <p className="text-[#646464] text-base leading-[26px]">
+                    <p className="text-text-gray text-base leading-[26px]">
                       {step.desc}
                     </p>
                   </div>

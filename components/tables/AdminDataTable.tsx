@@ -54,7 +54,7 @@ export default function AdminDataTable<
 }: Props<T>) {
   return (
     <div className={`w-full ${className}`}>
-      <div className="overflow-x-auto rounded-[10px] border border-[#E9E9E9]">
+      <div className="overflow-x-auto rounded-[10px] border border-border">
         <table className="w-full bg-white border-collapse">
           {/* HEADER */}
           <thead className="bg-[#F2F8F7]">
@@ -62,7 +62,7 @@ export default function AdminDataTable<
               {columns.map((col, index) => (
                 <th
                   key={String(col.key)}
-                  className="text-sm py-[18px] px-[15px] border border-[#E9E9E9] whitespace-nowrap font-normal"
+                  className="text-sm py-[18px] px-[15px] border border-border whitespace-nowrap font-normal"
                 >
                   <div
                     className={`flex items-center justify-between gap-2 ${
@@ -119,7 +119,7 @@ export default function AdminDataTable<
                   {columns.map((col) => (
                     <td
                       key={String(col.key)}
-                      className={`text-sm p-[16px] border border-[#E9E9E9] ${col.className ?? ""}`}
+                      className={`text-sm p-[16px] border border-border ${col.className ?? ""}`}
                     >
                       {col.render
                         ? col.render(row)
@@ -138,7 +138,7 @@ export default function AdminDataTable<
     {pagination && (
       <div
         className="
-          px-4 py-4 text-sm text-[#4D4D4D]
+          px-4 py-4 text-sm text-para
           flex flex-col gap-3
           sm:flex-row sm:items-center sm:justify-between
         "

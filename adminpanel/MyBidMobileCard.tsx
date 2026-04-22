@@ -5,7 +5,7 @@ import { MyBidRow } from "./MyBiddingListTable";
 export default function MyBidMobileCard({ bid }: { bid: MyBidRow }) {
   return (
     <div
-      className={`border border-[#E9E9E9] rounded-xl p-4 space-y-3 bg-white
+      className={`border border-border rounded-xl p-4 space-y-3 bg-white
         ${bid.isHighlighted ? "bg-[#FFF7E3]" : ""}
       `}
     >
@@ -15,7 +15,7 @@ export default function MyBidMobileCard({ bid }: { bid: MyBidRow }) {
           {bid.isHighlighted && (
             <span className="w-2 h-2 rounded-full bg-[#3C97FF]" />
           )}
-          <p className="font-semibold text-[#373737]">
+          <p className="font-semibold text-secgray">
             {bid.user_name}
           </p>
         </div>

@@ -192,15 +192,15 @@ function VerificationStatusContent() {
                     <button
                         onClick={() => fetchStatus(true)}
                         disabled={refreshing}
-                        className="flex items-center gap-2 px-4 py-2 bg-white border border-[#E9E9E9] rounded-lg text-sm font-medium hover:bg-gray-50 transition-all disabled:opacity-50"
+                        className="flex items-center gap-2 px-4 py-2 bg-white border border-border rounded-lg text-sm font-medium hover:bg-gray-50 transition-all disabled:opacity-50"
                     >
                         <MdRefresh size={18} className={refreshing ? "animate-spin" : ""} />
                         {refreshing ? "Refreshing..." : "Manual Refresh"}
                     </button>
                 </div>
 
-                <div className="bg-white rounded-2xl shadow-sm border border-[#E9E9E9] overflow-hidden" suppressHydrationWarning>
-                    <div className={`${status.bg} p-8 text-center border-b border-[#E9E9E9]`}>
+                <div className="bg-white rounded-2xl shadow-sm border border-border overflow-hidden" suppressHydrationWarning>
+                    <div className={`${status.bg} p-8 text-center border-b border-border`}>
                         <div className="flex justify-center mb-4">
                             {status.icon}
                         </div>

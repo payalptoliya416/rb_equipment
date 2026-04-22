@@ -256,7 +256,7 @@ export default function MyBuyOrders() {
   return (
     <section className="py-11 sm:py-[60px]">
       <div className="container-custom mx-auto">
-        <h1 className="text-[#373737] text-[26px] font-bold mb-6">
+        <h1 className="text-secgray text-[26px] font-bold mb-6">
           My Buy It Now Orders
         </h1>
         {!loading && orders.length === 0 && (
@@ -294,7 +294,7 @@ export default function MyBuyOrders() {
             return (
               <div
                 key={data.order_id}
-                className="border border-[#E9E9E9] rounded-[14px] overflow-hidden mb-6"
+                className="border border-border rounded-[14px] overflow-hidden mb-6"
               >
                 <div className="p-[15px]">
                   <div className="grid grid-cols-12 items-center gap-5">
@@ -309,10 +309,10 @@ export default function MyBuyOrders() {
                       </div>
 
                       <div>
-                        <h2 className="mb-4 text-xl text-[#373737]">
+                        <h2 className="mb-4 text-xl text-secgray">
                           {data.name}
                         </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-[#7A7A7A]">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-seclightgray">
                           <p>Hours: {data.working_hours}</p>
                           <p>Total Weight: {data.weight}</p>
                           <p>Year: {data.year}</p>
@@ -324,8 +324,8 @@ export default function MyBuyOrders() {
                       <h2 className="text-green text-[22px] mb-4 font-semibold">
                         {formatPrice(data.price)}
                       </h2>
-                      <p className="text-[#646464] mb-2">Serial Number</p>
-                      <span className="py-1 px-2 text-sm rounded bg-[#E9E9E9]">
+                      <p className="text-text-gray mb-2">Serial Number</p>
+                      <span className="py-1 px-2 text-sm rounded bg-border">
                         {data.serial_no}
                       </span>
                     </div>
@@ -336,7 +336,7 @@ export default function MyBuyOrders() {
                   <div className="flex justify-between mb-16 flex-wrap gap-5">
                     <div>
                       <h3 className="text-xl font-medium">Order ID</h3>
-                      <p className="text-[#7A7A7A]">#{data.order_id}</p>
+                      <p className="text-seclightgray">#{data.order_id}</p>
                     </div>
 
                     <div className="flex items-center gap-4">
@@ -347,7 +347,7 @@ export default function MyBuyOrders() {
                         {phoneNumber ? (
                           <a
                             href={`tel:${phoneNumber}`}
-                            className="text-[#7A7A7A] hover:text-green transition"
+                            className="text-seclightgray hover:text-green transition"
                           >
                             {phoneNumber}
                           </a>
@@ -355,7 +355,7 @@ export default function MyBuyOrders() {
                           <p className="text-gray-400">Not Available</p>
                         )}
                       </div>
-                      <div className="w-[38px] h-[38px] flex justify-center items-center rounded-full bg-[#E9E9E9]">
+                      <div className="w-[38px] h-[38px] flex justify-center items-center rounded-full bg-border">
                         <IoCallOutline />
                       </div>
                     </div>
@@ -416,7 +416,7 @@ export default function MyBuyOrders() {
                                   href={data.contract_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex flex-col items-center gap-1 text-xs text-[#373737]"
+                                  className="flex flex-col items-center gap-1 text-xs text-secgray"
                                 >
                                   <span>View Agreement</span>
                                   <FaFilePdf className="text-[#FFCA42] text-lg" />
@@ -437,7 +437,7 @@ export default function MyBuyOrders() {
                                   href={data.invoice_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex flex-col items-center gap-1 text-xs text-[#373737]"
+                                  className="flex flex-col items-center gap-1 text-xs text-secgray"
                                 >
                                   <span>View Invoice</span>
                                   <FaFilePdf className="text-green text-lg" />
@@ -466,13 +466,13 @@ export default function MyBuyOrders() {
                                   s.key === "Settle Payment"
                                     ? "bg-[#E6F4F1] group-hover:scale-110 group-hover:ring-1 group-hover:ring-green"
                                     : completed
-                                      ? "bg-[#CCE4E1]"
-                                      : "bg-[#E9E9E9]"
+                                      ? "bg-lightgreen"
+                                      : "bg-border"
                                 }`}
                             >
                               <div
                                 className={`w-[22px] h-[22px] rounded-full ${
-                                  completed ? "bg-[#0A7F71]" : "bg-[#D3D3D3]"
+                                  completed ? "bg-[#0A7F71]" : "bg-light-gray"
                                 }`}
                               />
                             </div>
@@ -492,7 +492,7 @@ export default function MyBuyOrders() {
                               className={`text-lg font-medium ${
                                 s.key === "Settle Payment"
                                   ? "text-green"
-                                  : "text-[#373737]"
+                                  : "text-secgray"
                               }`}
                             >
                               {s.title}
@@ -507,7 +507,7 @@ export default function MyBuyOrders() {
                                       : "Click to upload payment Receipt"}
                                   </p>
                                 ) : (
-                                  <p className="text-sm text-[#7A7A7A]">
+                                  <p className="text-sm text-seclightgray">
                                     {formatDateTime(confirmationDate!)}
                                   </p>
                                 )}
@@ -515,7 +515,7 @@ export default function MyBuyOrders() {
                             )}
 
                             {item?.date && (
-                              <p className="text-sm text-[#7A7A7A]">
+                              <p className="text-sm text-seclightgray">
                                 {formatDateTime(item.date)}
                               </p>
                             )}
@@ -535,7 +535,7 @@ export default function MyBuyOrders() {
                                       href={data.contract_url}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="flex items-center gap-3 text-xs text-[#373737] mt-1"
+                                      className="flex items-center gap-3 text-xs text-secgray mt-1"
                                     >
                                       <span>View Agreement</span>
                                       <FaFilePdf className="text-[#FFCA42] text-lg" />
@@ -556,7 +556,7 @@ export default function MyBuyOrders() {
                                       href={data.invoice_url}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      className="flex items-center gap-3 text-xs text-[#373737] mt-1"
+                                      className="flex items-center gap-3 text-xs text-secgray mt-1"
                                     >
                                       <span>View Invoice</span>
                                       <FaFilePdf className="text-green text-lg" />

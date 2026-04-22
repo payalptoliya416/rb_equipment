@@ -100,7 +100,7 @@ export default function ResetPassword(): JSX.Element {
               <Form className="space-y-5">
                 {/* New Password */}
                 <div>
-                  <label className="text-[#333333] font-medium mb-3 block text-lg mont-text">
+                  <label className="text-lightblack font-medium mb-3 block text-lg mont-text">
                     New Password
                   </label>
 
@@ -133,7 +133,7 @@ export default function ResetPassword(): JSX.Element {
 
                 {/* Confirm Password */}
                 <div>
-                  <label className="text-[#333333] font-medium mb-3 block text-lg mont-text">
+                  <label className="text-lightblack font-medium mb-3 block text-lg mont-text">
                     Confirm Password
                   </label>
 

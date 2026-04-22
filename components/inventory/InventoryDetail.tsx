@@ -237,7 +237,7 @@ if (loading || isRedirecting) {
         <div className="col-span-12 xl:col-span-7 order-2 xl:order-1">
        <div className="hidden xl:block">  {data && <ProductSlider data={data} />}</div> 
           <div className="w-full space-y-5 hidden xl:block">
-            <h2 className="text-[22px] font-semibold text-[#333333] mb-[22px] mont-text">
+            <h2 className="text-[22px] font-semibold text-lightblack mb-[22px] mont-text">
               Overview
             </h2>
 
@@ -396,7 +396,7 @@ if (loading || isRedirecting) {
             <div className="border-t border-light-gray"></div>
           </div>
           <div className="mt-[30px] hidden xl:block">
-            <h3 className="mb-[15px] text-[#333333] text-[22px] leading-[22px] mont-text font-semibold">
+            <h3 className="mb-[15px] text-lightblack text-[22px] leading-[22px] mont-text font-semibold">
               Description
             </h3>
             <div
@@ -437,7 +437,7 @@ if (loading || isRedirecting) {
                 <strong>Auction ID</strong> : {data?.auction_id}
               </div>
             </div>
-            <h2 className="text-[#373737] text-[26px] sm:text-[28px] sm:leading-[38px] mb-[30px] font-semibold mont-text">
+            <h2 className="text-secgray text-[26px] sm:text-[28px] sm:leading-[38px] mb-[30px] font-semibold mont-text">
               {data?.name}
             </h2>
              <div className="block xl:hidden">  {data && <ProductSlider data={data} />}</div> 
@@ -463,14 +463,14 @@ if (loading || isRedirecting) {
             </div>
 
             <div className="flex gap-[10px] items-center mb-[15px]">
-              <p className="text-[#373737] text-lg leading-[18px]">
+              <p className="text-secgray text-lg leading-[18px]">
                 Current bid:
               </p>
               <p className="text-green text-[26px] leading-[26px] font-semibold mont-text">
                 {formatPrice(data?.current_bid)}
               </p>
             </div>
-            <div className="flex items-center bg-[#F2F8F7] text-green border border-[#CCE4E1] px-4 py-3 rounded-xl gap-[10px] text-base mb-[30px]">
+            <div className="flex items-center bg-[#F2F8F7] text-green border border-lightgreen px-4 py-3 rounded-xl gap-[10px] text-base mb-[30px]">
               <Image src="/assets/fire.png" alt="icon" width={30} height={30} />
               {offerCount === 1
                 ? "1 offer was received"
@@ -491,7 +491,7 @@ if (loading || isRedirecting) {
             )}
             <div className="border-t border-light-gray my-[30px]"></div>
             <div className="w-full space-y-5 block xl:hidden">
-              <h2 className="text-[22px] font-semibold text-[#333333] mb-[22px] mont-text">
+              <h2 className="text-[22px] font-semibold text-lightblack mb-[22px] mont-text">
                 Overview
               </h2>
 
@@ -650,7 +650,7 @@ if (loading || isRedirecting) {
               <div className="border-t border-light-gray my-[30px]"></div>
             </div>
               <div className="mt-[30px] block xl:hidden">
-            <h3 className="mb-[15px] text-[#333333] text-[22px] leading-[22px] mont-text font-semibold">
+            <h3 className="mb-[15px] text-lightblack text-[22px] leading-[22px] mont-text font-semibold">
               Description
             </h3>
             <div
@@ -719,7 +719,7 @@ if (loading || isRedirecting) {
                     <Form className="space-y-5">
                       {/* ZIP CODE INPUT */}
                       <div className="mb-[25px]">
-                        <label className="text-[#333333] text-lg mb-2 block mont-text font-semibold">
+                        <label className="text-lightblack text-lg mb-2 block mont-text font-semibold">
                           Zip code
                         </label>
 
@@ -738,7 +738,7 @@ if (loading || isRedirecting) {
 
                       {/* COUNTRY DROPDOWN - HEADLESS UI LISTBOX */}
                       <div>
-                        <label className="text-[#333333] text-lg mb-2 block mont-text font-semibold">
+                        <label className="text-lightblack text-lg mb-2 block mont-text font-semibold">
                           Choose your country
                         </label>
                         <div ref={ref} className="relative mt-2">
@@ -912,7 +912,7 @@ if (loading || isRedirecting) {
                       width={22}
                       height={22}
                     />
-                    <p className="text-[#373737]">
+                    <p className="text-secgray">
                       Delivery anywhere within the USA & Canada
                     </p>
                   </div>
@@ -928,7 +928,7 @@ if (loading || isRedirecting) {
                       width={22}
                       height={22}
                     />
-                    <p className="text-[#373737]">30-day hassle-free returns</p>
+                    <p className="text-secgray">30-day hassle-free returns</p>
                   </div>
                   <div
                     className="flex items-center gap-3 p-4 rounded-xl 
@@ -941,7 +941,7 @@ if (loading || isRedirecting) {
                       width={22}
                       height={22}
                     />
-                    <p className="text-[#373737]">6 months warranty</p>
+                    <p className="text-secgray">6 months warranty</p>
                   </div>
                   <div
                     className="flex items-center gap-3 p-4 rounded-xl 
@@ -954,7 +954,7 @@ if (loading || isRedirecting) {
                       width={22}
                       height={22}
                     />
-                    <p className="text-[#373737]">Pre-delivery inspection</p>
+                    <p className="text-secgray">Pre-delivery inspection</p>
                   </div>
                 </div>
               </div>

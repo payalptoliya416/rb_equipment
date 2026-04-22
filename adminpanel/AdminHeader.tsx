@@ -156,12 +156,12 @@ export default function AdminHeader({
   };
   return (
     <>
-      <header className="bg-white flex items-center justify-between border rounded-[14px] border-[#D3D3D3] p-3 sm:p-5 mb-5">
+      <header className="bg-white flex items-center justify-between border rounded-[14px] border-light-gray p-3 sm:p-5 mb-5">
         {/* LEFT */}
         <div className="flex items-center gap-3 min-w-0 flex-1">
           <button
             onClick={onMenuClick}
-            className="lg:hidden border border-[#E9E9E9] rounded-md p-2"
+            className="lg:hidden border border-border rounded-md p-2"
           >
             <HiOutlineBars3 size={22} />
           </button>
@@ -220,8 +220,8 @@ export default function AdminHeader({
         {/* RIGHT */}
         <div className="flex items-center gap-1 sm:gap-[15px] shrink-0">
           {/* Notification */}
-          <button className="h-[42px] w-[42px] border border-[#E9E9E9] rounded-full flex items-center justify-center">
-            <HiOutlineBellAlert size={20} className="text-[#4D4D4D]" />
+          <button className="h-[42px] w-[42px] border border-border rounded-full flex items-center justify-center">
+            <HiOutlineBellAlert size={20} className="text-para" />
           </button>
 
           {/* Profile */}
@@ -230,7 +230,7 @@ export default function AdminHeader({
               onClick={() => setOpen((v) => !v)}
               className="bg-white rounded-full px-1 py-[4px]
     flex items-center gap-3 shadow-sm md:pe-3 cursor-pointer
-    border border-[#E9E9E9]"
+    border border-border"
             >
               <Image
                 src="/assets/user.png"
@@ -240,7 +240,7 @@ export default function AdminHeader({
                 className="rounded-full"
               />
 
-              <span className="text-[#4D4D4D] font-medium text-[16px] hidden md:block">
+              <span className="text-para font-medium text-[16px] hidden md:block">
                 {user?.name || "Admin"}
               </span>
 

@@ -1,27 +1,22 @@
 "use client";
 
+import { useSettings } from "@/contexts/SettingsContext";
 import Link from "next/link";
-import {
-  FaFacebookF,
-  FaInstagram,
-  FaLinkedinIn,
-  FaXTwitter,
-} from "react-icons/fa6";
-import { motion } from "framer-motion";
 
 function UserFooter() {
+    const { companyName } = useSettings();
   return (
     <div className="bg-gray ">
       <div className="py-12 container-custom mx-auto grid grid-cols-12 gap-4 lg:gap-5 sm:gap-1 items-center">
         <div className="text-center md:text-left col-span-12 xl:col-span-8">
           <p className="text-light-gray text-base font-normal text-center lg:text-left mb-3 lg:mb-0">
             <a
-              href="https://stiopa-equipment.com/"
+              href='https://stiopa-equipment.com/'
               className="text-orange font-semibold"
               target="_blank"
               rel="noopener noreferrer"
             >
-              Stiopa-Equipment.com
+               Stiopa-Equipment.com
             </a>{" "}
             is owned by STIOPA EQUIPMENT, LLC Reg nº : (201702410607) -
             Copyright {new Date().getFullYear()} © All Rights Reserved

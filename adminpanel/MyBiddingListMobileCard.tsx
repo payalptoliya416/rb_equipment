@@ -10,14 +10,14 @@ export default function MyBiddingListMobileCard({
 }) {
   return (
     <div
-      className={`border border-[#E9E9E9] rounded-xl p-4 space-y-3 bg-white
+      className={`border border-border rounded-xl p-4 space-y-3 bg-white
         ${bid.isWon ? "bg-[#E6F9EF]" : bid.isHighlighted ? "bg-[#FFF7E3]" : ""}
       `}
     >
       {/* USER */}
       <div className="flex justify-between items-start">
         <div>
-          <p className="font-semibold text-[#373737]">
+          <p className="font-semibold text-secgray">
             {bid.user_name}
           </p>
           <p className="text-xs text-gray-500">{bid.email}</p>

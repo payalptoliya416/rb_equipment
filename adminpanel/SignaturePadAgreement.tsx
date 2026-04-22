@@ -263,7 +263,7 @@ function SignaturePadAgreement() {
             onSignatureReady={setSignature}
             clearTrigger={isSubmitted}
           />
-          <div className="bg-white border border-[#E9E9E9] rounded-[10px] my-6 min-h-[700px] flex items-center justify-center">
+          <div className="bg-white border border-border rounded-[10px] my-6 min-h-[700px] flex items-center justify-center">
             {contractLoading ? (
               <div className="flex flex-col items-center gap-3">
                 <Loader />
@@ -271,7 +271,7 @@ function SignaturePadAgreement() {
             ) : (
               <iframe
                 srcDoc={makeContractResponsive(contractHtml)}
-                className="w-full h-[700px] border border-[#E9E9E9] rounded"
+                className="w-full h-[700px] border border-border rounded"
               />
             )}
           </div>

@@ -51,7 +51,7 @@ export default function MachineryStatusDropdown({
     },
     2: {
       label: "Sold",
-      btnClass: "bg-[#FFCA42] text-[#212121]",
+      btnClass: "bg-[#FFCA42] text-gray",
     },
   };
 

@@ -98,7 +98,7 @@ useEffect(() => {
             <Form className="space-y-5">
               {/* EMAIL */}
               <div>
-                <label className="block text-lg font-medium text-[#212121] mb-[10px]">
+                <label className="block text-lg font-medium text-gray mb-[10px]">
                   Email Address
                 </label>
 
@@ -127,7 +127,7 @@ useEffect(() => {
 
               {/* PASSWORD */}
               <div>
-                <label className="block text-lg font-medium text-[#212121] mb-[10px]">
+                <label className="block text-lg font-medium text-gray mb-[10px]">
                   Password
                 </label>
 

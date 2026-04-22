@@ -20,7 +20,7 @@ const statusClassMap: Record<string, string> = {
 
 export default function WonUserMobileCard({ item, onView, loading }: Props) {
   return (
-    <div className="bg-white border border-[#E9E9E9] rounded-xl p-4 space-y-4">
+    <div className="bg-white border border-border rounded-xl p-4 space-y-4">
       {/* USER + MACHINE */}
       <div>
         <p className="text-xs text-gray-500">Won User</p>
@@ -37,7 +37,7 @@ export default function WonUserMobileCard({ item, onView, loading }: Props) {
       </div>
 
       {/* STATUS + ACTION */}
-      <div className="flex items-center justify-between pt-3 border-t border-[#E9E9E9]">
+      <div className="flex items-center justify-between pt-3 border-t border-border">
         <span
           className={`px-4 py-1 rounded-md text-sm ${
             statusClassMap[item.status] || "bg-gray-400 text-white"

@@ -346,7 +346,7 @@ if (isEdit && loading) {
         <Form className="space-y-10">
 
           {/* ================= BASIC INFO ================= */}
-          <div className="bg-white border border-[#E9E9E9] rounded-[14px] p-3 sm:p-5 space-y-5">
+          <div className="bg-white border border-border rounded-[14px] p-3 sm:p-5 space-y-5">
           <Section title="Basic Information">
             <Grid cols={2}>
               <Input name="make" label="Make" placeholder="Enter make"  requiredMark/>
@@ -509,7 +509,7 @@ if (isEdit && loading) {
           </div>
 
           {/* ================= DETAILS ================= */}
-          <div className="bg-white border border-[#E9E9E9] rounded-[14px] p-3 sm:p-5">
+          <div className="bg-white border border-border rounded-[14px] p-3 sm:p-5">
          <Section title="Machine Details">
         <Grid cols={3}>
 
@@ -600,9 +600,9 @@ if (isEdit && loading) {
         </Grid>
         <Grid cols={3}>
         <div className="flex flex-col mt-6 lg:col-span-full">
-          <label className="block mb-3 text-sm font-medium text-[#333333]">
+          <label className="block mb-3 text-sm font-medium text-lightblack">
             Description  
-          <sup className="text-[#ef4343]">*</sup>
+          <sup className="text-redmark">*</sup>
           </label>
 
           {/* <Field
@@ -634,7 +634,7 @@ if (isEdit && loading) {
                       <button
                         type="button"
                         onClick={() => router.back()}
-                        className="px-[18px] py-3 border rounded-[10px] text-[#7A7A7A] text-sm border-[#E9E9E9] cursor-pointer bg-white"
+                        className="px-[18px] py-3 border rounded-[10px] text-seclightgray text-sm border-border cursor-pointer bg-white"
                       >
                         Cancel
                       </button>
@@ -721,10 +721,10 @@ const Input = ({ label, name, suffix,requiredMark , ...props }: InputProps) => {
 
   return (
     <div>
-      <label className="block mb-3 text-sm font-medium text-[#333333]">
+      <label className="block mb-3 text-sm font-medium text-lightblack">
         {label}
            {requiredMark && (
-          <sup className="text-[#ef4343]">*</sup>
+          <sup className="text-redmark">*</sup>
         )}
       </label>
 
@@ -775,10 +775,10 @@ const Select = ({ label, name, options, placeholder,requiredMark }: SelectProps)
 
   return (
     <div>
-      <label className="block mb-3 text-sm font-medium text-[#333333]">
+      <label className="block mb-3 text-sm font-medium text-lightblack">
         {label}
            {requiredMark && (
-          <sup className="text-[#ef4343]">*</sup>
+          <sup className="text-redmark">*</sup>
         )}
       </label>
 
@@ -829,11 +829,11 @@ const UploadBox = ({
 }: UploadBoxProps) => (
     <div
     className={`border p-[10px] rounded-[10px]
-      ${error ? "border-red-500" : "border-[#E9E9E9]"}
+      ${error ? "border-red-500" : "border-border"}
     `}
   >
     <div
-      className={`  relative  border-2 border-dashed border-[#D3D3D3] rounded-[14px]
+      className={`  relative  border-2 border-dashed border-light-gray rounded-[14px]
         p-8 flex flex-col items-center justify-center text-center
         bg-[#F9F9F9]  min-h-[150px] transition
         ${loading ? "cursor-not-allowed opacity-70" : "cursor-pointer hover:border-[#0E8A74]"}

@@ -114,7 +114,7 @@ function BiddingList() {
   }
 
   return (
-    <div className="w-full bg-white rounded-[12px] border border-[#E9E9E9] p-5">
+    <div className="w-full bg-white rounded-[12px] border border-border p-5">
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-start gap-[20px]">
         {/* LEFT SIDE */}
         <div className="flex-1">
@@ -122,7 +122,7 @@ function BiddingList() {
             Machinery Name:
           </p>
 
-          <h2 className="text-[16px] sm:text-[18px] font-semibold text-[#373737] mb-[14px]">
+          <h2 className="text-[16px] sm:text-[18px] font-semibold text-secgray mb-[14px]">
             {details?.name || ""}
           </h2>
 
@@ -132,7 +132,7 @@ function BiddingList() {
               <p className="text-[13px] sm:text-[14px] text-[#8C8C8C] mb-[6px]">
                 Bid End Time
               </p>
-              <span className="inline-block bg-[#F5F5F5] text-[#373737] text-[13px] sm:text-[14px] px-[12px] py-[6px] rounded-[6px]">
+              <span className="inline-block bg-[#F5F5F5] text-secgray text-[13px] sm:text-[14px] px-[12px] py-[6px] rounded-[6px]">
                 {details?.bid_end_time
                   ? formatBidDateTime(details.bid_end_time)
                   : "-"}
@@ -148,7 +148,7 @@ function BiddingList() {
             <p className="text-[13px] sm:text-[14px] text-[#8C8C8C] mb-[6px]">
               Bid Start Price:
             </p>
-            <p className="text-[16px] sm:text-[18px] font-semibold text-[#373737]">
+            <p className="text-[16px] sm:text-[18px] font-semibold text-secgray">
               ${Number(details?.bid_start_price || 0).toLocaleString()}
             </p>
           </div>
@@ -158,7 +158,7 @@ function BiddingList() {
             <p className="text-[13px] sm:text-[14px] text-[#8C8C8C] mb-[6px]">
               Highest bid
             </p>
-            <p className="text-[16px] sm:text-[18px] font-semibold text-[#373737] mb-[10px]">
+            <p className="text-[16px] sm:text-[18px] font-semibold text-secgray mb-[10px]">
               ${Number(details?.highest_bid || 0).toLocaleString()}
             </p>
 
@@ -189,7 +189,7 @@ function BiddingList() {
             rows.map((row) => (
               <div
                 key={row.id}
-                className={`border border-[#E9E9E9] rounded-xl p-4 bg-white space-y-2
+                className={`border border-border rounded-xl p-4 bg-white space-y-2
             ${
               row.isWon
                 ? "bg-[#E6F9EF]"
@@ -201,7 +201,7 @@ function BiddingList() {
               >
                 <div className="flex justify-between items-start">
                   <div>
-                    <p className="font-semibold text-[#373737]">
+                    <p className="font-semibold text-secgray">
                       {row.user_name}
                     </p>
                     <p className="text-xs text-gray-500">{row.email}</p>

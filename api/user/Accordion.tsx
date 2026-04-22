@@ -14,7 +14,7 @@ export default function Accordion({
   onToggle,
 }: AccordionProps) {
   return (
-    <div className="border border-[#E9E9E9] rounded-[14px] overflow-hidden mb-6">
+    <div className="border border-border rounded-[14px] overflow-hidden mb-6">
       <div
         onClick={onToggle}
         className="cursor-pointer relative"

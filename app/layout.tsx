@@ -31,10 +31,15 @@ const sfPro = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Stiopa Equipment Sales & Auctions",
+  title: 'Stiopa Equipment Sales & Auctions',
   description: "",
   icons: {
     icon: "/favicon.png",
+  },
+
+   robots: {
+    index: false,
+    follow: false,
   },
 };
 
@@ -79,7 +84,6 @@ export default function RootLayout({
         {/* End Google Tag Manager (noscript) */}
 
         <SettingsProvider>
-          <MetadataUpdater />
           {children}
           <ToastProvider />
         </SettingsProvider>

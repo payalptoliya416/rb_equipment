@@ -26,7 +26,7 @@ export default function UserMobileCard({
   loadingAction,
 }: Props) {
   return (
-    <div className="bg-white border border-[#E9E9E9] rounded-xl p-4 space-y-4">
+    <div className="bg-white border border-border rounded-xl p-4 space-y-4">
       {/* Name + Status */}
       <div className="flex justify-between items-start gap-1">
           <div className="min-w-0">
@@ -48,7 +48,7 @@ export default function UserMobileCard({
       </div>
 
       {/* Actions */}
-       <div className="flex justify-end gap-4 pt-4 border-t border-[#E9E9E9]">
+       <div className="flex justify-end gap-4 pt-4 border-t border-border">
 
   {/* VIEW */}
   <button

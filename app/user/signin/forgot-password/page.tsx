@@ -132,7 +132,7 @@ const handleForgot = async (
 
                 {/* Email */}
                 <motion.div variants={itemVariant}>
-                  <label className="text-[#333333] font-medium mb-3  mont-text">
+                  <label className="text-lightblack font-medium mb-3  mont-text">
                     Email Address
                   </label>
                   <Field
@@ -177,7 +177,7 @@ const handleForgot = async (
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.5 }}
-          className="text-center text-[#333333] mt-[25px] text-lg  mont-text font-semibold"
+          className="text-center text-lightblack mt-[25px] text-lg  mont-text font-semibold"
         >
           <Link href="/user/signin" className="text-green">
              <span className="mr-1">←</span> Back to Signin

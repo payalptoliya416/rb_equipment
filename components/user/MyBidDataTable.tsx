@@ -56,7 +56,7 @@ export default function MyBidDataTable({
   };
 
   return (
-    <div className="w-full overflow-x-auto border border-[#E9E9E9] rounded-[10px] bg-white">
+    <div className="w-full overflow-x-auto border border-border rounded-[10px] bg-white">
       <table className="w-full border-collapse">
         {/* ================= HEADER ================= */}
         <thead className="bg-[#F2F8F7]">
@@ -69,8 +69,8 @@ export default function MyBidDataTable({
               <th
                 key={col.key}
                 onClick={() => toggleSort(col.key as SortKey)}
-                className={`px-[15px] py-[18px] text-sm font-medium text-[#373737]
-                border border-[#E9E9E9] whitespace-nowrap cursor-pointer
+                className={`px-[15px] py-[18px] text-sm font-medium text-secgray
+                border border-border whitespace-nowrap cursor-pointer
                 ${idx === 0 ? "rounded-tl-[10px]" : ""}
                 ${idx === 3 ? "rounded-tr-[10px]" : ""}`}
               >
@@ -109,25 +109,25 @@ export default function MyBidDataTable({
             return (
               <tr key={row.id} className={`${bg} hover:bg-gray-50`}>
                 {/* USER NAME */}
-                <td className="px-[15px] py-[16px] border border-[#E9E9E9]">
+                <td className="px-[15px] py-[16px] border border-border">
                   <div className="flex items-center gap-2">
                     {row.isHighlighted && (
                     <span className="w-2 h-2 rounded-full bg-[#3C97FF]" />
                   )}
 
-                    <span className="font-medium text-[#373737] whitespace-nowrap">
+                    <span className="font-medium text-secgray whitespace-nowrap">
                       {row.user_name}
                     </span>
                   </div>
                 </td>
 
                 {/* LAST BID */}
-                <td className="px-[15px] py-[16px] border border-[#E9E9E9] font-semibold text-[#373737]">
+                <td className="px-[15px] py-[16px] border border-border font-semibold text-secgray">
                   ${row.last_bid.toLocaleString()}
                 </td>
 
                 {/* DATE */}
-                <td className="px-[15px] py-[16px] border border-[#E9E9E9]">
+                <td className="px-[15px] py-[16px] border border-border">
                   <span className="inline-block px-3 py-1 rounded-md bg-[#F2F2F2] text-xs whitespace-nowrap">
                     {row.bidding_date}
                   </span>

@@ -396,7 +396,7 @@ function SignaturePadDetail() {
         <h1 className="text-gray text-[26px] font-bold mb-[10px]">
           Signature Pad
         </h1>
-        <p className="text-sm text-[#7A7A7A] mb-[15px]">
+        <p className="text-sm text-seclightgray mb-[15px]">
           <span
             onClick={() => router.push("/user/won-bids")}
             className="cursor-pointer"
@@ -405,7 +405,7 @@ function SignaturePadDetail() {
           </span>
           &nbsp;&gt;&nbsp; Signature Pad
         </p>
-        <div className="bg-white border border-[#E9E9E9] rounded-[10px] p-[25px] mb-5">
+        <div className="bg-white border border-border rounded-[10px] p-[25px] mb-5">
           {/* CARD HEADER */}
           <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
             <h2 className="text-[#000000] text-2xl font-semibold">
@@ -422,13 +422,13 @@ function SignaturePadDetail() {
             {/* END BID DATE */}
             <div>
               <p className="text-sm text-[#8A8A8A] mb-1">Category:</p>
-              <p className="text-[#373737] font-medium">{data.category}</p>
+              <p className="text-secgray font-medium">{data.category}</p>
             </div>
 
             {/* START BID PRICE */}
             <div>
               <p className="text-sm text-[#8A8A8A] mb-1">Start Bid Price:</p>
-              <p className="text-[#373737] font-medium">
+              <p className="text-secgray font-medium">
                 {formatCurrency(data.start_bid_price)}
               </p>
             </div>
@@ -436,7 +436,7 @@ function SignaturePadDetail() {
             {/* MY BID */}
             <div>
               <p className="text-sm text-[#8A8A8A] mb-1">My Bid:</p>
-              <p className="text-[#373737] font-medium">
+              <p className="text-secgray font-medium">
                 {formatCurrency(data.won_bid_amount ?? 0)}
               </p>
             </div>
@@ -689,7 +689,7 @@ function SignaturePadDetail() {
                     ${
                       shouldDisableButton
                         ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                        : "bg-green text-white hover:bg-[#333333] cursor-pointer"
+                        : "bg-green text-white hover:bg-lightblack cursor-pointer"
                     }
                   `}
               >

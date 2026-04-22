@@ -68,15 +68,15 @@ export default function BankDetailsEditor({
       : "";
 
   return (
-    <div className="border border-[#E9E9E9] rounded-[14px] bg-white p-3 sm:p-5">
-      <label className="block mb-3 text-base font-normal text-[#333333]">
+    <div className="border border-border rounded-[14px] bg-white p-3 sm:p-5">
+      <label className="block mb-3 text-base font-normal text-lightblack">
         {label}{" "}
-        {required && <span className="text-[#ef4343]">*</span>}
+        {required && <span className="text-redmark">*</span>}
       </label>
 
       <div
         className={`rounded-xl overflow-hidden border transition ${
-          errorMsg ? "border-red-500" : "border-[#E9E9E9]"
+          errorMsg ? "border-red-500" : "border-border"
         }`}
       >
         <div ref={quillRef} className="bg-white min-h-[150px]" />

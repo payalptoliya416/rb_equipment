@@ -204,9 +204,9 @@ export default function CompanySettingUI() {
       }) => (
         <Form className="space-y-5 ">
           {/* ================= TOP CARD ================= */}
-          <div className="border border-[#E9E9E9] rounded-[14px] bg-white p-3 sm:p-5">
+          <div className="border border-border rounded-[14px] bg-white p-3 sm:p-5">
             <div className=" grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div className="h-[175px] border border-[#E9E9E9] rounded-xl p-5">
+              <div className="h-[175px] border border-border rounded-xl p-5">
                 <div
                   className="relative rounded-xl border border-[#4A8D86] h-full flex items-center justify-center"
                   style={{
@@ -236,7 +236,7 @@ export default function CompanySettingUI() {
               </div>
 
               {/* LOGO */}
-              <div className="h-[175px] border border-[#E9E9E9] rounded-xl p-5">
+              <div className="h-[175px] border border-border rounded-xl p-5">
                 <div
                   className="relative rounded-xl border border-[#4A8D86] h-full flex items-center justify-center"
                   style={{
@@ -267,13 +267,13 @@ export default function CompanySettingUI() {
 
               {/* COMPANY NAME */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Footer Company Name <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Footer Company Name <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="companyName"
                   placeholder="Enter footer company name"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9] focus:outline-none"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border focus:outline-none"
                 />
                 {errors.companyName && touched.companyName && (
                   <p className="text-xs text-red-500 mt-1">
@@ -284,13 +284,13 @@ export default function CompanySettingUI() {
 
               {/* EMAIL */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Email Address <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Email Address <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="email"
                   placeholder="Enter your email address"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9] focus:outline-none"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border focus:outline-none"
                 />
                 {errors.email && touched.email && (
                   <p className="text-xs text-red-500 mt-1">{errors.email}</p>
@@ -298,28 +298,28 @@ export default function CompanySettingUI() {
               </div>
               {/* PHONE */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Phone Number <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Phone Number <span className="text-redmark">*</span>
                 </label>
 
                 <Field
                   name="phone"
                   placeholder="Enter phone number"
                   maxLength={10}
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border"
                 />
                 {errors.phone && touched.phone && (
                   <p className="error">{errors.phone}</p>
                 )}
               </div>
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Address <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Address <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="address"
                   placeholder="Enter address"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9] focus:outline-none"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border focus:outline-none"
                 />
                 {errors.address && touched.address && (
                   <p className="text-xs text-red-500 mt-1">{errors.address}</p>
@@ -329,15 +329,15 @@ export default function CompanySettingUI() {
           </div>
 
           {/* ================= DELIVERY ================= */}
-          <div className="border border-[#E9E9E9] rounded-[14px] bg-white p-3 sm:p-5">
-            <label className="block mb-3 text-base font-normal text-[#333333]">
-              Per Miles Delivery Cost <span className="text-[#ef4343]">*</span>
+          <div className="border border-border rounded-[14px] bg-white p-3 sm:p-5">
+            <label className="block mb-3 text-base font-normal text-lightblack">
+              Per Miles Delivery Cost <span className="text-redmark">*</span>
             </label>
             <div className="relative">
               <Field
                 name="perMile"
                 placeholder="Enter delivery cost"
-                className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9] focus:outline-none"
+                className="w-full px-5 py-4 rounded-[10px] border border-border focus:outline-none"
               />
               <span className="absolute right-4 top-5 text-sm text-gray-400">
                 / Per miles
@@ -349,17 +349,17 @@ export default function CompanySettingUI() {
           </div>
 
           {/* ============= */}
-          <div className="border border-[#E9E9E9] rounded-[14px] bg-white p-3 sm:p-5">
+          <div className="border border-border rounded-[14px] bg-white p-3 sm:p-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* Bank Name */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Bank Name <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Bank Name <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="bank_name"
                   placeholder="Enter bank name"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border"
                 />
                 {errors.bank_name && touched.bank_name && (
                   <p className="text-xs text-red-500 mt-1">
@@ -370,13 +370,13 @@ export default function CompanySettingUI() {
 
               {/* Beneficiary Name */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Beneficiary Name <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Beneficiary Name <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="beneficiary_name"
                   placeholder="Enter beneficiary name"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border"
                 />
                 {errors.beneficiary_name && touched.beneficiary_name && (
                   <p className="text-xs text-red-500 mt-1">
@@ -387,13 +387,13 @@ export default function CompanySettingUI() {
 
               {/* Beneficiary Address */}
               <div className="md:col-span-2">
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Beneficiary Address <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Beneficiary Address <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="beneficiary_address"
                   placeholder="Enter beneficiary address"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border"
                 />
                 {errors.beneficiary_address && touched.beneficiary_address && (
                   <p className="text-xs text-red-500 mt-1">
@@ -404,13 +404,13 @@ export default function CompanySettingUI() {
 
               {/* Account Number */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Account Number <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Account Number <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="account_number"
                   placeholder="Enter account number"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border"
                 />
                 {errors.account_number && touched.account_number && (
                   <p className="text-xs text-red-500 mt-1">
@@ -421,13 +421,13 @@ export default function CompanySettingUI() {
 
               {/* Routing Number */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Routing Number <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Routing Number <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="routing_number"
                   placeholder="Enter routing number"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border"
                 />
                 {errors.routing_number && touched.routing_number && (
                   <p className="text-xs text-red-500 mt-1">
@@ -438,13 +438,13 @@ export default function CompanySettingUI() {
 
               {/* Branch Address */}
               <div className="md:col-span-2">
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Branch Address <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Branch Address <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="branch_address"
                   placeholder="Enter branch address"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border"
                 />
                 {errors.branch_address && touched.branch_address && (
                   <p className="text-xs text-red-500 mt-1">
@@ -456,17 +456,17 @@ export default function CompanySettingUI() {
           </div>
 
           {/* ================= SOCIAL ================= */}
-          <div className="border border-[#E9E9E9] rounded-[14px] bg-white p-3 sm:p-5 space-y-5">
+          <div className="border border-border rounded-[14px] bg-white p-3 sm:p-5 space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
               {/* FACEBOOK */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Facebook <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Facebook <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="facebook"
                   placeholder="https://www.facebook.com/"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]  focus:outline-none"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border  focus:outline-none"
                 />
                 {errors.facebook && touched.facebook && (
                   <p className="text-xs text-red-500 mt-1">{errors.facebook}</p>
@@ -475,13 +475,13 @@ export default function CompanySettingUI() {
 
               {/* TWITTER */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Twitter <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Twitter <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="twitter"
                   placeholder="https://www.twitter.com/"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]  focus:outline-none"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border  focus:outline-none"
                 />
                 {errors.twitter && touched.twitter && (
                   <p className="text-xs text-red-500 mt-1">{errors.twitter}</p>
@@ -490,13 +490,13 @@ export default function CompanySettingUI() {
 
               {/* INSTAGRAM */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Instagram <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Instagram <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="instagram"
                   placeholder="https://www.instagram.com/"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]  focus:outline-none"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border  focus:outline-none"
                 />
                 {errors.instagram && touched.instagram && (
                   <p className="text-xs text-red-500 mt-1">
@@ -507,13 +507,13 @@ export default function CompanySettingUI() {
 
               {/* LINKEDIN */}
               <div>
-                <label className="block mb-3 text-base font-normal text-[#333333]">
-                  Linkedin <span className="text-[#ef4343]">*</span>
+                <label className="block mb-3 text-base font-normal text-lightblack">
+                  Linkedin <span className="text-redmark">*</span>
                 </label>
                 <Field
                   name="linkedin"
                   placeholder="https://www.linkedin.com/"
-                  className="w-full px-5 py-4 rounded-[10px] border border-[#E9E9E9]  focus:outline-none"
+                  className="w-full px-5 py-4 rounded-[10px] border border-border  focus:outline-none"
                 />
                 {errors.linkedin && touched.linkedin && (
                   <p className="text-xs text-red-500 mt-1">{errors.linkedin}</p>
@@ -541,7 +541,7 @@ export default function CompanySettingUI() {
                     setCancelLoading(false);
                   }
                 }}
-                className="px-6 py-2 border border-[#E9E9E9] rounded-md text-sm text-gray-500 flex items-center gap-2 disabled:opacity-60 cursor-pointer"
+                className="px-6 py-2 border border-border rounded-md text-sm text-gray-500 flex items-center gap-2 disabled:opacity-60 cursor-pointer"
               >
                 {/* 🔥 CANCEL LOADER */}
                 {cancelLoading && (

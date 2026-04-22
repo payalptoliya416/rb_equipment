@@ -1,6 +1,6 @@
 export function RecentUserCard({ row, licenseBadge, userBadge }: any) {
   return (
-    <div className="border rounded-xl p-4 bg-white space-y-4 border-[#E9E9E9]">
+    <div className="border rounded-xl p-4 bg-white space-y-4 border-border">
       <p className="font-semibold">{row.name}</p>
 
       <Info label="Email" value={row.email} />

@@ -13,8 +13,8 @@ import { FaFilePdf } from "react-icons/fa6";
 
 function RecentBidCard({ row }: any) {
   return (
-    <div className="border border-[#E9E9E9] rounded-xl p-4 space-y-2 bg-white">
-      <p className="font-semibold text-[#373737]">
+    <div className="border border-border rounded-xl p-4 space-y-2 bg-white">
+      <p className="font-semibold text-secgray">
         {row.machinery_name}
       </p>
 
@@ -25,7 +25,7 @@ function RecentBidCard({ row }: any) {
 
       <div className="flex justify-between text-sm gap-1">
         <span className="text-gray-500">Bid End</span>
-        <span className="bg-[#E9E9E9] px-2 py-1 rounded text-xs">
+        <span className="bg-border px-2 py-1 rounded text-xs">
           {row.bid_end_time}
         </span>
       </div>
@@ -43,8 +43,8 @@ function RecentOrderCard({ row }: any) {
   };
 
   return (
-    <div className="border border-[#E9E9E9] rounded-xl p-4 space-y-2 bg-white">
-      <p className="font-semibold text-[#373737]">
+    <div className="border border-border rounded-xl p-4 space-y-2 bg-white">
+      <p className="font-semibold text-secgray">
         {row.machinery_name}
       </p>
 
@@ -182,7 +182,7 @@ if (loading) {
 )}
     <section className="py-[25px]">
       <div className="container-custom mx-auto">
-        <h1 className="text-[#373737] text-[22px] sm:text-[26px] font-bold mb-[15px]">
+        <h1 className="text-secgray text-[22px] sm:text-[26px] font-bold mb-[15px]">
           Dashboard
         </h1>
 
@@ -194,7 +194,7 @@ if (loading) {
             setRedirectLoading(true);
             router.push(item.link);
           }}
-              className="border rounded-[10px] border-[#E9E9E9] p-[20px] sm:p-[25px] flex flex-col gap-[15px] justify-center items-center lg:items-start lg:justify-start cursor-pointer"
+              className="border rounded-[10px] border-border p-[20px] sm:p-[25px] flex flex-col gap-[15px] justify-center items-center lg:items-start lg:justify-start cursor-pointer"
             >
               <div
                 className="w-[60px] h-[60px] rounded-[18px] p-[15px] flex justify-center items-center"
@@ -212,7 +212,7 @@ if (loading) {
                 {item.count}
               </h3>
 
-              <p className="text-[#909090] text-[18px] sm:text-[22px] leading-[22px]">
+              <p className="text-lightgray text-[18px] sm:text-[22px] leading-[22px]">
                 {item.label}
               </p>
             </div>
@@ -243,25 +243,25 @@ if (loading) {
                         )}
                       </div>
                     ) : (
-                         <div className="w-full overflow-x-auto border border-[#E9E9E9] rounded-[10px]">
+                         <div className="w-full overflow-x-auto border border-border rounded-[10px]">
                             <table className="border-collapse min-w-full">
                             <thead>
                                 <tr className="bg-[#F2F8F7] text-left">
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r border-border whitespace-nowrap">
                                     Machinery
                                 </th>
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r border-border whitespace-nowrap">
                                     Last Bid
                                 </th>
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray whitespace-nowrap">
                                     Bid End Date
                                 </th>
                                 </tr>
                             </thead>
                                   <tbody>
                                 {recentBids.length === 0 ? (
-                                  <tr className="border-t border-[#E9E9E9] even:bg-[#F9F9F9]">
-                                    <td colSpan={3} className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap text-center">
+                                  <tr className="border-t border-border even:bg-[#F9F9F9]">
+                                    <td colSpan={3} className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap text-center">
                                       No recent bids found
                                     </td>
                                   </tr>
@@ -269,16 +269,16 @@ if (loading) {
                                   recentBids.map((row: any, index: number) => (
                                     <tr
                                       key={index}
-                                     className="px-[15px] py-[18px] text-sm text-[#373737] whitespace-nowrap"
+                                     className="px-[15px] py-[18px] text-sm text-secgray whitespace-nowrap"
                                     >
-                                      <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                      <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
                                         {row.machinery_name}
                                       </td>
-                                      <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                      <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
                                           {row.bid_amount}
                                       </td>
-                                      <td className="px-[15px] py-[18px] text-sm text-[#373737] whitespace-nowrap">
-                                        <span className="bg-[#E9E9E9] px-3 py-1 rounded-[4px] text-[13px]">
+                                      <td className="px-[15px] py-[18px] text-sm text-secgray whitespace-nowrap">
+                                        <span className="bg-border px-3 py-1 rounded-[4px] text-[13px]">
                                           {row.bid_end_time}
                                         </span>
                                       </td>
@@ -315,27 +315,27 @@ if (loading) {
                       )}
                     </div>
                   ) : (
-                     <div className="w-full overflow-x-auto border border-[#E9E9E9] rounded-[10px]">
+                     <div className="w-full overflow-x-auto border border-border rounded-[10px]">
                             <table className="w-full border-collapse">
                             <thead>
                                 <tr className="bg-[#F2F8F7] text-left">
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r border-border whitespace-nowrap">
                                     Machinery
                                 </th>
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r border-border whitespace-nowrap">
                                   Price
                                 </th>
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray border-r border-border whitespace-nowrap">
                                    Status
                                 </th>
-                                <th className="px-[15px] py-[18px] text-sm font-medium text-[#373737] whitespace-nowrap">
+                                <th className="px-[15px] py-[18px] text-sm font-medium text-secgray whitespace-nowrap">
                                   Invoice
                                 </th>
                                 </tr>
                             </thead>
                                   <tbody>
                                 {recentOrders.length === 0 ? (
-                                  <tr  className="border-t border-[#E9E9E9] even:bg-[#F9F9F9]">
+                                  <tr  className="border-t border-border even:bg-[#F9F9F9]">
                                     <td colSpan={3} className="text-center py-6 text-sm text-gray-400">
                                       No recent orders found
                                     </td>
@@ -344,16 +344,16 @@ if (loading) {
                                   recentOrders.map((row: any, index: number) => (
                                     <tr
                                       key={index}
-                                       className="border-t border-[#E9E9E9] even:bg-[#F9F9F9]"
+                                       className="border-t border-border even:bg-[#F9F9F9]"
                                     >
-                                      <td className="px-[15px] py-[18px] text-sm text-[#373737] border-r border-[#E9E9E9] whitespace-nowrap">
+                                      <td className="px-[15px] py-[18px] text-sm text-secgray border-r border-border whitespace-nowrap">
                                         {row.machinery_name}
                                       </td>
-                                     <td className="px-[15px] py-[18px] text-sm text-[#373737] whitespace-nowrap  border-r border-[#E9E9E9]">
+                                     <td className="px-[15px] py-[18px] text-sm text-secgray whitespace-nowrap  border-r border-border">
                                      {/* {formatPrice(row.price)}  */}
                                        {row.price}
                                       </td>
-                                      <td className="px-[15px] py-[18px] text-sm text-[#373737] whitespace-nowrap  border-r border-[#E9E9E9]">
+                                      <td className="px-[15px] py-[18px] text-sm text-secgray whitespace-nowrap  border-r border-border">
                                       {(() => {
                                         let statusClass = "bg-gray-400 text-white";
 

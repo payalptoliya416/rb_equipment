@@ -294,7 +294,7 @@ if (pageLoading || userLoading) {
       <section className="pt-10">
         <div className="max-w-6xl mx-auto px-4">
           <div className="bg-white border border-light-gray rounded-xl p-2 md:p-6">
-            <h2 className="text-2xl md:text-3xl font-bold text-[#212121] mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray mb-8">
   What happens next?
 </h2>
             {steps.map((step, index) => (
@@ -329,11 +329,11 @@ if (pageLoading || userLoading) {
                 )}
 
                 <div className="flex-1">
-                  <h3 className="text-lg md:text-xl font-semibold text-[#212121] mb-2">
+                  <h3 className="text-lg md:text-xl font-semibold text-gray mb-2">
                     {step.title}
                   </h3>
 
-              <p className="text-[#646464] text-base leading-[26px] mb-4">
+              <p className="text-text-gray text-base leading-[26px] mb-4">
                       {typeof step.desc === "function"
                       ? step.desc(userData?.email || "your registered email")
                       : step.desc}

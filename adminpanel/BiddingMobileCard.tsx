@@ -28,7 +28,7 @@ export default function BiddingMobileCard({
   // };
 
   return (
-    <div className="bg-white border border-[#E9E9E9] rounded-xl p-4 space-y-4">
+    <div className="bg-white border border-border rounded-xl p-4 space-y-4">
       {/* HEADER */}
       <div>
         <p className="text-xs text-gray-500">Machinery</p>
@@ -44,7 +44,7 @@ export default function BiddingMobileCard({
       </div>
 
       {/* STATUS + ACTION */}
-      <div className="flex items-center justify-between pt-3 border-t border-[#E9E9E9]">
+      <div className="flex items-center justify-between pt-3 border-t border-border">
         {/* <BiddingStatusDropdown
           value={item.bid_status}
           biddingId={item.id}

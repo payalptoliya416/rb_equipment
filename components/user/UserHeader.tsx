@@ -302,7 +302,7 @@ const handleMenuNavigate = (path: string) => {
                     className="rounded-full"
                     priority
                   />
-                  <span className="text-[#4D4D4D] font-medium text-[16px] hidden md:block">
+                  <span className="text-para font-medium text-[16px] hidden md:block">
                     {userName || "User"}
                   </span>
                   <IoChevronDown

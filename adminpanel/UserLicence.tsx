@@ -137,7 +137,7 @@ const disableDecline =
               { label: "Phone Number", value: user.phone_no },
             ].map((item, i) => (
               <div key={i} className="rounded-xl border border-[#ECECEC] p-4">
-                <p className="text-xs text-[#7A7A7A] mb-1">{item.label}</p>
+                <p className="text-xs text-seclightgray mb-1">{item.label}</p>
                 <p className="text-sm font-medium text-gray-900">
                   {item.value || "-"}
                 </p>
@@ -146,7 +146,7 @@ const disableDecline =
 
             {/* Company */}
             <div className="rounded-xl border border-[#ECECEC] p-4 md:col-span-2">
-              <p className="text-xs text-[#7A7A7A] mb-1">Company Name</p>
+              <p className="text-xs text-seclightgray mb-1">Company Name</p>
               <p className="text-sm font-medium text-gray-900 uppercase">
                 {user.company_name || "-"}
               </p>
@@ -154,7 +154,7 @@ const disableDecline =
 
             {/* Address */}
             <div className="rounded-xl border border-[#ECECEC] p-4 md:col-span-3">
-              <p className="text-xs text-[#7A7A7A] mb-1">Address</p>
+              <p className="text-xs text-seclightgray mb-1">Address</p>
               <p className="text-sm font-medium text-gray-900">
                 {user.address || "-"}
               </p>
@@ -166,7 +166,7 @@ const disableDecline =
               { label: "Zip Code", value: user.zip_code },
             ].map((item, i) => (
               <div key={i} className="rounded-xl border border-[#ECECEC] p-4">
-                <p className="text-xs text-[#7A7A7A] mb-1">{item.label}</p>
+                <p className="text-xs text-seclightgray mb-1">{item.label}</p>
                 <p className="text-sm font-medium text-gray-900">
                   {item.value || "-"}
                 </p>

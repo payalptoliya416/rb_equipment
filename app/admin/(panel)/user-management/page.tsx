@@ -300,7 +300,7 @@ export default function UsersPage() {
   ];
 
   return (
-    <div className="space-y-5 bg-white border border-[#E9E9E9] rounded-[14px] p-3 sm:p-5">
+    <div className="space-y-5 bg-white border border-border rounded-[14px] p-3 sm:p-5">
       {/* TOP BAR */}
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="relative w-[220px]">
@@ -315,7 +315,7 @@ export default function UsersPage() {
               setSearch(e.target.value);
             }}
             placeholder="Search..."
-            className="w-full py-3 pl-10 pr-4 border border-[#E9E9E9] rounded-lg text-sm"
+            className="w-full py-3 pl-10 pr-4 border border-border rounded-lg text-sm"
           />
         </div>
       </div>

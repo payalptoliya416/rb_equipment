@@ -76,8 +76,8 @@ export default function ApproveContractModal({
               <Form className="space-y-4">
                 {/* Bank Name */}
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-[#333333]">
-                    Bank Name <sup className="text-[#ef4343]">*</sup>
+                  <label className="block mb-2 text-sm font-medium text-lightblack">
+                    Bank Name <sup className="text-redmark">*</sup>
                   </label>
                   <Field
                     name="bank_name"
@@ -96,8 +96,8 @@ export default function ApproveContractModal({
 
                 {/* Beneficiary Name */}
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-[#333333]">
-                    Beneficiary Name <sup className="text-[#ef4343]">*</sup>
+                  <label className="block mb-2 text-sm font-medium text-lightblack">
+                    Beneficiary Name <sup className="text-redmark">*</sup>
                   </label>
                   <Field
                     name="beneficiary_name"
@@ -116,8 +116,8 @@ export default function ApproveContractModal({
 
                 {/* Beneficiary Address */}
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-[#333333]">
-                    Beneficiary Address <sup className="text-[#ef4343]">*</sup>
+                  <label className="block mb-2 text-sm font-medium text-lightblack">
+                    Beneficiary Address <sup className="text-redmark">*</sup>
                   </label>
                   <Field
                     name="beneficiary_address"
@@ -137,8 +137,8 @@ export default function ApproveContractModal({
 
                 {/* Account Number */}
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-[#333333]">
-                    Account Number <sup className="text-[#ef4343]">*</sup>
+                  <label className="block mb-2 text-sm font-medium text-lightblack">
+                    Account Number <sup className="text-redmark">*</sup>
                   </label>
                   <Field
                     name="account_number"
@@ -157,8 +157,8 @@ export default function ApproveContractModal({
 
                 {/* Routing Number */}
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-[#333333]">
-                    Routing Number <sup className="text-[#ef4343]">*</sup>
+                  <label className="block mb-2 text-sm font-medium text-lightblack">
+                    Routing Number <sup className="text-redmark">*</sup>
                   </label>
                   <Field
                     name="routing_number"
@@ -177,8 +177,8 @@ export default function ApproveContractModal({
 
                 {/* Branch Address */}
                 <div>
-                  <label className="block mb-2 text-sm font-medium text-[#333333]">
-                    Branch Address <sup className="text-[#ef4343]">*</sup>
+                  <label className="block mb-2 text-sm font-medium text-lightblack">
+                    Branch Address <sup className="text-redmark">*</sup>
                   </label>
                   <Field
                     name="branch_address"

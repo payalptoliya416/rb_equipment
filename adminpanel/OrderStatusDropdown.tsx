@@ -194,7 +194,7 @@ export default function OrderStatusDropdown({
           flex items-center justify-between gap-2
           px-3 py-2 w-[158px]
           rounded-lg text-sm font-medium whitespace-nowrap
-          shadow-sm border border-[#E9E9E9]
+          shadow-sm border border-border
           transition cursor-pointer
           ${current?.btnClass ?? "bg-gray-400 text-white"}
           ${updating ? "opacity-70 cursor-not-allowed" : ""}
@@ -232,7 +232,7 @@ export default function OrderStatusDropdown({
             className="
               w-[200px]
               rounded-xl bg-white
-              shadow-xl border border-[#E9E9E9]
+              shadow-xl border border-border
               z-[99999999]
               overflow-hidden
             "

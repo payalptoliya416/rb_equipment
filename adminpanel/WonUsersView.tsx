@@ -135,7 +135,7 @@ const isActionAllowed = data?.contract_status === "Signed";
   return (
     <div className="space-y-5">
       {/* ================= TOP CARD ================= */}
-      <div className="bg-white border border-[#E9E9E9] rounded-[10px] p-[25px]">
+      <div className="bg-white border border-border rounded-[10px] p-[25px]">
         {/* HEADER */}
         <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
           <h2 className="text-[#000000] text-2xl font-semibold">
@@ -155,28 +155,28 @@ const isActionAllowed = data?.contract_status === "Signed";
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-6">
           <div>
             <p className="text-base text-[#8A8A8A] mb-1">User Name:</p>
-            <p className="text-[#373737] font-medium">
+            <p className="text-secgray font-medium">
               {data.user_full_name}
             </p>
           </div>
 
           <div>
             <p className="text-base text-[#8A8A8A] mb-1">Phone Number:</p>
-            <p className="text-[#373737] font-medium">
+            <p className="text-secgray font-medium">
               {data.phone_no}
             </p>
           </div>
 
           <div>
             <p className="text-base text-[#8A8A8A] mb-1">Category:</p>
-            <p className="text-[#373737] font-medium">
+            <p className="text-secgray font-medium">
               {data.category}
             </p>
           </div>
 
           <div>
             <p className="text-base text-[#8A8A8A] mb-1">Won Bid Amount:</p>
-            <p className="text-[#373737] font-medium">
+            <p className="text-secgray font-medium">
              {formatPrice(data.won_bid_amount)}
             </p>
           </div>
@@ -184,7 +184,7 @@ const isActionAllowed = data?.contract_status === "Signed";
       </div>
 
       {/* ================= CONTRACT VIEW ================= */}
-      <div className="bg-white border border-[#E9E9E9] rounded-[10px] p-[25px]">
+      <div className="bg-white border border-border rounded-[10px] p-[25px]">
         <div className="flex justify-between items-center mb-4 flex-wrap gap-3">
           <h3 className="text-lg font-semibold">Contract</h3>
 

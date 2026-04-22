@@ -19,7 +19,7 @@ export default function CategoryMobileCard({
   loadingEditId,
 }: Props) {
   return (
-    <div className="bg-white border border-[#E9E9E9] rounded-xl p-4 space-y-4">
+    <div className="bg-white border border-border rounded-xl p-4 space-y-4">
       {/* HEADER */}
       <div className="flex items-center gap-3">
         {item.image_urls ? (
@@ -47,7 +47,7 @@ export default function CategoryMobileCard({
       </div>
 
       {/* ACTIONS */}
-      <div className="flex justify-end gap-4 pt-3 border-t border-[#E9E9E9]">
+      <div className="flex justify-end gap-4 pt-3 border-t border-border">
         <button
           disabled={loadingEditId === item.id}
           onClick={onEdit}

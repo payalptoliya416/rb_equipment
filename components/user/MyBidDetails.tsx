@@ -76,7 +76,7 @@ const isMobile = useIsMobile();
         </h1>
 
         {/* BREADCRUMB */}
-        <p className="text-sm text-[#7A7A7A] mb-[15px]">
+        <p className="text-sm text-seclightgray mb-[15px]">
           <span
             onClick={() => router.push("/user/bids")}
             className="cursor-pointer"
@@ -84,11 +84,11 @@ const isMobile = useIsMobile();
             My Bids
           </span>
           &nbsp;&gt;&nbsp;
-          <span className="text-[#7A7A7A]">{details.machinery_name}</span>
+          <span className="text-seclightgray">{details.machinery_name}</span>
         </p>
 
         {/* CARD */}
-        <div className="bg-white border border-[#E9E9E9] rounded-[10px] p-[25px] mb-5">
+        <div className="bg-white border border-border rounded-[10px] p-[25px] mb-5">
           {/* HEADER */}
           <div className="flex flex-wrap items-start justify-between gap-4 mb-6">
             <h2 className="text-[#000000] text-2xl font-semibold">
@@ -96,7 +96,7 @@ const isMobile = useIsMobile();
             </h2>
 
             <div className="flex items-center gap-2">
-              <span className="px-[10px] py-1 text-xs rounded-[10px] bg-[#E9E9E9] text-[#373737]">
+              <span className="px-[10px] py-1 text-xs rounded-[10px] bg-border text-secgray">
                 {details.user_full_name}
               </span>
               <span
@@ -117,21 +117,21 @@ const isMobile = useIsMobile();
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div>
               <p className="text-sm text-[#8A8A8A] mb-1">End Bid Date:</p>
-              <p className="text-[#373737] font-medium">
+              <p className="text-secgray font-medium">
                 {formatDateTime(details.bid_end_time)}
               </p>
             </div>
 
             <div>
               <p className="text-sm text-[#8A8A8A] mb-1">Start Bid Price:</p>
-              <p className="text-[#373737] font-medium">
+              <p className="text-secgray font-medium">
                 {formatPrice(details.start_bid_price)}
               </p>
             </div>
 
             <div>
               <p className="text-sm text-[#8A8A8A] mb-1">My Bid:</p>
-              <p className="text-[#373737] font-medium">
+              <p className="text-secgray font-medium">
                 {formatPrice(details.my_bid)}
               </p>
             </div>
@@ -157,7 +157,7 @@ const isMobile = useIsMobile();
       rows.map((row) => (
         <div
           key={row.id}
-         className={`border border-[#E9E9E9] rounded-xl p-4 space-y-2
+         className={`border border-border rounded-xl p-4 space-y-2
   ${row.isHighlighted ? highlightClass : "bg-white"}
 `}
         >
@@ -165,7 +165,7 @@ const isMobile = useIsMobile();
             {row.isHighlighted && (
               <span className="w-2 h-2 rounded-full bg-[#3C97FF]" />
             )}
-            <p className="font-semibold text-[#373737]">
+            <p className="font-semibold text-secgray">
               {row.user_name}
             </p>
           </div>

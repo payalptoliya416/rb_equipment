@@ -259,12 +259,12 @@ function Footer() {
           <div className="flex justify-center 2xl:justify-between items-center pt-5 flex-wrap gap-4 text-center">
             <p className="text-light-gray text-base font-normal">
               <a
-                href="https://stiopa-equipment.com/"
+                href='https://stiopa-equipment.com/'
                 className="text-orange font-semibold"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Stiopa-Equipment.com
+                  Stiopa-Equipment.com
               </a>{" "}
               is owned by STIOPA EQUIPMENT, LLC Reg nº : (201702410607) -
               Copyright {new Date().getFullYear()} © All Rights Reserved

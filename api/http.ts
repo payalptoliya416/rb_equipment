@@ -2,7 +2,8 @@
 
 
 import { clearToken, getToken } from "./authToken";
-export const BASE_URL = "https://stiopa-equipment.com/api/api";
+
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export async function api<T>(
   endpoint: string,

@@ -256,7 +256,7 @@ const handlePlaceBid = async () => {
 
   return (
     <div>
-      <label className="block mb-2 text-sm font-medium text-[#373737]">
+      <label className="block mb-2 text-sm font-medium text-secgray">
         Place your bid
       </label>
       {licenseBlocked && (
@@ -265,7 +265,7 @@ const handlePlaceBid = async () => {
         </div>
       )}
 
-      <div className="flex items-stretch w-full rounded-xl overflow-hidden border border-[#CCE4E1] focus-within:ring-2 focus-within:ring-green">
+      <div className="flex items-stretch w-full rounded-xl overflow-hidden border border-lightgreen focus-within:ring-2 focus-within:ring-green">
 
         {/* $ + INPUT */}
         <div className="relative flex-1">
@@ -318,7 +318,7 @@ const handlePlaceBid = async () => {
         )}
       </button>
 
-      <div className="text-center text-[#4D4D4D] text-lg leading-[18px] mb-[15px]">
+      <div className="text-center text-para text-lg leading-[18px] mb-[15px]">
         - OR -
       </div>
       <button

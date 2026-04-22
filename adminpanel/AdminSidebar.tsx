@@ -60,7 +60,7 @@ export default function AdminSidebar({
         w-[270px]
         bg-white
         flex flex-col
-        border border-[#D3D3D3]
+        border border-light-gray
         ${mobile ? "h-screen rounded-none" : "h-full rounded-[14px]"}
       `}
     >
@@ -81,7 +81,7 @@ export default function AdminSidebar({
         </Link>
       </div>
 
-      <div className="border-t border-[#E9E9E9] mx-[10px] shrink-0" />
+      <div className="border-t border-border mx-[10px] shrink-0" />
 
       {/* MENU (SCROLLABLE) */}
       <nav className="flex-1 overflow-y-auto mt-[20px] px-[10px] pb-4">
@@ -126,7 +126,7 @@ export default function AdminSidebar({
                   ${
                     isActive
                       ? "gradient-btn text-white"
-                      : "text-[#7A7A7A] hover:bg-green hover:text-white"
+                      : "text-seclightgray hover:bg-green hover:text-white"
                   }
                 `}
                 // onClick={() => {
@@ -138,7 +138,7 @@ export default function AdminSidebar({
               >
                 <Icon
                   className={`text-base group-hover:text-white ${
-                    isActive ? "text-white" : "text-[#7A7A7A]"
+                    isActive ? "text-white" : "text-seclightgray"
                   }`}
                 />
                 {item.label}

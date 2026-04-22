@@ -601,7 +601,7 @@ export default function InventoryFilter({}: {}) {
                   </Disclosure.Button>
 
                   <Disclosure.Panel>
-                    <div className="flex items-center justify-between text-sm text-[#373737] mt-3 mb-1">
+                    <div className="flex items-center justify-between text-sm text-secgray mt-3 mb-1">
                       <span>{min}</span>
                       <span>{max}</span>
                     </div>
@@ -644,7 +644,7 @@ export default function InventoryFilter({}: {}) {
                     </div>
                     <div className="flex gap-3">
                       <div className="w-1/2">
-                        <label className="text-base text-[#373737]">From</label>
+                        <label className="text-base text-secgray">From</label>
                         <input
                           type="number"
                           value={fromInput}
@@ -674,7 +674,7 @@ export default function InventoryFilter({}: {}) {
                       </div>
 
                       <div className="w-1/2">
-                        <label className="text-base text-[#373737]">To</label>
+                        <label className="text-base text-secgray">To</label>
                         <input
                           type="number"
                           value={toInput}

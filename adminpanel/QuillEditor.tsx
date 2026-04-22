@@ -68,7 +68,7 @@ export default function QuillEditor({ name }: Props) {
         className={`rounded-xl overflow-hidden border transition ${
           errorMsg
             ? "border-red-500"
-            : "border-[#e9e9e9]"
+            : "border-border"
         }`}
       >
         <div ref={quillRef} className="bg-white"  />

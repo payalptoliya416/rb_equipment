@@ -29,7 +29,7 @@ function MyBidCard({ row, onView ,loading}: { row: Bid; onView: () => void ,load
   };
 
   return (
-    <div className="border border-[#E9E9E9] rounded-xl p-4 bg-white space-y-3">
+    <div className="border border-border rounded-xl p-4 bg-white space-y-3">
       {/* TOP */}
       <div className="flex items-center gap-3">
         <Image
@@ -39,7 +39,7 @@ function MyBidCard({ row, onView ,loading}: { row: Bid; onView: () => void ,load
           height={48}
           className="rounded-md object-cover"
         />
-        <p className="font-semibold text-[#373737] text-sm">
+        <p className="font-semibold text-secgray text-sm">
           {row.machinery}
         </p>
       </div>
@@ -176,7 +176,7 @@ export default function Bids() {
           px-3 py-1.5
           rounded-md
           bg-[#F3F4F6]
-          text-[#373737]
+          text-secgray
           text-sm
           font-medium
           whitespace-nowrap
@@ -258,14 +258,14 @@ export default function Bids() {
         {/* Search + Buttons */}
         <div className="flex justify-between mb-5 items-center flex-wrap gap-5">
           {/* Search */}
-          <h1 className="text-[#373737] text-[26px] font-bold">My Bids</h1>
+          <h1 className="text-secgray text-[26px] font-bold">My Bids</h1>
           <div className="relative w-72">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7A7A7A]" />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-seclightgray" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search..."
-              className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E9E9E9]"
+              className="w-full h-12 pl-12 pr-4 rounded-lg border border-border"
             />
           </div>
         </div>

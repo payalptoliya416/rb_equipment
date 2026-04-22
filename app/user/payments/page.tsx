@@ -34,7 +34,7 @@ function Payment() {
       key: "date",
       header: "Purchase Date",
       render: (row) => (
-        <span className="text-sm leading-[14px] bg-[#E9E9E9] text-[#4D4D4D] px-[10px] py-1 rounded-sm">
+        <span className="text-sm leading-[14px] bg-border text-para px-[10px] py-1 rounded-sm">
           {row.date}
         </span>
       ),
@@ -50,7 +50,7 @@ function Payment() {
         const color: any = {
           Paid: "bg-[#35BB63] text-white",
           Failed: "bg-[#DD3623] text-white",
-          Pending: "bg-[#FFCA42] text-[#212121]",
+          Pending: "bg-[#FFCA42] text-gray",
         };
 
         return (
@@ -96,19 +96,19 @@ function Payment() {
   return (
     <section className="py-11 sm:py-[60px]">
       <div className="container-custom mx-auto">
-        <h1 className="text-[#373737] text-[26px] font-bold mb-[35px]">
+        <h1 className="text-secgray text-[26px] font-bold mb-[35px]">
           Delivery Tracking
         </h1>
         
         {/* Search + Button Row */}
         <div className="flex justify-between items-center mb-6 flex-wrap gap-4">
           <div className="relative w-72">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7A7A7A]" />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-seclightgray" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search..."
-              className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E9E9E9]"
+              className="w-full h-12 pl-12 pr-4 rounded-lg border border-border"
             />
           </div>
 

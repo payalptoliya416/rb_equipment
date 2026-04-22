@@ -42,15 +42,15 @@ function WonBidCard({
     loading: boolean;
 }) {
   const statusStyles: Record<string, string> = {
-    Pending: "bg-[#FFCA42] text-[#373737]",
+    Pending: "bg-[#FFCA42] text-secgray",
     Approved: "bg-[#35BB63] text-white",
     Signed: "bg-[#3C97FF] text-white",
     Rejected: "bg-[#FF4D4F] text-white",
-    Unknown: "bg-[#E5E7EB] text-[#373737]",
+    Unknown: "bg-[#E5E7EB] text-secgray",
   };
 
   return (
-    <div className="border border-[#E9E9E9] rounded-xl p-4 bg-white space-y-3">
+    <div className="border border-border rounded-xl p-4 bg-white space-y-3">
       {/* TOP */}
       <div className="flex items-center gap-3">
         <Image
@@ -61,7 +61,7 @@ function WonBidCard({
           className="rounded-md object-cover"
         />
         <div>
-          <p className="font-semibold text-sm text-[#373737]">
+          <p className="font-semibold text-sm text-secgray">
             {row.machinery}
           </p>
           <p className="text-xs text-gray-500">{row.category}</p>
@@ -211,11 +211,11 @@ export default function MyWonBids() {
       header: "Contract Status",
       render: (row) => {
         const styles: Record<string, string> = {
-          Pending: "bg-[#FFCA42] text-[#373737]",
+          Pending: "bg-[#FFCA42] text-secgray",
           Approved: "bg-[#35BB63] text-white",
           Signed: "bg-[#3C97FF] text-white",
           Rejected: "bg-[#FF4D4F] text-white",
-          Unknown: "bg-[#E5E7EB] text-[#373737]",
+          Unknown: "bg-[#E5E7EB] text-secgray",
         };
 
         return (
@@ -266,17 +266,17 @@ export default function MyWonBids() {
       <div className="container-custom mx-auto">
         {/* HEADER */}
         <div className="flex justify-between items-center mb-5 flex-wrap gap-5">
-          <h1 className="text-[#373737] text-[26px] font-bold">
+          <h1 className="text-secgray text-[26px] font-bold">
             My Won Bids
           </h1>
 
           <div className="relative w-72">
-            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-[#7A7A7A]" />
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-seclightgray" />
             <input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search..."
-              className="w-full h-12 pl-12 pr-4 rounded-lg border border-[#E9E9E9]"
+              className="w-full h-12 pl-12 pr-4 rounded-lg border border-border"
             />
           </div>
         </div>

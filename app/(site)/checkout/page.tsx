@@ -746,7 +746,7 @@ if (userLoading || pageLoading) {
                 ${
                   shouldDisableButton || submitLoading
                     ? "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    : "bg-green text-white hover:bg-[#333333]"
+                    : "bg-green text-white hover:bg-lightblack"
                 }
               `}
             >

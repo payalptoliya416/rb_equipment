@@ -154,7 +154,7 @@ export default function SignInForm(): JSX.Element {
                 <Form className="space-y-5">
                   {/* Email */}
                   <motion.div variants={itemVariant}>
-                    <label className="text-[#333333] font-medium mb-5 block text-lg leading-[18px]  mont-text">
+                    <label className="text-lightblack font-medium mb-5 block text-lg leading-[18px]  mont-text">
                       Email Address
                     </label>
                     <Field
@@ -173,7 +173,7 @@ export default function SignInForm(): JSX.Element {
 
                   {/* Password */}
                   <motion.div variants={itemVariant}>
-                    <label className="text-[#333333] font-medium block text-lg leading-[18px] mont-text mb-5">
+                    <label className="text-lightblack font-medium block text-lg leading-[18px] mont-text mb-5">
                       Password
                     </label>
 
@@ -212,7 +212,7 @@ export default function SignInForm(): JSX.Element {
                     variants={itemVariant}
                     className="flex justify-between items-center flex-wrap gap-2"
                   >
-                    <label className="flex items-center gap-2 cursor-pointer select-none text-[#4D4D4D]">
+                    <label className="flex items-center gap-2 cursor-pointer select-none text-para">
                       <Field
                         type="checkbox"
                         name="remember"
@@ -236,7 +236,7 @@ export default function SignInForm(): JSX.Element {
 
                     <Link
                       href="/user/signin/forgot-password"
-                      className="text-[#4D4D4D]"
+                      className="text-para"
                     >
                       Forgot password?
                     </Link>
@@ -276,7 +276,7 @@ export default function SignInForm(): JSX.Element {
 
                   {/* Google Button */}
                   {/* <button
-                      className="w-full flex items-center justify-center gap-3 border border-light-gray rounded-[10px] py-[18px] hover:bg-gray-50 transition text-[#333333] text-base sm:text-lg cursor-pointer  mont-text font-semibold"
+                      className="w-full flex items-center justify-center gap-3 border border-light-gray rounded-[10px] py-[18px] hover:bg-gray-50 transition text-lightblack text-base sm:text-lg cursor-pointer  mont-text font-semibold"
                       type="button"
                     >
                       <Image
@@ -297,7 +297,7 @@ export default function SignInForm(): JSX.Element {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.7, duration: 0.5 }}
-            className="text-center text-[#333333] mt-[25px] text-lg  mont-text font-semibold"
+            className="text-center text-lightblack mt-[25px] text-lg  mont-text font-semibold"
           >
             Don't have an account?{" "}
             <Link href="/signup" className="text-green">

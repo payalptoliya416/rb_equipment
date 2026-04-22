@@ -99,10 +99,10 @@ function SimpleSteps() {
 
               {/* Content */}
               <div>
-                <h3 className="text-lg md:text-xl font-semibold text-[#212121] mb-[10px]">
+                <h3 className="text-lg md:text-xl font-semibold text-gray mb-[10px]">
                   {step.title}
                 </h3>
-                <p className="text-[#646464] text-base leading-[26px]">
+                <p className="text-text-gray text-base leading-[26px]">
                   {step.desc}
                 </p>
               </div>
