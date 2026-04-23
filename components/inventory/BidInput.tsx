@@ -1,6 +1,6 @@
 "use client";
 
-import { isAuthError } from "@/api/authToken";
+import { getToken, isAuthError } from "@/api/authToken";
 import {
   licenseVerify,
   loginCheck,
@@ -100,6 +100,10 @@ const query = searchParams.toString();
 const returnUrl = query ? `${pathname}?${query}` : pathname;
 
 const loadLicenseStatus = async () => {
+   if (!getToken()) {
+        setIsLicenseStatusLoading(false);
+        return;
+      }
     try {
       const licenseRes = await licenseVerify();
       setLicenseStatus({
@@ -222,16 +226,37 @@ const handlePlaceBid = async () => {
     `/checkout/${categorySlug}/${makeSlug}/${modelSlug}/${auction_id}`;
 
   const licenseBlocked =
+   !!getToken() &&
     !isLicenseStatusLoading &&
     (!licenseStatus.is_upload || licenseStatus.is_reject || !licenseStatus.is_verify);
 
-  const licenseBlockMessage = !licenseStatus.is_upload
-    ? "License not uploaded. Please verify your account before bidding or buying."
-    : licenseStatus.is_reject
-    ? "Your documents were rejected. Please re-upload valid documents."
-    : !licenseStatus.is_verify
-    ? "Verification pending. Please wait for approval before bidding or buying."
-    : "";
+  const licenseBlockMessage = !licenseStatus.is_upload ? (
+    <>
+      License not uploaded. Please verify your account before bidding or buying.{" "}
+      <span
+        className="text-orange underline cursor-pointer"
+        onClick={() => router.push("/user/profile")}
+      >
+        Click here
+      </span>
+    </>
+  ) : licenseStatus.is_reject ? (
+    <>
+      Your documents were rejected. Please re-upload valid documents.{" "}
+      <span
+        className="text-orange underline cursor-pointer"
+        onClick={() => router.push("/user/profile")}
+      >
+        Click here
+      </span>
+    </>
+  ) : !licenseStatus.is_verify ? (
+    <>
+      Verification pending. Please wait for approval before bidding or buying.
+    </>
+  ) : (
+    ""
+  );
 
  const handleBuyNow = async () => {
     try {
