@@ -68,6 +68,12 @@ const STEPS: StepItem[] = [
   { key: "Delivered", title: "Delivered" },
 ];
 
+
+const CANCELLED_STEP: StepItem = {
+  key: "Cancelled" as DeliveryStatus,
+  title: "Cancelled",
+}
+
 const formatDateTime = (date: string) =>
   new Date(date).toLocaleString("en-US", {
     month: "short",
@@ -268,11 +274,13 @@ export default function MyBuyOrders() {
         )}
         <div className="space-y-6">
           {orders.map((data) => {
-            // const filteredSteps =
-            //   data.type_text === "Bidding"
-            //     ? STEPS
-            //     : STEPS.filter((s) => s.key !== "Awaiting Invoice");
-            const filteredSteps = STEPS;
+            
+           const isCancelled = data.delivery_status_text === "Cancelled";
+
+            const filteredSteps: StepItem[] = isCancelled
+            ? [...STEPS, CANCELLED_STEP]
+            : STEPS;
+
             const step = getCurrentStepFromTimeline(
               data.delivery_timeline,
               filteredSteps,
