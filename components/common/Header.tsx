@@ -8,7 +8,7 @@ import {
 } from "@/api/categoryActions";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { HiBars3BottomRight, HiMiniMinus, HiMiniPlus } from "react-icons/hi2";
 import { IoIosArrowDown } from "react-icons/io";
@@ -163,9 +163,6 @@ function Header({
   settings: any;
 }) {
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const query = searchParams.toString();
-  const returnUrl = query ? `${pathname}?${query}` : pathname;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const buttonRef = useRef<HTMLButtonElement | null>(null);
@@ -427,6 +424,9 @@ function Header({
     );
   }, [currentPath]);
 
+  const isSignupPage = pathname ? pathname.startsWith("/signup") : false;
+  const isSigninPage = pathname ? pathname.startsWith("/user/signin") : false;
+
   return (
     <>
       {isNavigating && (
@@ -444,9 +444,15 @@ function Header({
     }
   `}
       >
-        <div className="container-custom mx-auto flex justify-between items-center pb-4 px-4 md:px-0">
-          <Link href="/">
-            {settings?.dark_logo && <img src={settings.dark_logo} alt="Logo" />}
+        <div className="container-custom mx-auto flex justify-between items-center py-3 md:py-4 px-4 md:px-0">
+          <Link href="/" className="flex items-center shrink-0">
+            {settings?.dark_logo && (
+              <img
+                src={settings.dark_logo}
+                alt="Logo"
+                className="h-[52px] sm:h-[60px] w-auto max-w-[178px] object-contain"
+              />
+            )}
           </Link>
           <ul className="hidden lg:flex justify-center items-center gap-5 xl:gap-12">
             {navItems.map((item) => (
@@ -633,44 +639,46 @@ function Header({
           {loggedIn ? (
             <button
               onClick={() => handleNavigate("/user")}
-              className="hidden lg:block text-green bg-white py-2 px-4 md:py-3 md:px-6 rounded-lg font-semibold hover:bg-orange hover:text-white transition cursor-pointer"
+              className="hidden lg:block text-green bg-white border border-green py-2 px-4 md:py-2.5 md:px-6 rounded-lg font-semibold hover:bg-orange hover:text-white hover:border-orange transition cursor-pointer"
             >
               Dashboard
             </button>
           ) : (
             <div className="hidden lg:flex gap-3 items-center">
-              {/* Sign In (Outline - light) */}
-              <button
-                onClick={() => handleNavigate(getAuthUrl("/user/signin"))}
-                className="
-                px-3 xl:px-5 py-2 xl:py-2.5 rounded-lg 
-                border border-white/40 
-                text-white font-medium
-                hover:border-orange hover:text-orange
-                transition duration-200
-                backdrop-blur-sm
-                cursor-pointer
-              "
-              >
-                Sign In
-              </button>
+              {/* Sign In */}
+              {!isSigninPage && (
+                <button
+                  onClick={() => handleNavigate(getAuthUrl("/user/signin"))}
+                  className="
+                  px-4 xl:px-5 py-2 xl:py-2.5 rounded-lg 
+                  border border-green 
+                  text-green font-semibold
+                  bg-white
+                  hover:bg-orange hover:border-orange hover:text-white
+                  transition duration-200
+                  cursor-pointer
+                "
+                >
+                  Sign In
+                </button>
+              )}
 
-              {/* Sign Up (Primary highlight) */}
-              {!pathname.startsWith("/signup") && (
+              {/* Sign Up */}
+              {!isSignupPage && (
                 <button
                   onClick={() => {
                     setIsNavigating(true);
                     handleNavigate(getAuthUrl("/signup"));
                   }}
                   className="
-                px-3 xl:px-5 py-2 xl:py-2.5 rounded-lg 
-                bg-gradient-to-r from-orange to-yellow-400
-                text-white font-semibold
-                shadow-md
-                hover:opacity-90
-                transition duration-200
-                cursor-pointer
-              "
+                  px-4 xl:px-5 py-2 xl:py-2.5 rounded-lg 
+                  bg-orange border border-orange
+                  text-white font-semibold
+                  shadow-sm
+                  hover:bg-[#e85b4d] hover:border-[#e85b4d]
+                  transition duration-200
+                  cursor-pointer
+                "
                 >
                   Sign Up
                 </button>
@@ -709,15 +717,12 @@ function Header({
             ${isMenuOpen ? "sidebar-open" : "sidebar-closed"}
           `}
           >
-            <Link href="/">
+            <Link href="/" onClick={handleCloseMenu} className="inline-block">
               {settings?.dark_logo && (
-                <Image
+                <img
                   src={settings.dark_logo}
                   alt="Logo"
-                  height={100}
-                  width={100}
-                  loading="eager"
-                  priority
+                  className="h-11 sm:h-12 w-auto max-w-[160px] object-contain"
                 />
               )}
             </Link>
@@ -747,7 +752,7 @@ function Header({
                 href="/user"
                 className="
               mt-6 block text-center text-green bg-white border border-green 
-              py-3 px-6 rounded-lg font-semibold 
+              py-2.5 px-6 rounded-lg font-semibold 
               transition-all duration-300 
               hover:bg-orange hover:text-white hover:border-orange
             "
@@ -755,29 +760,35 @@ function Header({
                 Dashboard
               </Link>
             ) : (
-              <div className="">
-                <button
-                  onClick={() => handleNavigate(getAuthUrl("/user/signin"))}
-                  className="
-              mt-6 block text-center text-green bg-white border border-green 
-              py-3 px-6 rounded-lg font-semibold w-full
-              transition-all duration-300 
-              hover:bg-orange hover:text-white hover:border-orange
-            "
-                >
-                  Sign In
-                </button>
-                <button
-                  onClick={() => handleNavigate(getAuthUrl("/signup"))}
-                  className="
-              mt-2 block text-center text-green bg-white border border-green 
-              py-3 px-6 rounded-lg font-semibold w-full
-              transition-all duration-300 
-              hover:bg-orange hover:text-white hover:border-orange
-            "
-                >
-                  Sign Up
-                </button>
+              <div className="mt-6 flex flex-col gap-2.5">
+                {!isSigninPage && (
+                  <button
+                    onClick={() => handleNavigate(getAuthUrl("/user/signin"))}
+                    className="
+                      block text-center text-green bg-white border border-green 
+                      py-2.5 px-6 rounded-lg font-semibold w-full
+                      transition-all duration-300 
+                      hover:bg-orange hover:text-white hover:border-orange
+                      cursor-pointer
+                    "
+                  >
+                    Sign In
+                  </button>
+                )}
+                {!isSignupPage && (
+                  <button
+                    onClick={() => handleNavigate(getAuthUrl("/signup"))}
+                    className="
+                      block text-center text-white bg-orange border border-orange 
+                      py-2.5 px-6 rounded-lg font-semibold w-full
+                      transition-all duration-300 
+                      hover:bg-[#e85b4d] hover:border-[#e85b4d]
+                      cursor-pointer
+                    "
+                  >
+                    Sign Up
+                  </button>
+                )}
               </div>
             )}
           </div>

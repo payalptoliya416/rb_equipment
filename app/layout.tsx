@@ -31,10 +31,10 @@ const sfPro = localFont({
 });
 
 export const metadata: Metadata = {
-  title: 'Stiopa Equipment Sales & Auctions',
+  title: 'Capital Equipment Auctions',
   description: "",
   icons: {
-    icon: "/favicon.png",
+    icon: `/favicon.png?time=${new Date().getTime()}`,
   },
 
    robots: {
@@ -52,6 +52,7 @@ export default function RootLayout({
   return (
        <html lang="en" suppressHydrationWarning>
       <head>
+        <link rel="icon" href={`/favicon.png?time=${new Date().getTime()}`} />
         {/* Google Tag Manager */}
         <Script id="gtm-script" strategy="afterInteractive">
           {`

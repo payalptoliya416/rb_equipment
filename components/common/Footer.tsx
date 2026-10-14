@@ -258,15 +258,13 @@ function Footer() {
           </div>
           <div className="flex justify-center 2xl:justify-between items-center pt-5 flex-wrap gap-4 text-center">
             <p className="text-light-gray text-base font-normal">
-              <a
-                href='https://stiopa-equipment.com/'
+              <Link
+                href="/"
                 className="text-orange font-semibold"
-                target="_blank"
-                rel="noopener noreferrer"
               >
-                  Stiopa-Equipment.com
-              </a>{" "}
-              is owned by STIOPA EQUIPMENT, LLC Reg nº : (201702410607) -
+                {companyName || settings?.company_name || "Capital Equipment Auctions"}
+              </Link>{" "}
+              is owned by {companyName ? (companyName.toUpperCase().includes("LLC") ? companyName.toUpperCase() : `${companyName.toUpperCase()}, LLC`) : "CAPITAL EQUIPMENT AUCTIONS, LLC"} Reg nº : (201702410607) -
               Copyright {new Date().getFullYear()} © All Rights Reserved
             </p>
             <p className="text-light-gray text-base font-normal">
