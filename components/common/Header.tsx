@@ -475,8 +475,8 @@ function Header({
                   className={`text-base font-medium text-gray-700 hover:text-orange cursor-pointer relative
                 after:content-[''] after:absolute after:-bottom-1
                 after:left-1/2 after:-translate-x-1/2
-                after:h-1 after:w-0
-                after:bg-[linear-gradient(180deg,#FFAD0100_0%,#FFAD01_50%,#FFAD0100_100%)]
+                after:h-0.5 after:w-0
+                after:bg-[#ff6f61]
                 after:transition-all after:duration-300
                 hover:after:w-8 hover:text-orange transition-all duration-300   ${
                   item.path === "/"

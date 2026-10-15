@@ -264,7 +264,7 @@ function Footer() {
               >
                 {companyName || settings?.company_name || "Capital Equipment Auctions"}
               </Link>{" "}
-              is owned by {companyName ? (companyName.toUpperCase().includes("LLC") ? companyName.toUpperCase() : `${companyName.toUpperCase()}, LLC`) : "CAPITAL EQUIPMENT AUCTIONS, LLC"} Reg nº : (201702410607) -
+              is owned by {companyName ? (companyName.toUpperCase().includes("LLC") ? companyName.toUpperCase() : `${companyName.toUpperCase()}, LLC`) : "CAPITAL EQUIPMENT AUCTIONS, LLC"} Reg nº : (553175) -
               Copyright {new Date().getFullYear()} © All Rights Reserved
             </p>
             <p className="text-light-gray text-base font-normal">
