@@ -48,6 +48,13 @@ if (res.status === 401) {
   throw new Error("Unauthorized");
 }
 
+// ❌ Validation errors (e.g. email already taken)
+if (data?.success === false && data?.errors) {
+  const err: any = new Error(data.message || "Validation errors");
+  err.errors = data.errors;
+  throw err;
+}
+
 // ❌ API-level error (status:false)
 if (data?.status === false) {
   throw new Error(data.message || "Something went wrong");
@@ -55,7 +62,9 @@ if (data?.status === false) {
 
 // ❌ HTTP error
 if (!res.ok) {
-  throw new Error(data?.message || "Something went wrong");
+  const err: any = new Error(data?.message || "Something went wrong");
+  if (data?.errors) err.errors = data.errors;
+  throw err;
 }
 
     return data as T;
