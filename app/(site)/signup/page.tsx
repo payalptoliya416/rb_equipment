@@ -70,7 +70,7 @@ export default function CreateAccount(): JSX.Element {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-const handleRegister = async (values: any, { resetForm }: any) => {
+const handleRegister = async (values: any, { resetForm, setErrors }: any) => {
   try {
     setLoading(true);
 
@@ -106,20 +106,14 @@ const handleRegister = async (values: any, { resetForm }: any) => {
       }, 800);
     }
  } catch (error: any) {
-  let messages: string[] = [];
-
-  if (error?.message) {
-    messages.push(error.message);
-  }
-
-  if (error?.errors) {
-    Object.values(error.errors).forEach((err: any) => {
-      messages.push(err[0]); 
+  if (error?.errors && typeof error.errors === "object") {
+    // Show separate toast for each error, without displaying under input fields
+    Object.values(error.errors).forEach((msgs: any) => {
+      const msg = Array.isArray(msgs) ? msgs[0] : String(msgs);
+      toast.error(msg);
     });
-  }
-
-  if (messages.length) {
-    toast.error(messages.join("\n")); 
+  } else if (error?.message) {
+    toast.error(error.message);
   } else {
     toast.error("Registration failed");
   }
