@@ -554,7 +554,7 @@ export default function CompanySettingUI() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-6 py-2 rounded-md bg-[#0E9F6E] text-white text-sm flex items-center gap-2 disabled:opacity-60 cursor-pointer"
+                className="px-6 py-2 rounded-md gradient-btn text-white text-sm flex items-center gap-2 disabled:opacity-60 cursor-pointer"
               >
                 {isSubmitting && (
                   <span className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>

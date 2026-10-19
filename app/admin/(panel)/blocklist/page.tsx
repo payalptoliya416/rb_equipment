@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AdminDataTable, { Column } from "@/components/tables/AdminDataTable";
-import { FiSearch, FiMail, FiPhone } from "react-icons/fi";
+import { FiSearch } from "react-icons/fi";
 import { HiOutlineTrash } from "react-icons/hi2";
 import { BiEdit } from "react-icons/bi";
 import toast from "react-hot-toast";
@@ -110,40 +110,26 @@ export default function AdminBlocklistPage() {
   /* ================= TABLE COLUMNS ================= */
   const columns: Column<BlocklistApiItem>[] = [
     {
-      key: "id",
-      header: "ID",
-      sortable: true,
-      onSort: () => handleSort("id"),
-      render: (row) => (
-        <span className="font-semibold text-gray-700">#{row.id}</span>
+      key: "no",
+      header: "No",
+      render: (_row, idx) => (
+        <span className="font-semibold text-gray-700">
+          {(page - 1) * perPage + idx + 1}
+        </span>
       ),
-      className: "w-[80px]",
+      className: "w-[70px]",
     },
     {
       key: "type",
       header: "Type",
       sortable: true,
       onSort: () => handleSort("type"),
-      render: (row) => {
-        const isEmail = row.type?.toLowerCase() === "email";
-        return (
-          <div className="flex items-center gap-2">
-            <span
-              className={`w-7 h-7 rounded-md flex items-center justify-center text-xs ${
-                isEmail
-                  ? "bg-blue-50 text-blue-600"
-                  : "bg-emerald-50 text-emerald-600"
-              }`}
-            >
-              {isEmail ? <FiMail size={14} /> : <FiPhone size={14} />}
-            </span>
-            <span className="capitalize font-medium text-gray-800 text-sm">
-              {row.type}
-            </span>
-          </div>
-        );
-      },
-      className: "w-[130px]",
+      render: (row) => (
+        <span className="capitalize text-sm font-medium text-gray-800">
+          {row.type}
+        </span>
+      ),
+      className: "w-[120px]",
     },
     {
       key: "value",
@@ -164,36 +150,7 @@ export default function AdminBlocklistPage() {
       ),
       className: "w-[130px]",
     },
-    {
-      key: "created_at",
-      header: "Created Date",
-      sortable: true,
-      onSort: () => handleSort("created_at"),
-      render: (r) => (
-        <span className="bg-[#ECECEC] px-3 py-1 rounded-md text-xs sm:text-sm text-gray-700 font-normal">
-          {r.formatted_created_at ||
-            (r.created_at
-              ? new Date(r.created_at).toLocaleDateString()
-              : "-")}
-        </span>
-      ),
-      className: "w-[170px]",
-    },
-    {
-      key: "updated_at",
-      header: "Last Updated",
-      sortable: true,
-      onSort: () => handleSort("updated_at"),
-      render: (r) => (
-        <span className="bg-[#ECECEC] px-3 py-1 rounded-md text-xs sm:text-sm text-gray-700 font-normal">
-          {r.formatted_updated_at ||
-            (r.updated_at
-              ? new Date(r.updated_at).toLocaleDateString()
-              : "-")}
-        </span>
-      ),
-      className: "w-[170px]",
-    },
+
     {
       key: "actions",
       header: "Actions",
@@ -270,10 +227,11 @@ export default function AdminBlocklistPage() {
           )}
 
           {!loading &&
-            data.map((item) => (
+            data.map((item, index) => (
               <BlocklistMobileCard
                 key={item.id}
                 item={item}
+                index={(page - 1) * perPage + index + 1}
                 onEdit={() => router.push(`/admin/blocklist/add?id=${item.id}`)}
                 onDelete={() => setDeleteId(item.id)}
                 onUpdated={fetchBlocklists}

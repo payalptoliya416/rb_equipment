@@ -10,7 +10,7 @@ export type Column<T> = {
   header: string;
   sortable?: boolean;
   onSort?: () => void;
-  render?: (row: T) => React.ReactNode;
+  render?: (row: T, index: number) => React.ReactNode;
   accessor?: (row: T) => React.ReactNode;
   className?: string;
 };
@@ -122,7 +122,7 @@ export default function AdminDataTable<
                       className={`text-sm p-[16px] border border-border ${col.className ?? ""}`}
                     >
                       {col.render
-                        ? col.render(row)
+                        ? col.render(row, idx)
                         : col.accessor
                         ? col.accessor(row)
                         : (row as any)[col.key]}
