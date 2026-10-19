@@ -38,7 +38,7 @@ try {
   }
 
   // Run Next.js build
-  execSync('next build', { stdio: 'inherit', cwd: path.join(__dirname, '..') });
+  execSync('npx next build --webpack', { stdio: 'inherit', cwd: path.join(__dirname, '..'), shell: true });
 
 
 } catch (error) {

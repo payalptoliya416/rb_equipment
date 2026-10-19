@@ -237,7 +237,7 @@ const handleMenuNavigate = (path: string) => {
                   <li key={item.path}>
                     <button onClick={() => onNavigate?.(item.path)}
                       className={`
-                text-base relative
+                text-base relative cursor-pointer
                 after:content-[''] after:absolute after:-bottom-1
                 after:left-1/2 after:-translate-x-1/2
                 after:h-1 after:w-0

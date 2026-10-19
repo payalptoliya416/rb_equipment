@@ -52,7 +52,7 @@ export default function AdminBlocklistPage() {
       if (!res?.data || res.data.length === 0) {
         setData([]);
         setPagination(res?.pagination ?? null);
-        setNoDataMessage(res?.message || "No blocklist items found");
+        setNoDataMessage("No data found");
         return;
       }
 
@@ -63,7 +63,7 @@ export default function AdminBlocklistPage() {
       console.error("Error fetching blocklists:", error);
       setData([]);
       setPagination(null);
-      setNoDataMessage("Failed to fetch blocklist data");
+      setNoDataMessage("No data found");
     } finally {
       setLoading(false);
     }
@@ -222,7 +222,7 @@ export default function AdminBlocklistPage() {
 
           {!loading && data.length === 0 && (
             <p className="text-center text-sm text-gray-500 py-10">
-              {noDataMessage || "No blocklist items found"}
+              {noDataMessage || "No data found"}
             </p>
           )}
 

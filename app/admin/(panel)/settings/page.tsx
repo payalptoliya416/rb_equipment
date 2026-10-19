@@ -36,7 +36,7 @@ type SettingsFormValues = {
 };
 
 /* ---------------- VALIDATION ---------------- */
-export const Schema = Yup.object({
+const Schema = Yup.object({
   companyName: Yup.string()
     .trim()
     .min(2, "Company name must be at least 2 characters")

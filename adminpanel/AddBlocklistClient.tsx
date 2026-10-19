@@ -161,7 +161,7 @@ export default function AddBlocklistClient() {
             <label className="block mb-3 text-sm font-medium text-lightblack">
               Block Type <span className="text-red-500">*</span>
             </label>
-            <div className="grid grid-cols-2 gap-4 max-w-md">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-md">
               <button
                 type="button"
                 onClick={() => setFieldValue("type", "email")}
