@@ -11,7 +11,13 @@ export async function adminApi<T>(
   const token = getAdminToken();
   const isFormData = options.body instanceof FormData;
 
-  const res = await fetch(`${ADMIN_BASE_URL}${endpoint}`, {
+  const cleanEndpoint = endpoint.startsWith("/admin/")
+    ? endpoint.replace(/^\/admin/, "")
+    : endpoint === "/admin"
+    ? ""
+    : endpoint;
+
+  const res = await fetch(`${ADMIN_BASE_URL}${cleanEndpoint}`, {
     ...options,
     headers: {
       ...(isFormData ? {} : { "Content-Type": "application/json" }),
@@ -29,10 +35,20 @@ export async function adminApi<T>(
   }
 
   if (!res.ok) {
-    let message = "Invalid email or password";
+    let message = "Something went wrong";
 
-    // If backend sends message → use it
-    if (data?.message) {
+    // 1. Check for detailed validation errors: { errors: { field: ["error message"] } }
+    if (data?.errors && typeof data.errors === "object") {
+      const keys = Object.keys(data.errors);
+      if (keys.length > 0) {
+        const firstErr = data.errors[keys[0]];
+        if (Array.isArray(firstErr) && firstErr.length > 0) {
+          message = firstErr[0];
+        } else if (typeof firstErr === "string") {
+          message = firstErr;
+        }
+      }
+    } else if (data?.message) {
       if (typeof data.message === "string") {
         message = data.message;
       } else if (typeof data.message === "object") {
@@ -43,7 +59,11 @@ export async function adminApi<T>(
       }
     }
 
-    throw new Error(message);
+    const err: any = new Error(message);
+    err.errors = data?.errors;
+    err.data = data;
+    err.status = res.status;
+    throw err;
   }
 
   return data as T;

@@ -14,6 +14,7 @@ import {
   FaCogs,
   FaShoppingCart,
   FaTrophy,
+  FaBan,
 } from "react-icons/fa";
 import Link from "next/link";
 
@@ -25,6 +26,7 @@ const menu = [
   { label: "Bidding", icon: FaGavel, href: "/admin/bidding" },
   { label: "Orders", icon: FaShoppingCart, href: "/admin/orders" },
   { label: "Won User", icon: FaTrophy, href: "/admin/won-user" },
+  { label: "Blocklist", icon: FaBan, href: "/admin/blocklist" },
   { label: "Settings", icon: FaCogs, href: "/admin/settings" },
 ];
 
