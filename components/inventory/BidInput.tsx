@@ -326,7 +326,7 @@ const handlePlaceBid = async () => {
         className={`w-full py-[15px] rounded-lg text-base leading-[16px] font-medium mb-[15px] flex justify-center items-center gap-[10px] mont-text transition-all duration-300 mt-4 ${
           licenseBlocked
             ? "bg-gray-300 text-gray-600 cursor-not-allowed"
-            : "bg-green text-white hover:brightness-110 hover:bg-green/90"
+            : "bg-green text-white hover:brightness-110 hover:bg-green/90 cursor-pointer"
         }`}
       >
         {bidLoading ? (
@@ -352,7 +352,7 @@ const handlePlaceBid = async () => {
         className={`w-full py-[15px] rounded-lg text-base leading-[16px] font-medium flex justify-center items-center gap-[10px] border mont-text transition-all duration-300 ${
           licenseBlocked
             ? "bg-gray-100 text-gray-600 border-gray-300 cursor-not-allowed"
-            : "bg-white text-green border-green hover:bg-green hover:text-white"
+            : "bg-white text-green border-green hover:bg-green hover:text-white cursor-pointer"
         }`}
       >
         {buyLoading ? (

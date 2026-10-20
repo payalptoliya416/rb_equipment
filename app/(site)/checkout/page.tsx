@@ -397,7 +397,10 @@ const getFirstValidImage = (images: any[]) => {
   if (!Array.isArray(images)) return null;
 
   for (let i = 0; i < images.length; i++) {
-    if (images[i]?.full_url) {
+    if (
+      images[i]?.type === "image" &&
+      images[i]?.full_url
+    ) {
       return images[i].full_url;
     }
   }

@@ -91,11 +91,18 @@ useEffect(() => {
   }
 }, [product]);
 
-const getFirstValidImage = (images?: { full_url?: string }[]) => {
+const getFirstValidImage = (
+  images?: { full_url?: string; type?: string }[]
+) => {
   if (!images || images.length === 0) return null;
 
-  return images.find((img) => img?.full_url)?.full_url || null;
+  return (
+    images.find(
+      (img) => img?.type === "image" && img?.full_url
+    )?.full_url || null
+  );
 };
+
 const imageUrl = getFirstValidImage(product?.images);
 
   useEffect(() => {
