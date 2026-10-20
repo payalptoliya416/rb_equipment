@@ -209,15 +209,12 @@ const handleMenuNavigate = (path: string) => {
     <>
       <div className="bg-header">
         <div className="container-custom mx-auto flex justify-between items-center py-[14px] sm:gap-2">
-          <Link href="/">
+          <Link href="/" className="flex items-center shrink-0">
             {settings?.dark_logo && (
-              <Image
+              <img
                 src={`${settings.dark_logo}`}
                 alt="Logo"
-                height={52}
-                width={130}
-                loading="eager"
-                priority
+                className="h-[65px] sm:h-[75px] md:h-[85px] w-auto max-w-[220px] sm:max-w-[260px] object-contain"
               />
             )}
           </Link>

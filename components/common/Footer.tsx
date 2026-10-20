@@ -62,14 +62,12 @@ function Footer() {
         <div className="container-custom mx-auto">
           <div className="grid grid-cols-12 pb-[42px] border-b border-para">
             <div className="col-span-12 lg:col-span-4 mb-10 lg:mb-0">
-              <Link href="/">
+              <Link href="/" className="inline-block">
                 {settings?.white_logo && (
-                  <Image
+                  <img
                     src={`${settings.white_logo}`}
-                    alt={settings.company_name}
-                    height={90}
-                    width={178}
-                    className="mb-[30px]"
+                    alt={settings.company_name || "Capital Equipment Auctions"}
+                    className="h-[75px] sm:h-[88px] md:h-[100px] lg:h-[112px] w-auto max-w-[260px] sm:max-w-[290px] lg:max-w-[340px] object-contain mb-[25px]"
                   />
                 )}
               </Link>
