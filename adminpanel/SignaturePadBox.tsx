@@ -43,7 +43,9 @@ export default function SignaturePadBox({
       return;
     }
 
-    const dataUrl = sigRef.current.getTrimmedCanvas().toDataURL("image/png");
+    // Use toDataURL directly to avoid getTrimmedCanvas() issue with alpha version
+    const canvas = sigRef.current.getCanvas();
+    const dataUrl = canvas.toDataURL("image/png");
 
     onSignatureReady(dataUrl);
     toast.success("Signature saved");

@@ -184,7 +184,8 @@ function SaleAgreement() {
       toast.error("Please draw your signature first");
       return;
     }
-    const dataUrl = sigRef.current.getTrimmedCanvas().toDataURL("image/png");
+    // Use getCanvas().toDataURL() directly to avoid getTrimmedCanvas() issue with alpha version
+    const dataUrl = sigRef.current.getCanvas().toDataURL("image/png");
 
     setIsSignatureSaved(true);
     toast.success("Signature saved successfully");
@@ -202,7 +203,7 @@ function SaleAgreement() {
     }
 
     const signatureBase64 = sigRef
-      .current!.getTrimmedCanvas()
+      .current!.getCanvas()
       .toDataURL("image/png");
 
     const finalPayload = {
