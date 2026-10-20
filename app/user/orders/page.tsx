@@ -182,6 +182,26 @@ export default function MyBuyOrders() {
       return;
     }
 
+    const currentOrder = orders.find((o) => o.id === selectedOrderId);
+    if (!currentOrder) {
+      setErrorMsg("Order not found");
+      return;
+    }
+
+    const currentTimeline = currentOrder.delivery_timeline || [];
+    const currentStep = getCurrentStepFromTimeline(currentTimeline, STEPS);
+    const settleIdx = STEPS.findIndex((s) => s.key === "Settle Payment");
+    const hasInvoice = Boolean(
+      currentOrder.invoice_url &&
+      currentOrder.invoice_url.trim() !== "" &&
+      currentStep >= settleIdx
+    );
+
+    if (!hasInvoice) {
+      setErrorMsg("Invoice is not available yet. Please wait until invoice is issued.");
+      return;
+    }
+
     try {
       setUploading(true);
       setErrorMsg(null);
@@ -249,16 +269,6 @@ export default function MyBuyOrders() {
   }
   const selectedOrder = orders.find((o) => o.id === selectedOrderId);
 
-  const selectedStep = selectedOrder
-    ? getCurrentStepFromTimeline(selectedOrder.delivery_timeline, STEPS)
-    : 0;
-
-  const selectedConfirmationIndex = STEPS.findIndex(
-    (s) => s.key === "Settle Payment",
-  );
-
-  const isAfterSettle = selectedStep > selectedConfirmationIndex;
-
   return (
     <section className="py-11 sm:py-[60px]">
       <div className="container-custom mx-auto">
@@ -297,6 +307,23 @@ export default function MyBuyOrders() {
 
             const SalesAgreementIndex = filteredSteps.findIndex(
               (s) => s.key === "Sales Agreement",
+            );
+
+            const isInvoiceShown = Boolean(
+              data.invoice_url &&
+              data.invoice_url.trim() !== "" &&
+              step >= confirmationIndex
+            );
+
+            const isAfterSettle = step > confirmationIndex;
+
+            const isSettlePaymentActive =
+              isInvoiceShown && !isConfirmed && step === confirmationIndex && !isCancelled;
+
+            const canClickSettlePayment = isSettlePaymentActive || isConfirmed;
+
+            const settleItem = data.delivery_timeline?.find(
+              (t) => t.status === "Settle Payment",
             );
 
             return (
@@ -399,16 +426,18 @@ export default function MyBuyOrders() {
 
                   {filteredSteps.map((s, idx) => {
                     const completed =
-                      s.key === "Settle Payment" ? isConfirmed : step >= idx;
+                      s.key === "Settle Payment"
+                        ? isConfirmed || step > idx
+                        : step >= idx;
 
                     const item =
                       s.key === "Settle Payment"
-                        ? null
+                        ? settleItem
                         : data.delivery_timeline?.find(
                             (t) => t.status === s.key,
                           );
                     return (
-                      <div className="relative">
+                      <div className="relative" key={s.key}>
                         <div className="hidden lg:block">
                           {s.key === "Sales Agreement" &&
                             data.contract_url &&
@@ -424,7 +453,7 @@ export default function MyBuyOrders() {
                                   href={data.contract_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex flex-col items-center gap-1 text-xs text-secgray"
+                                  className="flex flex-col items-center gap-1 text-xs text-secgray hover:text-green transition"
                                 >
                                   <span>View Agreement</span>
                                   <FaFilePdf className="text-[#FFCA42] text-lg" />
@@ -432,8 +461,7 @@ export default function MyBuyOrders() {
                               </div>
                             )}
                           {s.key === "Settle Payment" &&
-                            data.invoice_url &&
-                            step >= confirmationIndex && (
+                            isInvoiceShown && (
                               <div
                                 className="
                           mb-2
@@ -445,7 +473,7 @@ export default function MyBuyOrders() {
                                   href={data.invoice_url}
                                   target="_blank"
                                   rel="noopener noreferrer"
-                                  className="flex flex-col items-center gap-1 text-xs text-secgray"
+                                  className="flex flex-col items-center gap-1 text-xs text-secgray hover:text-green transition"
                                 >
                                   <span>View Invoice</span>
                                   <FaFilePdf className="text-green text-lg" />
@@ -454,9 +482,8 @@ export default function MyBuyOrders() {
                             )}
                         </div>
                         <div
-                          key={s.key}
                           onClick={() => {
-                              if (s.key === "Settle Payment" && step <= confirmationIndex) {
+                            if (s.key === "Settle Payment" && canClickSettlePayment) {
                               setSelectedOrderId(data.id!);
                               setSelectedOrderNumber(data.order_id);
                               setOpenConfirmationModal(true);
@@ -465,14 +492,18 @@ export default function MyBuyOrders() {
                           }}
                           className={`flex items-start gap-4
                           lg:flex-col lg:items-center
-                          ${s.key === "Settle Payment" ? "cursor-pointer group" : ""}`}
+                          ${s.key === "Settle Payment" && canClickSettlePayment ? "cursor-pointer group" : ""}`}
                         >
                           <div className="relative flex flex-col items-center">
                             <div
                               className={`w-[36px] h-[36px] rounded-full flex items-center justify-center transition
                                 ${
                                   s.key === "Settle Payment"
-                                    ? "bg-[#E6F4F1] group-hover:scale-110 group-hover:ring-1 group-hover:ring-green"
+                                    ? isSettlePaymentActive
+                                      ? "bg-[#E6F4F1] group-hover:scale-110 group-hover:ring-1 group-hover:ring-green"
+                                      : completed
+                                        ? "bg-lightgreen"
+                                        : "bg-border"
                                     : completed
                                       ? "bg-lightgreen"
                                       : "bg-border"
@@ -499,7 +530,9 @@ export default function MyBuyOrders() {
                             <h3
                               className={`text-lg font-medium ${
                                 s.key === "Settle Payment"
-                                  ? "text-green"
+                                  ? isSettlePaymentActive
+                                    ? "text-green"
+                                    : "text-secgray"
                                   : "text-secgray"
                               }`}
                             >
@@ -508,21 +541,23 @@ export default function MyBuyOrders() {
 
                             {s.key === "Settle Payment" && (
                               <>
-                                {!isConfirmed ? (
-                                  <p className="text-xs text-green mt-1">
-                                    {isAfterSettle
-                                      ? "Payment step completed"
-                                      : "Click to upload payment Receipt"}
-                                  </p>
-                                ) : (
+                                {isConfirmed ? (
                                   <p className="text-sm text-seclightgray">
-                                    {formatDateTime(confirmationDate!)}
+                                    {formatDateTime(settleItem?.date || confirmationDate!)}
                                   </p>
-                                )}
+                                ) : isSettlePaymentActive ? (
+                                  <p className="text-xs text-green mt-1">
+                                    Click to upload payment Receipt
+                                  </p>
+                                ) : isAfterSettle ? (
+                                  <p className="text-xs text-seclightgray mt-1">
+                                    Payment step completed
+                                  </p>
+                                ) : null}
                               </>
                             )}
 
-                            {item?.date && (
+                            {s.key !== "Settle Payment" && item?.date && (
                               <p className="text-sm text-seclightgray">
                                 {formatDateTime(item.date)}
                               </p>
@@ -551,8 +586,7 @@ export default function MyBuyOrders() {
                                   </div>
                                 )}
                               {s.key === "Settle Payment" &&
-                                data.invoice_url &&
-                                step >= confirmationIndex && (
+                                isInvoiceShown && (
                                   <div
                                     className="
                           mb-2

@@ -208,13 +208,13 @@ const handleMenuNavigate = (path: string) => {
   return (
     <>
       <div className="bg-header">
-        <div className="container-custom mx-auto flex justify-between items-center py-[14px] sm:gap-2">
+        <div className="container-custom mx-auto flex justify-between items-center py-2 sm:py-2.5 md:py-3 px-4 md:px-0 sm:gap-2">
           <Link href="/" className="flex items-center shrink-0">
             {settings?.dark_logo && (
               <img
-                src={`${settings.dark_logo}`}
+                src={settings.dark_logo}
                 alt="Logo"
-                className="h-[65px] sm:h-[75px] md:h-[85px] w-auto max-w-[220px] sm:max-w-[260px] object-contain"
+                className="h-[68px] sm:h-[78px] md:h-[88px] lg:h-[96px] w-auto max-w-[240px] sm:max-w-[270px] lg:max-w-[310px] object-contain transition-all duration-200"
               />
             )}
           </Link>
