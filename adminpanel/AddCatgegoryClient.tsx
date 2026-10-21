@@ -183,7 +183,9 @@ const [cropImage, setCropImage] = useState<string | null>(null);
 
     <Field
       name="shipping_fee_addon"
-      type="number"
+        type="number"
+        step="any"
+        min="0"
       placeholder="Enter shipping fee addon"
       className={`
         w-full px-5 py-4 rounded-[10px] border focus:outline-none
