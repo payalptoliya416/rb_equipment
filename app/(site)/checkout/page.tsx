@@ -283,6 +283,7 @@ const calculateDeliveryCost = async (zip: string, country: string) => {
     const res = await calculateDistanceApi({
       zip_code: zip,
       country,
+      auction_id: auction_id
     });
     if (res.status === "success") {
       setDistanceMiles(res.distance_miles);

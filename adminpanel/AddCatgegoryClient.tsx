@@ -18,6 +18,10 @@ import { ImageCropGallry } from "./ImageCropGallry";
 
 const schema = Yup.object({
   categoryName: Yup.string().trim().required("Category name is required"),
+  shipping_fee_addon: Yup.number()
+    .typeError("Shipping fee addon must be a number")
+    .required("Shipping fee addon is required")
+    .min(0, "Shipping fee addon cannot be negative"),
   image_urls: Yup.array().min(1, "At least one image is required"),
 });
 
@@ -59,6 +63,7 @@ const UrlPreview = ({
 const DEFAULT_VALUES = {
   categoryName: "",
   totalMachinery: "",
+  shipping_fee_addon: "",
   image_urls: [],
 };
 
@@ -88,6 +93,7 @@ const [cropImage, setCropImage] = useState<string | null>(null);
         setInitialValues({
           categoryName: c?.category_name,
           totalMachinery: c.total_machinery,
+          shipping_fee_addon: c.shipping_fee_addon,
           image_urls: Array.isArray(c.image_urls)
             ? c.image_urls
             : c.image_urls
@@ -124,6 +130,7 @@ const [cropImage, setCropImage] = useState<string | null>(null);
           const payload = {
             category_name: values.categoryName,
             total_machinery: Number(values.totalMachinery),
+            shipping_fee_addon: Number(values.shipping_fee_addon),
             image_urls: values.image_urls,
           };
 
@@ -143,31 +150,58 @@ const [cropImage, setCropImage] = useState<string | null>(null);
     >
       {({ errors, touched, setFieldValue, values, isSubmitting }) => (
         <Form className="space-y-5 bg-white border border-border rounded-[14px] p-3 sm:p-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div>
-              <label className="block mb-3 text-sm font-medium text-lightblack">
-                Category Name <span className="text-redmark">*</span>
-              </label>
-              <Field
-                name="categoryName"
-                placeholder="Enter category name"
-                className={`
-                      w-full px-5 py-4 rounded-[10px] border focus:outline-none
-                      ${
-                        errors.categoryName && touched.categoryName
-                          ? "border-red-500"
-                          : "border-border"
-                      }
-                    `}
-              />
+         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <div>
+    <label className="block mb-3 text-sm font-medium text-lightblack">
+      Category Name <span className="text-redmark">*</span>
+    </label>
 
-              {errors.categoryName && touched.categoryName && (
-                <p className="text-xs text-red-500 mt-1">
-                  {errors.categoryName}
-                </p>
-              )}
-            </div>
-          </div>
+    <Field
+      name="categoryName"
+      placeholder="Enter category name"
+      className={`
+        w-full px-5 py-4 rounded-[10px] border focus:outline-none
+        ${
+          errors.categoryName && touched.categoryName
+            ? "border-red-500"
+            : "border-border"
+        }
+      `}
+    />
+
+    {errors.categoryName && touched.categoryName && (
+      <p className="text-xs text-red-500 mt-1">
+        {errors.categoryName}
+      </p>
+    )}
+  </div>
+
+  <div>
+    <label className="block mb-3 text-sm font-medium text-lightblack">
+      Shipping Fee Addon <span className="text-redmark">*</span>
+    </label>
+
+    <Field
+      name="shipping_fee_addon"
+      type="number"
+      placeholder="Enter shipping fee addon"
+      className={`
+        w-full px-5 py-4 rounded-[10px] border focus:outline-none
+        ${
+          errors.shipping_fee_addon && touched.shipping_fee_addon
+            ? "border-red-500"
+            : "border-border"
+        }
+      `}
+    />
+
+    {errors.shipping_fee_addon && touched.shipping_fee_addon && (
+      <p className="text-xs text-red-500 mt-1">
+        {errors.shipping_fee_addon}
+      </p>
+    )}
+  </div>
+</div>
 
           {/* IMAGE UPLOAD */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
@@ -367,7 +401,7 @@ const [cropImage, setCropImage] = useState<string | null>(null);
               disabled={isSubmitting}
               className={`
                 px-[18px] py-3 rounded-[10px] text-white text-sm
-                gradient-btn
+                gradient-btn cursor-pointer
                 ${isSubmitting ? "opacity-60 cursor-not-allowed" : ""}
               `}
             >

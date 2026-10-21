@@ -6,8 +6,10 @@ export interface CategoryApiItem {
   image_urls: string[];
   category_name: string;
   total_machinery: number;
+  shippingFeeAddon: number;
   created_at: string;
   updated_at: string;
+  shipping_fee_addon: string | number;
 }
 
 export interface CategoryApiResponse {

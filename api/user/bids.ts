@@ -213,6 +213,7 @@ export type WonBid = {
   won_bid_amount: string | null
   status: string
   contract_html: string
+   auction_id: string | number;
 }
 
 export type SingleWonBidResponse = {

@@ -202,6 +202,7 @@ function InventoryDetail() {
       const res = await calculateDistanceApi({
         zip_code: zip,
         country,
+        auction_id: hours
       });
 
       if (res.status === "success") {

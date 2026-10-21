@@ -280,6 +280,7 @@ function SignaturePadDetail() {
       const res = await calculateDistanceApi({
         zip_code: zip,
         country,
+        auction_id: data?.auction_id
       });
       if (res.status === "success") {
         setDistanceMiles(res.distance_miles);
@@ -306,7 +307,7 @@ function SignaturePadDetail() {
     }, 700);
 
     return () => clearTimeout(timer);
-  }, [zipToUse, countryToUse]);
+  }, [zipToUse, countryToUse, data?.auction_id]);
   const handleCheckoutSubmit = async (values: CheckoutFormValues) => {
     // if (!product?.id) return toast.error("Product not found");
 

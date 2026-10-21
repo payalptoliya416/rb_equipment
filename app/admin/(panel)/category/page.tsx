@@ -21,6 +21,7 @@ export type CategoryRow = {
   image_urls: string | null;
   categoryName: string;
   totalMachinery: number;
+  shippingFeeAddon: string | number;
   createdDate: string;
   lastUpdated: string;
 };
@@ -73,6 +74,7 @@ export default function AdminCategory() {
         image_urls: item.image_urls?.length ? item.image_urls[0] : null,
         categoryName: item.category_name,
         totalMachinery: item.total_machinery,
+        shippingFeeAddon: item.shipping_fee_addon,
         createdDate: new Date(item.created_at).toLocaleDateString(),
         lastUpdated: new Date(item.updated_at).toLocaleDateString(),
       }));
@@ -156,6 +158,15 @@ export default function AdminCategory() {
         setSortOrder((p) => (p === "asc" ? "desc" : "asc"));
       },
     },
+    {
+    key: "shippingFeeAddon",
+    header: "Shipping Fee Addon",
+    render: (r) => (
+      <span>
+        {r.shippingFeeAddon}
+      </span>
+    ),
+  },
     {
       key: "createdDate",
       header: "Created Date",

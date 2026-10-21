@@ -4,6 +4,7 @@ import { api } from "./http";
 export type CalculateDistancePayload = {
   zip_code: string;
   country: string;
+  auction_id?: number | string;
 };
 
 export type CalculateDistanceResponse = {
